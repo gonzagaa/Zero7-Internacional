@@ -22,6 +22,12 @@
     color: #070C11;
 }
 
+#topicos header h2 span {
+    background: radial-gradient(63.17% 77.11% at 50% 0.13%, #000000, #4c4c4c);
+         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+}
+
 #topicos header p {
     color: #070C11;
 }
@@ -46,15 +52,15 @@
 }
 
 #topicos .cards .card:nth-child(1)  {
-    background: #070E0F;
+    background: linear-gradient(to bottom, #161616, #050505);
 }
 
 #topicos .cards .card:nth-child(2) {
-    background: #070C11;
+    background: linear-gradient(to bottom, #161616, #050505);
 }
 
 #topicos .cards .card:nth-child(3)  {
-    background: #0D0F18;
+    background: linear-gradient(to bottom, #161616, #050505);
 }
 
 #topicos .cards .card img {
@@ -75,18 +81,19 @@
     margin-bottom: 2rem;
 }
 
-#topicos .cards .card:nth-child(1) a button {
-    background: linear-gradient(to right, #00FFDE, #00B49D);
-    color: #000;
+#topicos .cards .card a button {
+    background: radial-gradient(70.74% 250.43% at 50.26% 100%, rgb(21, 21, 21), rgb(42, 42, 42)), linear-gradient(0deg, #2c2c2c, #1a1a1a);
+        color: #fff;
 }
 
-#topicos .cards .card:nth-child(2) a button {
-    background: linear-gradient(to right, #00A1FF, #007EC7);
-}
-
-#topicos .cards .card:nth-child(3) a button {
-    background: linear-gradient(to right, #0021FF, #0015A0);
-}
+#topicos .cards .card a button::before {
+    background-image: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(56, 56, 56, 0.388),
+      rgba(255, 255, 255, 0) 70%
+    );
+  }
 
 @media (min-width: 1080px) {
     section#topicos .cards {

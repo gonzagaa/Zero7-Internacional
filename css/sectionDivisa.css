@@ -33,7 +33,7 @@
 }
 
 #divisa .cards .borderCard:nth-child(1) {
-    background: linear-gradient(130deg, #023c83, #1da4f3, #1da4f3, #000 30%);
+    background: linear-gradient(130deg, #26262636, #a4a4a4, #a4a4a4, #000 30%);
 }
 
 #divisa .cards .borderCard:nth-child(2) {
@@ -41,7 +41,7 @@
 }
 
 #divisa .cards .borderCard:nth-child(3) {
-    background: linear-gradient(50deg, #023c83, #1da4f3, #1da4f3, #000 30%);
+    background: linear-gradient(50deg, #26262636, #a4a4a4, #a4a4a4, #000 30%);
 }
 
 #divisa .cards .borderCard:nth-child(1) .card,
@@ -61,7 +61,7 @@
     left: 0;
     width: 3px;
     height: 100%;
-    background: linear-gradient(-130deg, #023c83, #1da4f3, #1da4f3, #023c83);
+    background: linear-gradient(-130deg, #26262636, #a4a4a4, #a4a4a4, #26262636);
     bottom: 0;
 }
 
@@ -76,7 +76,7 @@
 
 #divisa .cards .card h3 span {
     font-size: 4rem;
-    background: linear-gradient(130deg, #023c83, #1da4f3, #023c83);
+    background: linear-gradient(130deg, #bfbfbfbd, #a4a4a4, #e0e0e0b1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -117,7 +117,7 @@
     }
 
     section#divisa .cards .borderCard:nth-child(1) {
-        background: linear-gradient(168deg, #023c83, #1da4f3, #1da4f3, #000 30%);
+        background: linear-gradient(168deg, #e2e2e28a, #a4a4a4, #a4a4a4, #26262636 30%);
     }
     
     section#divisa .cards .borderCard:nth-child(2) {
@@ -125,20 +125,20 @@
     }
     
     section#divisa .cards .borderCard:nth-child(3) {
-        background: linear-gradient(-168deg, #023c83, #1da4f3, #1da4f3, #000 30%);
+        background: linear-gradient(-168deg, #e2e2e28a, #a4a4a4, #a4a4a4, #26262636 30%);
     }
     
     section#divisa .cards .borderCard:nth-child(1) .card {
-        background: linear-gradient(168deg, #001120, #01050b);
+        background: linear-gradient(168deg, #161616, #050505);
     }
     
     
     section#divisa .cards .borderCard:nth-child(3) .card {
-        background: linear-gradient(-168deg, #001120, #01050b);
+        background: linear-gradient(-168deg, #161616, #050505);
     }
     
     section#divisa .cards .borderCard:nth-child(2) .card {
-        background: linear-gradient(to bottom, #001120, #01050b);
+        background: linear-gradient(to bottom, #161616, #050505);
         position: relative;
     }
     
@@ -147,7 +147,7 @@
         top: 0;
         width: 100%;
         height: 2px;
-        background: linear-gradient(-130deg, #023c8336, #1da4f3, #1da4f3, #023c8336);
+        background: linear-gradient(-130deg, #26262636, #a4a4a4, #a4a4a4, #26262636);
     }
     
 }

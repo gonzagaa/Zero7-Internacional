@@ -175,7 +175,7 @@ nav {
   }
 
   body nav#navigation button#navButton {
-    color: #Fff;
+    color: #000000;
     filter: none;
     font-family: var(--tts);
     font-weight: 500;
@@ -246,12 +246,9 @@ nav {
       }
   
       nav#navigation .menu ul li a:hover {
-        color: var(--primary-color);
         opacity: 1;
 
-        background: linear-gradient(45deg, #1da4f3, #056ba6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #fff;
       }
   
       nav#navigation .menu a {
@@ -332,7 +329,7 @@ nav {
         content: '';
         width: 0%;
         height: 3px;
-        background: linear-gradient(to right, transparent, #023c83, #0080c9, #023c83, transparent);
+        background: linear-gradient(to right, transparent, #878787, #bdbdbd, #878787, transparent);
     
         position: relative;
         bottom: -1.5rem;

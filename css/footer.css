@@ -14,7 +14,7 @@ footer::before {
     right: 0;
     top: 0;
     height: 1px;
-    background: linear-gradient(to right, transparent, #023c83, #0080c9, #023c83, transparent);
+    background: linear-gradient(to right, transparent, #ffffff5b, #cecece, #ffffff5b, transparent);
 }
 
 footer img.logo {

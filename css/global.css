@@ -17,7 +17,7 @@
     --secondy-color: #023c83;
     --orange-black: #000205;
     --orange-blac: #000b1c;
-    --gradient: linear-gradient(to right, #023c83, #0080c9);
+    --gradient: radial-gradient(63.17% 77.11% at 50% 50.13%, #ffffff, #a6a6a6);
     --bg-black: #000205;
     --bg-white: #f2fffb;
     color: #7c8590;

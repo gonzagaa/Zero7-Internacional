@@ -62,7 +62,9 @@
   #home h1 span {
     font-size: 2.5rem;
     font-family: var(--ncs);
-    color: var(--primary-color);
+    background: radial-gradient(63.17% 77.11% at 50% 50.13%, #ffffff, #a6a6a6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 
     min-width: 50%;
     text-align: right;

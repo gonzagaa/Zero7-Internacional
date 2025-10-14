@@ -36,7 +36,7 @@
     font-weight: 300;
     font-size: 1.2rem;
 
-    background: linear-gradient(130deg, #010b15, #01050b);
+    background: linear-gradient(145deg, #0f0f0f, #050505);
 
     display: flex;
     text-align: left;
@@ -62,7 +62,7 @@
     height: 100%;
     left: 0;
     top: 0;
-    background: linear-gradient(to bottom, #023c83, #0080c9);
+    background: linear-gradient(to bottom, rgb(209, 209, 209), #828282);
     transition: all 200ms ease-in-out;
 }
 
@@ -105,7 +105,7 @@
 
     font-size: 3rem;
     transition: all .5s ease-in-out;
-    color: var(--primary-color);
+    color: #fff;
     transform: rotate(-45deg);
     position: relative;
     line-height: 0;
@@ -125,7 +125,7 @@ summary::-webkit-details-marker {
 }
 
 #faq details p {
-    background: linear-gradient(130deg, #010b15, #01050b);
+    background: linear-gradient(145deg, #0f0f0f, #050505);
 
     padding: 3rem;
     padding-top: 2rem;

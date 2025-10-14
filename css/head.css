@@ -18,7 +18,7 @@ header h2 {
 
 header h2 span {
     font-family: var(--ncs);
-    background: linear-gradient(45deg, #1da4f3, #056ba6);
+     background: radial-gradient(63.17% 77.11% at 50% 50.13%, #ffffff, #a6a6a6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -26,13 +26,13 @@ header h2 span {
 header p {
     font-size: 1.4rem;
     line-height: 1.4;
-    color: #d1e0ff;
+    color: #ffffff;
 
     margin-bottom: 2rem;
 }
 
 header p span {
-    color: #d1e0ff;
+    color: #ffffff;
     font-weight: 600;
 }
 
