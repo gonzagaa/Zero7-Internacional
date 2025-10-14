@@ -1,0 +1,32 @@
+@import './global.css';
+@import './home.css';
+@import './sectionDivisa.css';
+@import './sectionCards.css';
+@import './sectionTopicos.css';
+@import './sectionNumeros.css';
+@import './sectionDepoimentos.css';
+@import './sectionPlanos.css';
+@import './sectionFaq.css';
+@import './sectionContato.css';
+@import './divSuporte.css';
+@import './sectionBa.css';
+
+@import './navigation.css';
+@import './button.css';
+@import './head.css';
+@import './buttonWpp.css';
+@import './modalDepoimento.css';
+@import './tarja.css';
+@import './tarjaNav.css';
+@import './tarjaImage.css';
+@import './popup.css';
+
+@import './author.css';
+@import './footer.css';
+@import './footerPagamento.css';
+@import './coutdownDois.css';
+
+@import './planosBlur.css';
+@import './obrigado.css';
+
+

@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/send-event.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/send-event", "dest": "api/send-event.js" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "facebook-api-conversion",
+  "version": "1.0.0",
+  "main": "api/send-event.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node api/send-event.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}

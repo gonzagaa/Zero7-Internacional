@@ -1,0 +1,139 @@
+#ba {
+    position: relative;
+    overflow: hidden;
+}
+
+#ba img.bgsection {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+#ba .content {
+    position: relative;
+    z-index: 1;
+}
+
+#ba .card,
+#ba .minicard {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.132);
+
+   box-shadow:  16px 16px 32px #0000001c,
+             -16px -16px 32px #0000001a;
+
+    width: 100%;
+    border-radius: 1rem;
+    min-height: 20rem;
+}
+
+#ba .card.centro img {
+    margin-bottom: 1rem;
+    width: 10rem;
+}
+
+#ba .card.centro a button {
+    border-radius: .5rem;
+    padding: 2rem 3rem;
+    font-size: 1.4rem;
+    margin-top: 2rem;
+}
+
+section#ba .card.centro video {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    opacity: .1;
+}
+
+@media (min-width: 1080px) {
+    section#ba .wrapper {
+        width: 100%;
+        padding-inline: 4%;
+    }
+
+    section#ba .bgsection {
+        mask-image: linear-gradient(to top, #000 80%, transparent);
+    }
+
+    section#ba .grid {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr 1fr;
+        gap: 2rem;
+        width: 100%;
+    }
+
+    section#ba .grid .coluna.um,
+    section#ba .grid .coluna.tres {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    section#ba .grid .coluna.dois {
+        display: grid;
+        grid-template-rows: .5fr 2fr 1fr;
+        gap: 2rem;
+    }
+
+    section#ba .grid .coluna.dois .card:nth-child(1) {
+        min-height: 10rem;
+    }
+
+    section#ba .grid .coluna.dois .card:last-child {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: transparent;
+    }
+
+     section#ba .grid .coluna.dois .card:nth-child(1) {
+        background: radial-gradient(63.17% 77.11% at 50% 50.13%, #dadada, #ffffff);
+     }
+
+    section#ba .grid .coluna.dois .card.centro {
+        background: radial-gradient(63.17% 77.11% at 50% 50.13%, #002d46, #0c0f15);
+        overflow: hidden;
+    }
+
+    section#ba .card.centro,
+    section#ba .grid .coluna.dois .card:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        padding: 5%;
+    }
+
+    section#ba .card.centro h3,
+    section#ba .grid .coluna.dois .card:nth-child(1) h3 {
+        color: #ffffff;
+        font-size: 2.2rem;
+    
+        font-family: var(--ncs);
+        text-transform: uppercase;
+        font-weight: 500;
+
+        background: radial-gradient(63.17% 77.11% at 50% 50.13%, #ffffff, #a1b5dc);
+         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    section#ba .grid .coluna.dois .card:nth-child(1) h3  {
+        background: radial-gradient(63.17% 77.11% at 50% 0.13%, #000000, #000c24);
+         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    
+}
