@@ -1,0 +1,108 @@
+/* ===== FIX: impedir que o reset do nav quebre o dropdown ===== */
+
+/* o <li> do idioma não precisa de estilos especiais, só garantir que não herde coisas estranhas */
+nav#navigation .menu ul .lang-li { list-style: none; }
+
+/* container do dropdown */
+nav#navigation .menu ul .lang-li .lang-switch{
+  position: relative !important;
+  display: inline-block !important;
+  overflow: visible !important;
+  z-index: 1000;
+}
+
+/* botão atual */
+nav#navigation .menu ul .lang-li .lang-current{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  padding: .5rem 1rem !important;
+  background: #191b1f !important;
+  color: #e7e9ee !important;
+  border: 1px solid #2a2d33 !important;
+  border-radius: .7rem !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+
+  margin-top: -.4rem;
+}
+
+/* menu suspenso */
+nav#navigation .menu ul .lang-li .lang-menu{
+  position: absolute !important;
+  top: calc(100%) !important;
+  left: 0 !important;
+  width: 220px !important;
+  background: radial-gradient(120% 100% at 0 0, rgba(255,255,255,.04), transparent 60%), #101216 !important;
+  border: 1px solid #2a2d33 !important;
+  border-radius: .9rem !important;
+  padding: .35rem !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35) !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  transform: translateY(6px) scale(.98) !important;
+  transition: opacity .18s ease, transform .18s ease !important;
+  z-index: 9999 !important;
+  overflow: hidden;
+}
+
+/* itens do menu */
+nav#navigation .menu ul .lang-li .lang-item{
+  display: flex !important;
+  align-items: center !important;
+  gap: .65rem !important;
+  padding: .6rem .7rem !important;
+  border-radius: .6rem !important;
+  color: #e7e9ee !important;
+  text-decoration: none !important;
+  font-size: .95rem !important;
+}
+nav#navigation .menu ul .lang-li .lang-item:hover{
+  background: rgba(255,255,255,.06) !important;
+}
+
+nav#navigation .menu ul .lang-li .lang-item span {
+  color: #fff;
+}
+
+nav#navigation .menu ul .lang-li a:hover::after {
+  display: none;
+}
+
+/* abrir no hover e no estado .open (mobile) */
+nav#navigation .menu ul .lang-li:hover .lang-menu,
+nav#navigation .menu ul .lang-li .lang-switch.open .lang-menu{
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+/* ===== Ajuste para bandeiras como imagens ===== */
+.lang-switch img.flag {
+  width: 22px;
+  height: 22px;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Suaviza a interação e alinha melhor */
+.lang-switch .lang-item,
+.lang-switch .lang-current {
+  display: flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+}
+
+.lang-switch .lang-current span.label {
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  
+}
+
+.lang-switch .lang-item:hover img.flag {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: all .2s ease;
+}
+

@@ -58,7 +58,7 @@ section#ba .card.centro video {
 @media (min-width: 1080px) {
     section#ba .wrapper {
         width: 100%;
-        padding-inline: 4%;
+        padding-inline: 1%;
     }
 
     section#ba .bgsection {
@@ -67,7 +67,7 @@ section#ba .card.centro video {
 
     section#ba .grid {
         display: grid;
-        grid-template-columns: 1fr 1.3fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 2rem;
         width: 100%;
     }
@@ -75,8 +75,17 @@ section#ba .card.centro video {
     section#ba .grid .coluna.um,
     section#ba .grid .coluna.tres {
         display: grid;
-        grid-template-rows: 1fr 1fr;
         gap: 2rem;
+    }
+
+    section#ba .grid .coluna.um {
+        grid-template-rows: 1fr;
+
+    }
+
+    section#ba .grid .coluna.tres {
+        grid-template-rows: 1fr;
+
     }
 
     section#ba .grid .coluna.dois {
@@ -101,7 +110,7 @@ section#ba .card.centro video {
      }
 
     section#ba .grid .coluna.dois .card.centro {
-        background: radial-gradient(63.17% 77.11% at 50% 50.13%, #000000, #151515);
+        background: radial-gradient(63.17% 77.11% at 50% 50.13%, #000000, #0c0c0c);
         overflow: hidden;
     }
 
@@ -137,11 +146,10 @@ section#ba .card.centro video {
 
     section#ba .card.video {
         overflow: hidden;
-        padding: 2rem;
     }
 
     section#ba .card.video video {
-        aspect-ratio: 1.3/1;
+        height: 100%;
         width: 100%;
         object-fit: cover;
         border-radius: 1rem;

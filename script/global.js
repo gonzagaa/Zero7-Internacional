@@ -343,3 +343,56 @@ document.addEventListener("DOMContentLoaded", () => {
     header.classList.add("activeTarjaHome");
   }, 3000);
 });
+
+// ===== Language Dropdown logic =====
+/* Lang dropdown – imagens das bandeiras e ocultar idioma atual
+   Requer no CSS:
+   nav#navigation .menu ul .lang-li .lang-item.is-hidden { display: none !important; }
+*/
+(function () {
+  const root = document.querySelector('nav#navigation .lang-switch');
+  if (!root) return;
+  const btn = root.querySelector('.lang-current');
+  const label = btn.querySelector('.label');
+  const img = btn.querySelector('.flag');
+
+  const items = [...root.querySelectorAll('.lang-item')];
+
+  // mapa com as imagens correspondentes
+  const map = {
+    pt: { label: 'PT', img: './assets/br.png' },
+    en: { label: 'EN', img: './assets/en.png' },
+    es: { label: 'ES', img: './assets/es.png' }
+  };
+
+  const current = (root.getAttribute('data-current') || 'pt').toLowerCase();
+  const cfg = map[current] || map.pt;
+  label.textContent = cfg.label;
+  img.src = cfg.img;
+
+  items.forEach(a => a.classList.toggle('is-active', a.dataset.lang === current));
+
+  // clique no botão (mobile)
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const open = root.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  // fechar ao clicar fora
+  document.addEventListener('click', e => {
+    if (!root.contains(e.target)) {
+      root.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ESC para fechar
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      root.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.focus();
+    }
+  });
+})();
