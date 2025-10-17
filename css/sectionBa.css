@@ -56,6 +56,10 @@ section#ba .card.centro video {
 }
 
 @media (min-width: 1080px) {
+    section#ba {
+        padding-top: 5rem;
+    }
+
     section#ba .wrapper {
         width: 100%;
         padding-inline: 1%;
