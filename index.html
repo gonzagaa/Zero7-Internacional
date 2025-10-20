@@ -13,17 +13,6 @@
 
   <link rel="canonical" href="https://zero7.com.br/home">
 
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', 'GTM-KCJQPMC');</script>
-  <!-- End Google Tag Manager -->
-
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -806,58 +795,6 @@
     <ion-icon name="logo-whatsapp"></ion-icon>
   </a>
 
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KCJQPMC" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <script>
-    function getFbp() {
-      const existing = localStorage.getItem('_fbp');
-      if (existing) return existing;
-      const fbp = 'fb.1.' + Date.now() + '.' + Math.floor(Math.random() * 1e10);
-      localStorage.setItem('_fbp', fbp);
-      return fbp;
-    }
-
-    function getFbc() {
-      const fbclid = new URLSearchParams(window.location.search).get('fbclid');
-      if (!fbclid) return '';
-      return 'fb.1.' + Date.now() + '.' + fbclid;
-    }
-
-    function generateEventID() {
-      return '_' + Math.random().toString(36).substring(2, 11);
-    }
-
-    function sendPageViewEvent() {
-      const eventID = generateEventID();
-      const fbp = getFbp();
-      const fbc = getFbc();
-
-      // Disparo do Pixel
-      fbq('track', 'PageView', {}, { eventID });
-      console.log('📤 Pixel PageView enviado com eventID:', eventID);
-
-      // Disparo da API
-      fetch('https://backend-api-zero7.vercel.app/api/send-event', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event_name: 'PageView',
-          event_id: eventID,
-          fbp,
-          fbc,
-          email: 'anonimo@teste.com'
-        })
-      })
-        .then(res => res.json())
-        .then(data => console.log('📥 Resposta API Facebook:', data))
-        .catch(err => console.error('❌ Erro na chamada da API:', err));
-    }
-
-    // Execute assim que a página carregar
-    window.addEventListener('DOMContentLoaded', sendPageViewEvent);
-  </script>
   <script>
     let prefix = ["https://app.4st.com.br"];
 
@@ -906,53 +843,6 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.9.3/countUp.min.js"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const optionsBase = {
-        useEasing: true,
-        separator: '.',
-        decimal: ',',
-      };
-
-      const optionsAno = {
-        ...optionsBase,
-        useGrouping: false // sem ponto em 2023
-      };
-
-      const optionsTraders = {
-        ...optionsBase,
-        prefix: "+",
-        useGrouping: true
-      };
-
-      const optionsPagamentos = {
-        ...optionsBase,
-        prefix: "+",
-        useGrouping: true
-      };
-
-      const createAnimations = () => {
-        const ano = new CountUp("ano", 0, 2023, 0, 3, optionsAno);
-        const traders = new CountUp("traders", 0, 20, 0, 3, optionsTraders);
-        const pagamentos = new CountUp("pagamentos", 0, 12, 0, 3, optionsPagamentos);
-
-        if (!ano.error) ano.start();
-        if (!traders.error) traders.start();
-        if (!pagamentos.error) pagamentos.start();
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            createAnimations(); // anima novamente sempre que a seção voltar à viewport
-          }
-        });
-      });
-
-      observer.observe(document.querySelector('#ano'));
-    });
-  </script>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
