@@ -92,9 +92,9 @@
 @media (min-width: 1080px) {
     section#divisa {
         padding-top: 0;
-        margin-top: 0;
+        margin-top: -2%;
 
-        padding-bottom: 3rem;
+        padding-bottom: 6rem;
     }
 
     section#divisa .cards .card {

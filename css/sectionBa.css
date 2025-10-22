@@ -94,12 +94,12 @@ section#ba .card.centro video {
 
     section#ba .grid .coluna.dois {
         display: grid;
-        grid-template-rows: .5fr 2fr 1fr;
+        grid-template-rows: .3fr 1.3fr 1fr;
         gap: 2rem;
     }
 
     section#ba .grid .coluna.dois .card:nth-child(1) {
-        min-height: 10rem;
+        min-height: 7rem;
     }
 
     section#ba .grid .coluna.dois .card:last-child {
@@ -116,6 +116,7 @@ section#ba .card.centro video {
     section#ba .grid .coluna.dois .card.centro {
         background: radial-gradient(63.17% 77.11% at 50% 50.13%, #000000, #0c0c0c);
         overflow: hidden;
+
     }
 
     section#ba .card.centro,
@@ -157,6 +158,16 @@ section#ba .card.centro video {
         width: 100%;
         object-fit: cover;
         border-radius: 1rem;
+    }
+
+    section#ba .grid .coluna.dois .minicard {
+        overflow: hidden;
+    }
+
+    section#ba .grid .coluna.dois .minicard img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
 }

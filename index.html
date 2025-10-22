@@ -6,6 +6,10 @@
   <title>Zero7 - Home</title>
   <link rel="shortcut icon" href="" type="image/x-icon">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
   <link rel="shortcut icon" href="./assets/favicon zero7.png" type="image/x-icon">
   <link href="https://fonts.cdnfonts.com/css/ncs-radhiumz" rel="stylesheet">
   <link href="https://fonts.cdnfonts.com/css/tt-fors-trial" rel="stylesheet">
@@ -290,8 +294,8 @@
       <div class="content">
         <div data-aos="fade-up" class="text">
           <h1>
-            SEU ECOSSISTEMA DE TRADING: <span class="reveal-wrapper">
-              <span class="reveal-word">acessível</span>
+            SEU ECOSSISTEMA DE TRADING:
+              <span>ACESSÍVEL, SEGURO, LUCRATIVO.</span>
             </span> 
           </h1>
 
@@ -395,9 +399,13 @@
             </div>
 
             <div class="card">
-              <div class="minicard"></div>
+              <div class="minicard">
+                <img src="./assets/CARD IMG BLACKARROW.avif" alt="">
+              </div>
 
-              <div class="minicard"></div>
+              <div class="minicard">
+                <img src="./assets/CARD IMG BLACKARROW 2.avif" alt="">
+              </div>
             </div>
           </div>
 
@@ -439,8 +447,6 @@
 
           <div class="text">
             <p>Etapa para aplicar sua técnica de operações e alcançar a meta estipulada no plano contratado. Todos os planos contam com um gerenciamento de risco específico, e os traders que alcançam a meta respeitando o nosso GR, alcançam altos voos no universo do trading, já que ele foi validado para que os traders cheguem mais longe. Todos os planos contam com 60 dias corridos para chegar até a meta. Após completar esta etapa, os traders passam para a fase de incubadora.</p>
-
-            <a href="https://zero7.com.br/regulamento/"><button class="button">Ver Regulamento</button></a>
           </div>
         </div>
 
@@ -449,8 +455,6 @@
 
           <div class="text">
             <p>Só de estar nesta etapa, os traders já demonstram muito talento. E esse é o ambiente ideal para, agora, provar a sua consistência. O ambiente de operações ainda é simulado, mas os traders recebem um prêmio de até 90% em dinheiro pela sua performance a cada ciclo de 30 dias. Suas contas são monitoradas, e ao final de dois ciclos e o alcance novamente da meta do plano, os traders são analisados pelo nosso time de risco, e então, os melhores podem ser selecionados para nossa conta real.</p>
-
-            <a href="https://zero7.com.br/regulamento/"><button class="button">Ver Regulamento</button></a>
           </div>
         </div>
 
@@ -459,8 +463,6 @@
 
           <div class="text">
             <p>Ambiente para os verdadeiros traders que demonstraram que suas habilidades valem muito dinheiro. O ambiente será uma subconta financiada pela Zero7, experimentando uma alavancagem até 20x maior do que em sua conta pessoal. O pagamento pela performance é feito ao final de um ciclo de 30 dias. Os traders estão livres para administrarem suas operações da maneira que lhes for mais agradável, sendo em técnica, quantidade de dias operados ou valor financeiro alcançado. E avançando em nosso plano de carreira, os traders não precisam investir nem mais um real, para operarem contratos ilimitados dentro da Zero7.</p>
-
-            <a href="https://zero7.com.br/regulamento/"><button class="button">Ver Regulamento</button></a>
           </div>
         </div>
       </div>
@@ -840,6 +842,53 @@
     }
 
     requestAnimationFrame(raf);
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const optionsBase = {
+        useEasing: true,
+        separator: '.',
+        decimal: ',',
+      };
+
+      const optionsAno = {
+        ...optionsBase,
+        useGrouping: false // sem ponto em 2023
+      };
+
+      const optionsTraders = {
+        ...optionsBase,
+        prefix: "+",
+        useGrouping: true
+      };
+
+      const optionsPagamentos = {
+        ...optionsBase,
+        prefix: "+",
+        useGrouping: true
+      };
+
+      const createAnimations = () => {
+        const ano = new CountUp("ano", 0, 2023, 0, 3, optionsAno);
+        const traders = new CountUp("traders", 0, 15, 0, 3, optionsTraders);
+        const pagamentos = new CountUp("pagamentos", 0, 10, 0, 3, optionsPagamentos);
+
+        if (!ano.error) ano.start();
+        if (!traders.error) traders.start();
+        if (!pagamentos.error) pagamentos.start();
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            createAnimations(); // anima novamente sempre que a seção voltar à viewport
+          }
+        });
+      });
+
+      observer.observe(document.querySelector('#ano'));
+    });
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.9.3/countUp.min.js"></script>

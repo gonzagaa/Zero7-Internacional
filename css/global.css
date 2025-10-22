@@ -4,10 +4,13 @@
     box-sizing: border-box;
 
     font-family: var(--tts);
+    
 }
 
 @import url('https://fonts.cdnfonts.com/css/tt-fors-trial');
 @import url('https://fonts.cdnfonts.com/css/ncs-radhiumz');
+
+
 
 :root {
     font-size: 62.5% ;
@@ -22,8 +25,7 @@
     --bg-white: #f2fffb;
     color: #7c8590;
     --nav-height: 7.2rem;
-
-    --ncs: 'NCS Radhiumz', sans-serif;
+    --ncs: "Zalando Sans Expanded", sans-serif;
     --tts: 'TT Fors Trial', sans-serif;                                             
 }  
 
