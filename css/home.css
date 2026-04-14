@@ -60,19 +60,14 @@
   }
   
   #home h1 span {
-    font-size: 2.5rem;
+
     font-family: var(--ncs);
-   /*
-* Created with https://www.css-gradient.com
-* Gradient link: https://www.css-gradient.com/?c1=444444&c2=ffffff&gt=r&gd=dbb
-*/
 background: #444444;
 background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    min-width: 50%;
-    font-weight: 300;
+    font-weight: 600;
     text-align: right;
   }
 
@@ -259,14 +254,6 @@ background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
       margin-bottom: 0;
     }
 
-    header#home .content h1 span {
-      font-size: 3rem;
-
-      min-width: 27rem;
-      text-align: left;
-
-    }
-
     header#home .content a {
       width: initial;
     }
@@ -275,7 +262,7 @@ background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
       font-weight: 500;
       margin-top: 1rem;
 
-      width: 60%;
+      width: 70%;
     }
   
     header#home .content a button {
@@ -292,15 +279,15 @@ background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
       top: 0;
       right:0;
     }
+    
+    header#home .content .text {
+      padding-inline: 10%;
+    }
 
     header#home .content h1 {
       font-size: 4rem;
-
-      width: 70%;
     }
 
-    header#home .content h1 span {
-      font-size: 4rem;
-    }
+
   }
   
