@@ -360,82 +360,114 @@
   <section id="ba">
     <img class="bgsection" src="./assets/bg black.png" alt="">
 
+    <div class="ba-ambient">
+      <div class="ba-blob ba-blob--1"></div>
+      <div class="ba-blob ba-blob--2"></div>
+    </div>
+
     <div class="wrapper">
-      <div class="content">
-        <div class="grid">
-          <div class="coluna um">
-            <div class="card video">
-              <video
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="./assets/logo-botton.jpg"
-                style="display:block;max-width:100%;height:auto"
-              >
-                <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video2.webm" type="video/webm" />
-                <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video2.webm" type="video/mp4" />
-                Seu navegador não suporta vídeo HTML5.
-              </video>
-            </div>
-          </div>
 
-          <div class="coluna dois">
-            <div class="card">
-              <h3>Conheça a Blackarrow</h3>
-            </div>
+      <!-- <div class="ba-kicker">
+        <span class="ba-kicker__line"></span>
+        <span class="ba-kicker__text">Plataforma Premium</span>
+      </div> -->
 
-            <div class="card centro">
-              <img src="./assets/logo blackarrow.svg" alt="">
-              <h3>A plataforma de trading mais inovadora do mercado global</h3>
-              <a href="#plan"><button id="openModalForm" class="button openModalForm">Ver todos os recursos</button></a>
+      <div class="ba-bento">
 
-              <video
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="./assets/logo-botton.jpg"
-                style="display:block;max-width:100%;height:auto"
-              >
-                <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/logo-botton.webm" type="video/webm" />
-                <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/logo-botton.webm" type="video/mp4" />
-                Seu navegador não suporta vídeo HTML5.
-              </video>
-
-            </div>
-
-            <div class="card">
-              <div class="minicard">
-                <img src="./assets/CARD IMG BLACKARROW.avif" alt="">
-              </div>
-
-              <div class="minicard">
-                <img src="./assets/CARD IMG BLACKARROW 2.avif" alt="">
-              </div>
-            </div>
-          </div>
-
-          <div class="coluna tres">
-            <div class="card video">
-              <video
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                poster="./assets/logo-botton.jpg"
-                style="display:block;max-width:100%;height:auto"
-              >
-                <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video1.webm" type="video/webm" />
-                <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video1.webm" type="video/mp4" />
-                Seu navegador não suporta vídeo HTML5.
-              </video>
-            </div>
+        <!-- Video Left -->
+        <div class="ba-card ba-card--video ba-card--video-a" data-ba-tilt>
+          <div class="ba-card__spotlight"></div>
+          <div class="ba-card__overlay"></div>
+          <video autoplay muted loop playsinline preload="auto" poster="./assets/logo-botton.jpg">
+            <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video2.webm" type="video/webm" />
+            <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video2.webm" type="video/mp4" />
+          </video>
+          <div class="ba-card__caption">
+            <!-- <span class="ba-caption__label">Live Trading</span> -->
+            <!-- <span class="ba-caption__value">Operadores reais</span> -->
           </div>
         </div>
+
+        <!-- Hero Card -->
+        <div class="ba-card ba-card--hero" data-ba-tilt>
+          <div class="ba-card__spotlight"></div>
+          <div class="ba-card__inner">
+            <!-- <div class="ba-card__badge">
+              <span class="ba-badge__dot"></span>
+              <span>Tecnologia de elite</span>
+            </div> -->
+            <img class="ba-hero__logo" src="./assets/logo blackarrow.svg" alt="Blackarrow">
+            <h2 class="ba-hero__title">A plataforma de trading mais inovadora do mercado global</h2>
+            <a href="#plan">
+              <button id="openModalForm" class="button openModalForm ba-cta">Ver todos os recursos</button>
+            </a>
+            <!-- <div class="ba-hero__stats">
+              <div class="ba-stat">
+                <span class="ba-stat__value">+90%</span>
+                <span class="ba-stat__label">De repasse</span>
+              </div>
+              <div class="ba-stat__divider"></div>
+              <div class="ba-stat">
+                <span class="ba-stat__value">20×</span>
+                <span class="ba-stat__label">Alavancagem</span>
+              </div>
+              <div class="ba-stat__divider"></div>
+              <div class="ba-stat">
+                <span class="ba-stat__value">60d</span>
+                <span class="ba-stat__label">Aprovação</span>
+              </div>
+            </div> -->
+          </div>
+          <video class="ba-hero__bg-video" autoplay muted loop playsinline preload="auto">
+            <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/logo-botton.webm" type="video/webm" />
+            <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/logo-botton.webm" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- Video Right -->
+        <div class="ba-card ba-card--video ba-card--video-b" data-ba-tilt>
+          <div class="ba-card__spotlight"></div>
+          <div class="ba-card__overlay"></div>
+          <video autoplay muted loop playsinline preload="auto" poster="./assets/logo-botton.jpg">
+            <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video1.webm" type="video/webm" />
+            <source src="https://downloadserver-cdn.nelogica.com.br/content/site/blackarrow/home/realTraders/home-video1.webm" type="video/mp4" />
+          </video>
+          <div class="ba-card__caption">
+            <!-- <span class="ba-caption__label">Alta Performance</span> -->
+            <!-- <span class="ba-caption__value">Plataforma global</span> -->
+          </div>
+        </div>
+
+        <!-- Image A -->
+        <div class="ba-card ba-card--img ba-card--img-a" data-ba-tilt>
+          <div class="ba-card__spotlight"></div>
+          <div class="ba-card__overlay"></div>
+          <img src="./assets/CARD IMG BLACKARROW.avif" alt="Blackarrow interface">
+          <div class="ba-card__caption">
+            <!-- <span class="ba-caption__label">Interface</span> -->
+          </div>
+        </div>
+
+        <!-- Label / Text Card -->
+        <div class="ba-card ba-card--label" data-ba-tilt>
+          <div class="ba-card__spotlight"></div>
+          <div class="ba-card__inner">
+            <span class="ba-label__eyebrow">BLACKARROW</span>
+            <h3 class="ba-label__title">Tecnologia de alta performance para traders de verdade.</h3>
+            <p class="ba-label__desc">Descubra milhares de oportunidades no mercado global, seja qual for o seu perfil de trader.</p>
+          </div>
+        </div>
+
+        <!-- Image B -->
+        <div class="ba-card ba-card--img ba-card--img-b" data-ba-tilt>
+          <div class="ba-card__spotlight"></div>
+          <div class="ba-card__overlay"></div>
+          <img src="./assets/CARD IMG BLACKARROW 2.avif" alt="Blackarrow plataforma">
+          <div class="ba-card__caption">
+            <!-- <span class="ba-caption__label">Premium</span> -->
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -967,5 +999,6 @@
   <script src="./script/global.js?v=22"></script>
   <script src="./script/4selet.js"></script>
   <script src="./script/blackPlanos.js"></script>
+  <script src="./script/sectionBa.js"></script>
 </body>
 </html>
