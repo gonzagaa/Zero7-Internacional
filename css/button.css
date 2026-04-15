@@ -1,112 +1,305 @@
-/* From Uiverse.io by adeladel522 */ 
-a {
-    text-decoration: none;
-    width: 100%;
+:root{
+  --z7-deep:#0b5d3b;
+  --z7-mid:#10a36a;
+  --z7-sky:#34d399;
 }
 
-.button {
-    width: 100%;
-    position: relative;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    padding-block: 2rem;
-    padding-inline: 2rem;
-    background: var(--gradient);
-    border-radius: .3rem 1.3rem .3rem 1.3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #000000;
-    gap: 10px;
-    outline: none;
-    overflow: hidden;
-    
+/* anima vars */
+@property --mx   { syntax: "<percentage>"; inherits: false; initial-value: 50%; }
+@property --my   { syntax: "<percentage>"; inherits: false; initial-value: 50%; }
+@property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 
-    font-family: var(--tts);
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 1.2;
-    background: radial-gradient(70.74% 250.43% at 50.26% 100%, rgb(255, 255, 255), rgb(186, 186, 186)), linear-gradient(0deg, #1a1a1a, #1a1a1a);
-    border: none;
+.z7-btnx{
+  /* FORMATO (igual ao print) */
+  --h: 7rem;
+  --in: 0.9rem;
+  --capw: 6.3rem;
+  --r: calc(var(--h) / 3);
 
-    transition: all 300ms ease-in-out;
-  }
+  --sh1x: 0rem;
+  --sh1y: 0rem;
+  --sh2x: 0rem;
+  --sh2y: 0rem;
 
-  .button:hover {
-    filter: drop-shadow(0 0 40px #00000076);
-  }
-  
-  .button .icon {
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .button:hover,
-  #rd-button-m5in9w3x.rd-button:hover {
-    transform: scale(1.05);
-  }
-  
-  .button:hover .icon {
-    transform: translate(4px);
-  }
-  
-  .button:hover::before,
-  #rd-button-m5in9w3x.rd-button:hover::before {
-    animation: shine 1.5s ease-out infinite;
-  }
-  
-  .button::before,
-  #rd-button-m5in9w3x.rd-button::before {
-    content: "";
-    position: absolute;
-    width: 100px;
-    height: 100%;
-    background-image: linear-gradient(
-      120deg,
-      rgba(255, 255, 255, 0) 30%,
-      rgba(255, 255, 255, 0.8),
-      rgba(255, 255, 255, 0) 70%
-    );
-    top: 0;
-    left: -100px;
-    opacity: 0.6;
-    animation: shine 2s ease-out infinite;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 
-  }
+  height: var(--h);
 
-  @media (min-width: 1080px) {
-    a {
-      width: initial;
-    }
-    button.button {
-        width: initial;
-        padding: 2rem 4.5rem;
-        font-size: 22px;
-    }
+  /* padding MAIOR (mais “parrudo”) */
+  padding-left: 3.6rem;
+  padding-right: calc(var(--capw) + (var(--in) * 2) + 1.0rem);
 
-    section#cadastro #rd-button-m5in9w3x.rd-button {
-      padding: 2rem 4.5rem;
-        font-size: 22px;
-    }
+  /* TL arredondado, TR reto, BR arredondado, BL reto */
+  border-radius: var(--r) 0 var(--r) 0;
 
-    header#home a button img {
-      margin-top: -.25rem;
-    }
-  }
-  
-  @keyframes shine {
-    0% {
-      left: -100px;
-    }
-  
-    60% {
-      left: 100%;
-    }
-  
-    to {
-      left: 100%;
-    }
-  }
-  
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  font-family: var(--ncs);
+  font-weight: 600;
+  font-size: 1.6rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,.96);
+
+  border: 0.1rem solid rgba(255,255,255,.10);
+  overflow: hidden;
+  isolation: isolate;
+
+  will-change: transform, filter, box-shadow;
+  transition:
+    filter .55s cubic-bezier(.16,1,.3,1),
+    box-shadow .60s cubic-bezier(.16,1,.3,1);
+
+  box-shadow:
+    0 0rem 4.5rem rgba(11, 93, 59, 0.34),
+    0 0rem 4.6rem rgba(52, 211, 153, 0.24),
+    0 0 0 .4rem rgba(52, 211, 153, 0.10);
+}
+
+/* glow externo */
+.z7-btnx::before{
+  content:"";
+  position:absolute;
+  inset:-2.4rem;
+
+  /* segue o mesmo recorte do botão */
+  border-radius: calc(var(--r) + 2.4rem) 0 calc(var(--r) + 2.4rem) 0;
+
+  z-index: 0;
+
+  background:
+    radial-gradient(130% 160% at var(--mx) var(--my),
+      rgba(52,211,153,.62) 0%,
+      rgba(52,211,153,.20) 34%,
+      rgba(11,93,59,.10) 58%,
+      rgba(0,0,0,0) 74%),
+    radial-gradient(140% 120% at 20% 30%,
+      rgba(255,255,255,.14) 0%,
+      rgba(255,255,255,0) 55%);
+
+  filter: blur(2.8rem);
+  opacity: .92;
+  transition: opacity .60s cubic-bezier(.16,1,.3,1);
+}
+
+/* ring premium seguindo o formato */
+.z7-btnx::after{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  border-radius: var(--r) 0 var(--r) 0;
+
+  padding: .1rem;
+  z-index: 5;
+  pointer-events:none;
+
+  background:
+    conic-gradient(from var(--spin),
+      rgba(52,211,153,0) 0deg,
+      rgba(52,211,153,.82) 60deg,
+      rgba(255,255,255,.28) 95deg,
+      rgba(11,93,59,.82) 170deg,
+      rgba(16,163,106,.58) 250deg,
+      rgba(52,211,153,0) 360deg);
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+
+  opacity: .90;
+}
+
+/* fundo base */
+.z7-btnx__bg{
+  position:absolute;
+  inset:0;
+
+  border-radius: var(--r) 0 var(--r) 0;
+
+  z-index: 1;
+
+  /* camada 1: highlight que “respira” */
+  background:
+    radial-gradient(140% 180% at var(--mx) var(--my),
+      rgba(255,255,255,.20) 0%,
+      rgba(255,255,255,.07) 22%,
+      rgba(255,255,255,0) 56%),
+
+    /* camada 2: gradiente principal */
+    linear-gradient(90deg,
+      #063b26 0%,
+      var(--z7-deep) 32%,
+      var(--z7-mid) 68%,
+      var(--z7-sky) 100%);
+
+  background-size: 130% 130%;
+  background-position: 0% 50%;
+  filter: saturate(1.10) contrast(1.05);
+}
+
+/* shine que passa */
+.z7-btnx__shine{
+  position:absolute;
+  inset:-35% -55%;
+  z-index: 2;
+  pointer-events:none;
+
+  background: linear-gradient(115deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0) 44%,
+    rgba(255,255,255,.18) 50%,
+    rgba(255,255,255,0) 56%,
+    rgba(255,255,255,0) 100%);
+
+  transform: translateX(-60%);
+  opacity: 1;
+}
+
+.z7-btnx__label{
+  position: relative;
+  z-index: 6;
+  white-space: nowrap;
+  line-height: 1;
+  text-shadow: 0 1.4rem 3.6rem rgba(0,0,0,.35);
+}
+
+/* CAP do ícone */
+.z7-btnx__cap{
+  position:absolute;
+  top: var(--in);
+  right: var(--in);
+  height: calc(100% - (var(--in) * 2));
+  width: var(--capw);
+
+  /* raio do cap: metade da altura do cap */
+  --cr: calc((var(--h) - (var(--in) * 2)) / 2);
+
+  /* esquerda arredondada, topo direito reto, baixo direito arredondado, baixo esquerdo arredondado */
+  border-radius: var(--cr) 0 var(--cr) var(--cr);
+
+  display:grid;
+  place-items:center;
+  z-index: 7;
+
+  background:
+    radial-gradient(120% 120% at 30% 30%,
+      rgba(255,255,255,.20) 0%,
+      rgba(255,255,255,.08) 40%,
+      rgba(255,255,255,0) 72%),
+    linear-gradient(90deg,
+      rgba(255,255,255,.08) 0%,
+      rgba(255,255,255,.04) 42%,
+      rgba(255,255,255,.02) 100%),
+    linear-gradient(135deg,
+      rgba(52,211,153,.32),
+      rgba(11,93,59,.10));
+
+  border: 0.1rem solid rgba(255,255,255,.12);
+  box-shadow:
+    inset 0 .1rem 0 rgba(255,255,255,.16),
+    0 1.2rem 2.6rem rgba(0,0,0,.20);
+}
+
+.z7-btnx__arrow{
+  font-size: 2.2rem;
+  line-height: 1;
+  transform: translateX(0);
+  transition: transform .60s cubic-bezier(.16,1,.3,1);
+}
+
+/* hover */
+.z7-btnx:hover{
+  filter: saturate(1.22) contrast(1.08);
+
+  /* sombra “segue o cursor” */
+  box-shadow:
+    var(--sh1x, 0rem) var(--sh1y, 0rem) 7.5rem rgba(11,93,59,.52),
+    var(--sh2x, 0rem) var(--sh2y, 0rem) 4.6rem rgba(52,211,153,.36),
+    0 0 0 .4rem rgba(52,211,153,.16);
+}
+
+.z7-btnx:hover::before{ opacity: 1; }
+.z7-btnx:hover .z7-btnx__arrow{ transform: translateX(.35rem); }
+
+.z7-btnx:hover .z7-btnx__shine{
+  opacity: .95;
+  animation: z7x-shineHover .95s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes z7x-shineHover{
+  to{ transform: translateX(60%); opacity: 0; }
+}
+
+/* ripple */
+.z7-btnx .z7x-ripple{
+  position:absolute;
+  z-index: 8;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999rem;
+  pointer-events:none;
+
+  background: radial-gradient(circle,
+    rgba(255,255,255,.55) 0%,
+    rgba(52,211,153,.34) 35%,
+    rgba(52,211,153,0) 70%);
+
+  transform: translate(-50%,-50%) scale(0);
+  opacity: .95;
+  animation: z7x-ripple .82s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes z7x-ripple{
+  to{ transform: translate(-50%,-50%) scale(28); opacity: 0; }
+}
+
+/* foco */
+.z7-btnx:focus-visible{
+  outline:none;
+  box-shadow:
+    0 2.8rem 7.5rem rgba(11,93,59,.52),
+    0 1.8rem 4.6rem rgba(52,211,153,.36),
+    0 0 0 .5rem rgba(52,211,153,.24);
+}
+
+/* ===========================
+   ANIMAÇÕES “IDLE” (antes do hover)
+   =========================== */
+@media (prefers-reduced-motion: no-preference){
+  .z7-btnx{ animation: z7x-ring 2.2s linear infinite, z7x-breathe 3.8s ease-in-out infinite; }
+  .z7-btnx__bg{ animation: z7x-gradient 7.5s ease-in-out infinite; }
+  .z7-btnx__shine{ animation: z7x-shineLoop 3.2s ease-in-out infinite; }
+  .z7-btnx::before{ animation: z7x-glow 3.8s ease-in-out infinite; }
+}
+
+@keyframes z7x-ring{ to { --spin: 360deg; } }
+
+@keyframes z7x-breathe{
+  0%,100%{ filter: saturate(1.00) contrast(1.00); }
+  50%    { filter: saturate(1.14) contrast(1.08); }
+}
+
+@keyframes z7x-gradient{
+  0%   { background-position: 0% 50%; filter: saturate(1.08) contrast(1.04); }
+  50%  { background-position: 100% 50%; filter: saturate(1.16) contrast(1.10); }
+  100% { background-position: 0% 50%; filter: saturate(1.08) contrast(1.04); }
+}
+
+@keyframes z7x-shineLoop{
+  0%   { transform: translateX(-75%); opacity: .12; }
+  40%  { opacity: .30; }
+  60%  { opacity: .18; }
+  100% { transform: translateX(75%); opacity: .10; }
+}
+
+@keyframes z7x-glow{
+  0%,100%{ opacity: .86; }
+  50%    { opacity: 1.00; }
+}

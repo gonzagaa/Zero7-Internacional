@@ -62,10 +62,7 @@
   #home h1 span {
 
     font-family: var(--ncs);
-background: #444444;
-background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
 
     font-weight: 600;
     text-align: right;
@@ -248,7 +245,7 @@ background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
     }
   
     header#home .content h1 {
-      font-size: 3rem;
+      font-size: 5rem;
       line-height: 1;
       color: #f8fffd;
       margin-bottom: 0;
@@ -285,7 +282,7 @@ background: radial-gradient(at center bottom, #ffffff, #8c8c8c);
     }
 
     header#home .content h1 {
-      font-size: 4rem;
+      font-size: 6rem;
     }
 
 
