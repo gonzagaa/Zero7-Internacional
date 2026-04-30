@@ -52,21 +52,49 @@
   
     margin-top: 1rem;
     margin-bottom: 1rem;
-    font-family: var(--ncs);
-    text-transform: uppercase;
-    font-weight: 600;
-    line-height: 1.2;
+    font-family: 'Neue Plak Light', sans-serif;
+    line-height: 1;
 
   }
   
   #home h1 span {
-
-    font-family: var(--ncs);
-
-
-    font-weight: 600;
+    font-family: 'Neue Plak Regular', sans-serif;
     text-align: right;
   }
+
+#home h1 span {
+  font-family: 'Neue Plak Regular', sans-serif;
+
+  background: linear-gradient(
+    120deg,
+    #ffffff 0%,
+    #b8b8b8 25%,
+    #ffffff 50%,
+    #bababa 75%,
+    #ffffff 100%
+  );
+
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: textGradientMove 5s ease-in-out infinite;
+}
+
+@keyframes textGradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
   .reveal-wrapper {
     position: relative;
@@ -210,10 +238,11 @@
   
     header#home .image img.desktop {
       display: inherit;
-      width: 100%;
+      width: 110%;
       position: absolute;
-      top: 0;
-      right:0;
+      top: 50%;
+      left:50%;
+      transform: translate(-50%, -50%);
       filter: saturate(130%);
       mask-image: linear-gradient(to bottom, #000 60%, transparent);
     }
@@ -246,7 +275,7 @@
   
     header#home .content h1 {
       font-size: 5rem;
-      line-height: 1;
+      line-height: .9;
       color: #f8fffd;
       margin-bottom: 0;
     }
@@ -257,9 +286,11 @@
 
     header#home .content p {
       font-weight: 500;
-      margin-top: 1rem;
+      margin-top: 3rem;
 
-      width: 70%;
+      width: 90%;
+
+      font-size: 2rem;
     }
   
     header#home .content a button {
@@ -270,11 +301,7 @@
   
   @media (min-width: 1700px) {
     header#home .image img.desktop {
-      display: inherit;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      right:0;
+      width: 110%;
     }
     
     header#home .content .text {
@@ -282,7 +309,7 @@
     }
 
     header#home .content h1 {
-      font-size: 6rem;
+      font-size: 9rem;
     }
 
 
