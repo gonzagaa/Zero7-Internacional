@@ -573,30 +573,31 @@
         <h2>Mini índice / Dólar</h2> -->
 
         <div class="box">
-          <div class="botoes">
-          <button data-mode="com_ativacao" class="selecionado tooltip-btn">
-            Desafio <span>com</span> taxa de ativação
-            <span class="tooltip-content">
-              Info: Após atingir a meta, você deverá pagar uma taxa de ativação
-              e avançar para incubadora.
-            </span>
-          </button>
-
-          <button data-mode="sem_ativacao" class="tooltip-btn">
-            Desafio <span>sem</span> taxa de ativação
-            <span class="tooltip-content">
-              Info: Alcance a meta e avance direto para incubadora,
-              sem pagar nenhuma taxa adicional.
-            </span>
-          </button>
+          <div class="seg seg--mode" role="radiogroup" aria-label="Modo do desafio">
+            <span class="seg__blob" aria-hidden="true"></span>
+            <button type="button" class="seg__option selecionado tooltip-btn" data-mode="com_ativacao" role="radio" aria-checked="true" tabindex="0">
+              <span class="seg__text">Desafio <span class="seg__highlight">com</span> taxa de ativação</span>
+              <span class="tooltip-content">
+                Info: Após atingir a meta, você deverá pagar uma taxa de ativação
+                e avançar para incubadora.
+              </span>
+            </button>
+            <button type="button" class="seg__option tooltip-btn" data-mode="sem_ativacao" role="radio" aria-checked="false" tabindex="-1">
+              <span class="seg__text">Desafio <span class="seg__highlight">sem</span> taxa de ativação</span>
+              <span class="tooltip-content">
+                Info: Alcance a meta e avance direto para incubadora,
+                sem pagar nenhuma taxa adicional.
+              </span>
+            </button>
           </div>
 
-          <div class="botoesPrice">
-            <button data-capital="25k" class="selecionado">25k</button>
-            <button data-capital="50k">50k</button>
-            <button data-capital="100k">100k</button>
-            <button data-capital="150k">150k</button>
-            <button data-capital="250k">250k</button>
+          <div class="seg seg--capital" role="radiogroup" aria-label="Capital do plano">
+            <span class="seg__blob" aria-hidden="true"></span>
+            <button type="button" class="seg__option selecionado" data-capital="25k" role="radio" aria-checked="true" tabindex="0">25k</button>
+            <button type="button" class="seg__option" data-capital="50k" role="radio" aria-checked="false" tabindex="-1">50k</button>
+            <button type="button" class="seg__option" data-capital="100k" role="radio" aria-checked="false" tabindex="-1">100k</button>
+            <button type="button" class="seg__option" data-capital="150k" role="radio" aria-checked="false" tabindex="-1">150k</button>
+            <button type="button" class="seg__option" data-capital="250k" role="radio" aria-checked="false" tabindex="-1">250k</button>
           </div>
         </div>
         </header>
@@ -655,11 +656,6 @@
     </table>
         </div>
 
-        <div class="plano-preco" data-aos="fade-up">
-          <span class="plano-preco__label">Desafio com taxa de ativação — 25k</span>
-          <span class="plano-preco__valor">$19,00</span>
-          <a class="plano-preco__cta" href="#" role="button">Quero esse plano</a>
-        </div>
       </div>
     </div>
 
@@ -900,6 +896,30 @@
     <ion-icon name="logo-whatsapp"></ion-icon>
   </a>
 
+  <aside id="priceBar" class="price-bar" role="region" aria-label="Resumo do plano selecionado">
+    <button type="button" class="price-bar__minimize" aria-label="Minimizar barra de preço" aria-expanded="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="price-bar__inner">
+      <div class="price-bar__info">
+        <span class="price-bar__badge">Plano 25k</span>
+        <span class="price-bar__mode">Desafio com taxa de ativação</span>
+      </div>
+      <div class="price-bar__action">
+        <span class="price-bar__price">$19,00</span>
+        <a class="price-bar__cta" href="#" role="button">
+          <span>Quero esse plano</span>
+          <svg class="price-bar__cta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
   <script>
     let prefix = ["https://app.4st.com.br"];
 
@@ -1004,6 +1024,6 @@
   <script src="./script/4selet.js"></script>
   <script src="./script/blackPlanos.js"></script>
   <script src="./script/sectionBa.js"></script>
-  <script src="./js/sectionPlanos.js?v=1" defer></script>
+  <script src="./js/sectionPlanos.js?v=3" defer></script>
 </body>
 </html>
