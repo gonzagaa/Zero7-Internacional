@@ -1,0 +1,61 @@
+{
+  "produto": "Mini Índice / Dólar",
+  "condicoesFixas": {
+    "minimoDias": { "desafio": "0 dias", "incubadora": "10 dias" },
+    "maximoDias": { "desafio": "30 dias", "incubadora": "---" },
+    "drawdown": { "desafio": "EOD", "incubadora": "Trailing" },
+    "recompensa": { "desafio": "Apenas desafio", "incubadora": "90%" }
+  },
+  "capitais": {
+    "25k": {
+      "contratos": { "desafio": "4 minis / 40 micros", "incubadora": "4 minis / 40 micros" },
+      "metaLucro": { "desafio": "$1.497,00", "incubadora": "$1.497,00" },
+      "perdaTotal": { "desafio": "$1.497,00", "incubadora": "$1.497,00" },
+      "taxaAtivacao": { "desafio": "$89,00", "incubadora": "---" },
+      "precos": {
+        "comAtivacao": "$19,00",
+        "semAtivacao": "$66,50"
+      }
+    },
+    "50k": {
+      "contratos": { "desafio": "10 minis / 100 micros", "incubadora": "10 minis / 100 micros" },
+      "metaLucro": { "desafio": "$2.997,00", "incubadora": "$2.997,00" },
+      "perdaTotal": { "desafio": "$2.497,00", "incubadora": "$2.497,00" },
+      "taxaAtivacao": { "desafio": "$99,00", "incubadora": "---" },
+      "precos": {
+        "comAtivacao": "$29,00",
+        "semAtivacao": "$97,50"
+      }
+    },
+    "100k": {
+      "contratos": { "desafio": "14 minis / 140 micros", "incubadora": "14 minis / 140 micros" },
+      "metaLucro": { "desafio": "$5.997,00", "incubadora": "$5.997,00" },
+      "perdaTotal": { "desafio": "$2.997,00", "incubadora": "$2.997,00" },
+      "taxaAtivacao": { "desafio": "$109,00", "incubadora": "---" },
+      "precos": {
+        "comAtivacao": "$39,00",
+        "semAtivacao": "$136,50"
+      }
+    },
+    "150k": {
+      "contratos": { "desafio": "17 minis / 170 micros", "incubadora": "17 minis / 170 micros" },
+      "metaLucro": { "desafio": "$8.997,00", "incubadora": "$8.997,00" },
+      "perdaTotal": { "desafio": "$4.997,00", "incubadora": "$4.997,00" },
+      "taxaAtivacao": { "desafio": "$129,00", "incubadora": "---" },
+      "precos": {
+        "comAtivacao": "$49,00",
+        "semAtivacao": "$171,50"
+      }
+    },
+    "250k": {
+      "contratos": { "desafio": "27 minis / 270 micros", "incubadora": "27 minis / 270 micros" },
+      "metaLucro": { "desafio": "$14.997,00", "incubadora": "$14.997,00" },
+      "perdaTotal": { "desafio": "$6.497,00", "incubadora": "$6.497,00" },
+      "taxaAtivacao": { "desafio": "$149,00", "incubadora": "---" },
+      "precos": {
+        "comAtivacao": "$59,00",
+        "semAtivacao": "$206,50"
+      }
+    }
+  }
+}

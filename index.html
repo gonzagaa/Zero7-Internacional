@@ -592,17 +592,16 @@
           </div>
 
           <div class="botoesPrice">
-            <button>25k</button>
-            <button>50k</button>
-            <button>100k</button>
-            <button>150k</button>
-            <button>250k</button>
-            <button>300k</button>
+            <button data-capital="25k" class="selecionado">25k</button>
+            <button data-capital="50k">50k</button>
+            <button data-capital="100k">100k</button>
+            <button data-capital="150k">150k</button>
+            <button data-capital="250k">250k</button>
           </div>
         </div>
         </header>
 
-        <div class="table-wrapper">
+        <div class="table-wrapper" data-capital="25k">
     <table class="pricing-table">
       <thead>
         <tr>
@@ -654,6 +653,12 @@
         </tr>
       </tbody>
     </table>
+        </div>
+
+        <div class="plano-preco" data-aos="fade-up">
+          <span class="plano-preco__label">Desafio com taxa de ativação — 25k</span>
+          <span class="plano-preco__valor">$19,00</span>
+          <a class="plano-preco__cta" href="#" role="button">Quero esse plano</a>
         </div>
       </div>
     </div>
@@ -999,5 +1004,6 @@
   <script src="./script/4selet.js"></script>
   <script src="./script/blackPlanos.js"></script>
   <script src="./script/sectionBa.js"></script>
+  <script src="./js/sectionPlanos.js?v=1" defer></script>
 </body>
 </html>
