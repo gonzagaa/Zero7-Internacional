@@ -147,6 +147,14 @@
   /* ============================================================
      Tabela
      ============================================================ */
+  function isCurrency(v) {
+    return typeof v === 'string' && v.trim().startsWith('$');
+  }
+
+  function tdAttrs(extra) {
+    return extra ? ` class="${extra}"` : '';
+  }
+
   function montarLinhas() {
     const tbody = refs.tbody;
     tbody.innerHTML = '';
@@ -154,10 +162,12 @@
       const dados = obterCelula(key, fonte);
       const tr = document.createElement('tr');
       tr.style.setProperty('--row-index', i);
+      const cDesafio = isCurrency(dados.desafio) ? 'cell--currency' : '';
+      const cIncubadora = isCurrency(dados.incubadora) ? 'cell--currency' : '';
       tr.innerHTML = `
-        <td data-label="Condição">${label}</td>
-        <td data-label="Desafio">${dados.desafio}</td>
-        <td data-label="Incubadora">${dados.incubadora}</td>
+        <td data-label="Condição"><span class="cell-label">${label}</span></td>
+        <td data-label="Desafio"${tdAttrs(cDesafio)}>${dados.desafio}</td>
+        <td data-label="Incubadora"${tdAttrs(cIncubadora)}>${dados.incubadora}</td>
       `;
       tbody.appendChild(tr);
     });
