@@ -218,6 +218,7 @@ body.price-bar-visible .btn-whatsapp-pulse {
 
     .price-bar__minimize {
         display: inline-flex;
+        display: none;
         align-items: center;
         justify-content: center;
         position: absolute;
