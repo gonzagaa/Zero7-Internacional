@@ -361,6 +361,10 @@
    Desktop ≥ 1080px
    ============================================================ */
 @media (min-width: 1080px) {
+    section.planos {
+  
+    }
+
     section.planos .wrapper.plano {
         width: 100%;
     }

@@ -6,6 +6,7 @@
 @import './sectionNumeros.css';
 @import './sectionDepoimentos.css';
 @import './sectionPlanos.css';
+@import './button.css';
 @import './priceBar.css';
 @import './sectionFaq.css';
 @import './sectionContato.css';
@@ -13,7 +14,6 @@
 @import './sectionBa.css';
 
 @import './navigation.css';
-@import './button.css';
 @import './head.css';
 @import './buttonWpp.css';
 @import './modalDepoimento.css';
