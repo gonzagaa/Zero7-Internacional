@@ -145,6 +145,8 @@ summary::-webkit-details-marker {
 
 @media (min-width: 1080px) {
     section#faq .faq {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 
     section#faq summary {

@@ -164,15 +164,6 @@
     font-weight: 700;
 }
 
-.seg--mode {
-    overflow: visible;
-}
-
-.seg--mode .seg__option {
-    padding: 1rem 1.5rem;
-    font-size: 0.95rem;
-}
-
 .seg--capital {
     max-width: 100%;
     overflow-x: auto;
@@ -197,6 +188,190 @@
 }
 
 /* ============================================================
+   Mode toggle — botão selecionado herda identidade do .z7-btnx
+   (especificidade .z7-btnx.z7-btnx--toggle = 0,2,0 vence o .z7-btnx
+   base que é importado depois neste projeto)
+   ============================================================ */
+.mode-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem;
+    background: #0a0a0a;
+    border: 1px solid #ffffff15;
+    border-radius: 999rem;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 0.8rem 3rem -1rem rgba(0, 0, 0, 0.7);
+}
+
+.mode-toggle__item {
+    position: relative;
+    display: inline-flex;
+}
+
+/* base do botão toggle — assume tamanho/forma de pill */
+.z7-btnx.z7-btnx--toggle {
+    --h: 5.4rem;
+    --r: 999rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: var(--h);
+    padding: 0 2.6rem;
+
+    border-radius: 999rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    font-family: var(--ncs);
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: rgba(255, 255, 255, 0.85);
+
+    background: #1a1a1a;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+
+    box-shadow: none;
+
+    transition:
+        color 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        background 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 400ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.z7-btnx.z7-btnx--toggle .z7-btnx__label {
+    text-transform: none;
+    text-shadow: none;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+}
+
+.z7-btnx.z7-btnx--toggle .z7-btnx__label strong {
+    font-weight: 700;
+}
+
+/* sobrescreve raio assimétrico do .z7-btnx pra pill em todos os pseudo/spans */
+.z7-btnx.z7-btnx--toggle::before {
+    border-radius: 999rem;
+    inset: -1rem;
+    filter: blur(1.4rem);
+}
+
+.z7-btnx.z7-btnx--toggle::after {
+    border-radius: 999rem;
+}
+
+.z7-btnx.z7-btnx--toggle .z7-btnx__bg {
+    border-radius: 999rem;
+}
+
+/* fade entre estados */
+.z7-btnx.z7-btnx--toggle::before,
+.z7-btnx.z7-btnx--toggle::after,
+.z7-btnx.z7-btnx--toggle .z7-btnx__bg,
+.z7-btnx.z7-btnx--toggle .z7-btnx__shine {
+    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== ESTADO INATIVO ===== */
+.z7-btnx.z7-btnx--toggle:not(.is-active)::before,
+.z7-btnx.z7-btnx--toggle:not(.is-active)::after,
+.z7-btnx.z7-btnx--toggle:not(.is-active) .z7-btnx__bg,
+.z7-btnx.z7-btnx--toggle:not(.is-active) .z7-btnx__shine {
+    opacity: 0;
+}
+
+/* desativa animações idle (ring, breathe, gradient, shineLoop, glow) */
+.z7-btnx.z7-btnx--toggle:not(.is-active),
+.z7-btnx.z7-btnx--toggle:not(.is-active) .z7-btnx__bg,
+.z7-btnx.z7-btnx--toggle:not(.is-active) .z7-btnx__shine,
+.z7-btnx.z7-btnx--toggle:not(.is-active)::before {
+    animation: none;
+}
+
+/* hover no inativo: realçe sutil */
+.z7-btnx.z7-btnx--toggle:not(.is-active):hover {
+    background: #222;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.15);
+    filter: none;
+}
+
+/* ===== ESTADO ATIVO ===== */
+.z7-btnx.z7-btnx--toggle.is-active {
+    color: rgba(255, 255, 255, 0.96);
+    border-color: rgba(52, 211, 153, 0.2);
+    background: transparent;
+
+    box-shadow:
+        0 0 2.5rem rgba(11, 93, 59, 0.32),
+        0 0 2rem rgba(52, 211, 153, 0.22),
+        0 0 0 0.2rem rgba(52, 211, 153, 0.08);
+}
+
+.z7-btnx.z7-btnx--toggle.is-active .z7-btnx__bg {
+    opacity: 1;
+}
+
+.z7-btnx.z7-btnx--toggle.is-active .z7-btnx__shine {
+    opacity: 1;
+}
+
+.z7-btnx.z7-btnx--toggle.is-active::after {
+    opacity: 0.85;
+}
+
+.z7-btnx.z7-btnx--toggle.is-active::before {
+    opacity: 0.7;
+}
+
+/* hover no ativo (sobrescreve o box-shadow gigante do .z7-btnx:hover original) */
+.z7-btnx.z7-btnx--toggle.is-active:hover {
+    filter: saturate(1.18) contrast(1.06);
+    box-shadow:
+        0 0 3rem rgba(11, 93, 59, 0.42),
+        0 0 2.4rem rgba(52, 211, 153, 0.3),
+        0 0 0 0.2rem rgba(52, 211, 153, 0.14);
+}
+
+/* animações idle reativadas só no estado ativo */
+@media (prefers-reduced-motion: no-preference) {
+    .z7-btnx.z7-btnx--toggle.is-active {
+        animation:
+            z7x-ring 2.2s linear infinite,
+            z7x-breathe 3.8s ease-in-out infinite;
+    }
+
+    .z7-btnx.z7-btnx--toggle.is-active .z7-btnx__bg {
+        animation: z7x-gradient 7.5s ease-in-out infinite;
+    }
+
+    .z7-btnx.z7-btnx--toggle.is-active .z7-btnx__shine {
+        animation: z7x-shineLoop 3.2s ease-in-out infinite;
+    }
+
+    .z7-btnx.z7-btnx--toggle.is-active::before {
+        animation: z7x-glow 3.8s ease-in-out infinite;
+    }
+}
+
+.z7-btnx.z7-btnx--toggle:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 0.3rem rgba(52, 211, 153, 0.32),
+        0 0 2rem rgba(52, 211, 153, 0.22);
+}
+
+/* ============================================================
    Tooltip
    ============================================================ */
 .tooltip-btn {
@@ -217,7 +392,7 @@
     font-size: 1.2rem;
     line-height: 1.4;
     text-align: left;
-    z-index: 20;
+    z-index: 30;
     opacity: 0;
     visibility: hidden;
     transition:
@@ -241,7 +416,8 @@
 }
 
 .tooltip-btn:hover .tooltip-content,
-.tooltip-btn:focus-visible .tooltip-content {
+.tooltip-btn:focus-visible .tooltip-content,
+.tooltip-btn:has(:focus-visible) .tooltip-content {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
@@ -378,11 +554,6 @@
         margin-top: 3rem;
     }
 
-    .seg--mode .seg__option {
-        padding: 1.1rem 2.25rem;
-        font-size: 1rem;
-    }
-
     .seg--capital {
         overflow: visible;
     }
@@ -410,5 +581,29 @@
 
     .pricing-table tbody td:first-child {
         font-size: 1.5rem;
+    }
+}
+
+/* ============================================================
+   Mobile ≤ 768px — mode-toggle ocupa linha cheia, lado a lado
+   ============================================================ */
+@media (max-width: 768px) {
+    .mode-toggle {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .mode-toggle__item {
+        display: flex;
+        width: 100%;
+    }
+
+    .mode-toggle__item .z7-btnx.z7-btnx--toggle {
+        width: 100%;
+        --h: 6rem;
+        padding: 0 1.6rem;
+        font-size: 1.2rem;
     }
 }

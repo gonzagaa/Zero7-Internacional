@@ -316,7 +316,7 @@
     <div class="image">
 
       <img class="desktop" src="./assets/HEAD-BANNER-INTERNACIONAL v2.png" alt="">
-      <img class="mobile" src="./assets/MOBILE TESTE.webp" alt="">
+      <img class="mobile" src="./assets/MOBILE TESTE INTERNACIONAL.png" alt="">
 
     </div>
 
@@ -572,22 +572,27 @@
         <h2>Mini índice / Dólar</h2> -->
 
         <div class="box">
-          <div class="seg seg--mode" role="radiogroup" aria-label="Modo do desafio">
-            <span class="seg__blob" aria-hidden="true"></span>
-            <button type="button" class="seg__option selecionado tooltip-btn" data-mode="com_ativacao" role="radio" aria-checked="true" tabindex="0">
-              <span class="seg__text">Desafio <span class="seg__highlight">com</span> taxa de ativação</span>
+          <div class="mode-toggle" role="radiogroup" aria-label="Tipo de desafio">
+            <span class="mode-toggle__item tooltip-btn">
+              <button type="button" class="mode-toggle__btn z7-btnx z7-btnx--toggle is-active" data-mode="com_ativacao" role="radio" aria-checked="true" tabindex="0">
+                <span class="z7-btnx__bg" aria-hidden="true"></span>
+                <span class="z7-btnx__shine" aria-hidden="true"></span>
+                <span class="z7-btnx__label">Desafio <strong>com</strong> taxa de ativação</span>
+              </button>
               <span class="tooltip-content">
-                Info: Após atingir a meta, você deverá pagar uma taxa de ativação
-                e avançar para incubadora.
+                Após atingir a meta, você deverá pagar uma taxa de ativação e avançar para incubadora.
               </span>
-            </button>
-            <button type="button" class="seg__option tooltip-btn" data-mode="sem_ativacao" role="radio" aria-checked="false" tabindex="-1">
-              <span class="seg__text">Desafio <span class="seg__highlight">sem</span> taxa de ativação</span>
+            </span>
+            <span class="mode-toggle__item tooltip-btn">
+              <button type="button" class="mode-toggle__btn z7-btnx z7-btnx--toggle" data-mode="sem_ativacao" role="radio" aria-checked="false" tabindex="-1">
+                <span class="z7-btnx__bg" aria-hidden="true"></span>
+                <span class="z7-btnx__shine" aria-hidden="true"></span>
+                <span class="z7-btnx__label">Desafio <strong>sem</strong> taxa de ativação</span>
+              </button>
               <span class="tooltip-content">
-                Info: Alcance a meta e avance direto para incubadora,
-                sem pagar nenhuma taxa adicional.
+                Alcance a meta e avance direto para incubadora, sem pagar nenhuma taxa adicional.
               </span>
-            </button>
+            </span>
           </div>
 
           <div class="seg seg--capital" role="radiogroup" aria-label="Capital do plano">
@@ -1025,6 +1030,6 @@
   <script src="./script/4selet.js"></script>
   <script src="./script/blackPlanos.js"></script>
   <script src="./script/sectionBa.js"></script>
-  <script src="./js/sectionPlanos.js?v=4" defer></script>
+  <script src="./js/sectionPlanos.js?v=5" defer></script>
 </body>
 </html>

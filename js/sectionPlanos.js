@@ -79,10 +79,10 @@
     });
   }
 
-  function atualizarSelecionado(opcoes, alvo) {
+  function atualizarSelecionado(opcoes, alvo, classeAtiva = 'selecionado') {
     opcoes.forEach((opt) => {
       const ativo = opt === alvo;
-      opt.classList.toggle('selecionado', ativo);
+      opt.classList.toggle(classeAtiva, ativo);
       opt.setAttribute('aria-checked', ativo ? 'true' : 'false');
       opt.tabIndex = ativo ? 0 : -1;
     });
@@ -320,13 +320,13 @@
   /* ============================================================
      Eventos dos segmented controls
      ============================================================ */
-  function bindSeg(seg, opcoes, dataKey, onChange) {
+  function bindSeg(seg, opcoes, dataKey, onChange, classeAtiva = 'selecionado') {
     if (!seg) return;
     opcoes.forEach((opt, idx) => {
       opt.addEventListener('click', () => {
         const valor = opt.dataset[dataKey];
-        if (!valor || opt.classList.contains('selecionado')) return;
-        atualizarSelecionado(opcoes, opt);
+        if (!valor || opt.classList.contains(classeAtiva)) return;
+        atualizarSelecionado(opcoes, opt, classeAtiva);
         posicionarBlob(seg);
         onChange(valor);
       });
@@ -350,7 +350,7 @@
       state.modo = modo;
       renderPreco();
       renderLabel();
-    });
+    }, 'is-active');
 
     bindSeg(refs.segCapital, refs.botoesCapital, 'capital', (capital) => {
       state.capital = capital;
@@ -387,9 +387,9 @@
      Init
      ============================================================ */
   function inicializarRefs(secao) {
-    refs.segMode = $('.seg--mode', secao);
+    refs.segMode = $('.mode-toggle', secao);
     refs.segCapital = $('.seg--capital', secao);
-    refs.botoesModo = $$('.seg--mode .seg__option[data-mode]', secao);
+    refs.botoesModo = $$('.mode-toggle .mode-toggle__btn[data-mode]', secao);
     refs.botoesCapital = $$('.seg--capital .seg__option[data-capital]', secao);
     refs.tableWrapper = $('.table-wrapper', secao);
     refs.tbody = $('.pricing-table tbody', secao);
@@ -402,14 +402,19 @@
   }
 
   function sincronizarEstadoComDOM() {
-    const modoAtivo = refs.botoesModo.find((b) => b.classList.contains('selecionado'));
+    const modoAtivo = refs.botoesModo.find((b) => b.classList.contains('is-active'));
     if (modoAtivo?.dataset.mode) state.modo = modoAtivo.dataset.mode;
     const capitalAtivo = refs.botoesCapital.find((b) => b.classList.contains('selecionado'));
     if (capitalAtivo?.dataset.capital) state.capital = capitalAtivo.dataset.capital;
   }
 
   function definirAriaInicial() {
-    [...refs.botoesModo, ...refs.botoesCapital].forEach((btn) => {
+    refs.botoesModo.forEach((btn) => {
+      const ativo = btn.classList.contains('is-active');
+      btn.setAttribute('aria-checked', ativo ? 'true' : 'false');
+      btn.tabIndex = ativo ? 0 : -1;
+    });
+    refs.botoesCapital.forEach((btn) => {
       const ativo = btn.classList.contains('selecionado');
       btn.setAttribute('aria-checked', ativo ? 'true' : 'false');
       btn.tabIndex = ativo ? 0 : -1;
