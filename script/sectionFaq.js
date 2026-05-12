@@ -163,19 +163,6 @@
     });
   }
 
-  function categoryIcon(name) {
-    const n = (name || '').toLowerCase();
-    if (/pagamento|saque|financeiro|fatura|cobran/.test(n)) return 'cash-outline';
-    if (/plano|assinatura|conta|cadastro/.test(n)) return 'card-outline';
-    if (/in[ií]cio|come[çc]ar|primeiros|introdu/.test(n)) return 'rocket-outline';
-    if (/regra|regulamento|pol[ií]tica|termos/.test(n)) return 'document-text-outline';
-    if (/operac|trade|trading|estrat[eé]gia|opera/.test(n)) return 'trending-up-outline';
-    if (/plataforma|t[eé]cnico|configura|sistema/.test(n)) return 'settings-outline';
-    if (/suporte|ajuda|d[uú]vid|contat/.test(n)) return 'help-buoy-outline';
-    if (/seguran|conta|senha|login|acesso/.test(n)) return 'shield-checkmark-outline';
-    return 'folder-open-outline';
-  }
-
   function pluralizeArticles(n) {
     return n === 1 ? '1 artigo' : n + ' artigos';
   }
@@ -251,7 +238,6 @@
 
       card.innerHTML =
         '<div class="faq__category-head">' +
-          '<ion-icon class="faq__category-icon" name="' + categoryIcon(cat.name) + '"></ion-icon>' +
           '<div class="faq__category-info">' +
             '<span class="faq__category-name">' + escapeHtml(cat.name) + '</span>' +
             '<span class="faq__category-desc">' + escapeHtml(truncate(desc, 120)) + '</span>' +

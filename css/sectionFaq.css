@@ -162,14 +162,8 @@
 .faq__category-head {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1.5rem;
     width: 100%;
-}
-
-#faq .faq__category-icon {
-    color: #ffffff;
-    font-size: 2.4rem;
-    flex-shrink: 0;
 }
 
 .faq__category-info {
