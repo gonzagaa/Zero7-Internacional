@@ -1,157 +1,324 @@
+/* =========================
+   DIVISA — CARDS MONSTROS (DARK MONO)
+   ========================= */
+
 #divisa {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  padding-top: 0;
+  overflow: hidden;
 
-    padding-top: 2rem;
+  /* palette mono */
+  --bg1: #000000;
+  --bg2: #050505;
+  --line1: #ffffff;
+  --line2: #2a2a2a;
+
+  /* card controls */
+  --radius-outer: 1.6rem;
+  --radius-inner: 1.35rem;
+  --border: 2px;
 }
 
+#divisa .content {
+  position: relative;
+  z-index: 1;
+}
+
+/* layout */
 #divisa .cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
+/* BORDER WRAPPER */
 #divisa .cards .borderCard {
-    width: 100%;
-    padding: .2rem;
-    border-radius: 1.2rem;
+  width: 100%;
+  padding: var(--border);
+  border-radius: var(--radius-outer);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  /* base metal mono */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0)),
+    linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.08), rgba(0,0,0,.4));
+
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.65),
+    0 2px 0 rgba(255,255,255,.06) inset;
 }
 
+/* glow/aurora por trás */
+#divisa .cards .borderCard::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  z-index: 0;
+  background:
+    radial-gradient(circle at var(--hot-x, 30%) var(--hot-y, 25%),
+      rgba(255,255,255,.22) 0%,
+      rgba(255,255,255,.08) 35%,
+      rgba(0,0,0,0) 70%);
+  filter: blur(28px);
+  opacity: .7;
+  transform: translateZ(0);
+}
+
+/* energia passando na borda */
+#divisa .cards .borderCard::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 1;
+  border-radius: inherit;
+  background:
+    conic-gradient(from var(--spin, 0deg),
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,.85) 10%,
+      rgba(255,255,255,.5) 14%,
+      rgba(180,180,180,.55) 20%,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0) 100%);
+  filter: blur(10px);
+  opacity: .5;
+  animation: borderSpin 4.5s linear infinite;
+  pointer-events: none;
+}
+
+/* CARD (conteúdo) */
 #divisa .cards .card {
-    position: relative;
-    width: 100%;
-    padding: 2rem;
-    padding-block: 3rem;
-    border-radius: 1rem;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 2.2rem;
+  padding-block: 3.2rem;
+  border-radius: var(--radius-inner);
 
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  background:
+    radial-gradient(1200px 380px at 50% 0%,
+      rgba(255,255,255,.06) 0%,
+      rgba(255,255,255,0) 55%),
+    radial-gradient(900px 420px at 90% 25%,
+      rgba(255,255,255,.04) 0%,
+      rgba(255,255,255,0) 60%),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,.025) 0px,
+      rgba(255,255,255,.025) 1px,
+      rgba(255,255,255,0) 9px,
+      rgba(255,255,255,0) 16px),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0) 22%),
+    linear-gradient(135deg, var(--bg1), var(--bg2));
+
+  border: 1px solid rgba(255,255,255,.06);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.55),
+    0 1px 0 rgba(255,255,255,.06) inset;
+  overflow: hidden;
 }
 
-#divisa .cards .borderCard:nth-child(1) {
-    background: linear-gradient(130deg, #26262636, #a4a4a4, #a4a4a4, #000 30%);
+/* sheen diagonal */
+#divisa .cards .card::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: linear-gradient(115deg,
+    rgba(255,255,255,0) 40%,
+    rgba(255,255,255,.08) 50%,
+    rgba(255,255,255,0) 60%);
+  transform: translateX(-35%) translateY(-10%);
+  opacity: .55;
+  animation: sheen 6.5s ease-in-out infinite;
+  pointer-events: none;
 }
 
-#divisa .cards .borderCard:nth-child(2) {
-    background: transparent;
+/* vinheta */
+#divisa .cards .card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(0,0,0,0) 40%,
+      rgba(0,0,0,.45) 100%);
+  opacity: .9;
+  pointer-events: none;
 }
 
-#divisa .cards .borderCard:nth-child(3) {
-    background: linear-gradient(50deg, #26262636, #a4a4a4, #a4a4a4, #000 30%);
+/* variação por card */
+#divisa .cards .borderCard.um   { --hot-x: 22%; --hot-y: 30%; }
+#divisa .cards .borderCard.dois { --hot-x: 50%; --hot-y: 18%; }
+#divisa .cards .borderCard.tres { --hot-x: 78%; --hot-y: 32%; }
+
+/* variação sutil no 2º */
+#divisa .cards .borderCard.dois .card {
+  background:
+    radial-gradient(700px 260px at 50% 0%,
+      rgba(255,255,255,.07) 0%,
+      rgba(255,255,255,0) 60%),
+    radial-gradient(900px 420px at 10% 30%,
+      rgba(255,255,255,.04) 0%,
+      rgba(255,255,255,0) 62%),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,.022) 0px,
+      rgba(255,255,255,.022) 1px,
+      rgba(255,255,255,0) 10px,
+      rgba(255,255,255,0) 18px),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0) 22%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-#divisa .cards .borderCard:nth-child(1) .card,
-#divisa .cards .borderCard:nth-child(3) .card {
-    background: linear-gradient(130deg, #001120, #01050b);
-}
-
-
-#divisa .cards .borderCard:nth-child(2) .card {
-    background: linear-gradient(to right, #001120, #01050b);
-    position: relative;
-}
-
-#divisa .cards .borderCard:nth-child(2) .card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    background: linear-gradient(-130deg, #26262636, #a4a4a4, #a4a4a4, #26262636);
-    bottom: 0;
-}
-
+/* TIPOGRAFIA */
 #divisa .cards .card h3 {
-    font-size: 3rem;
-    margin-top: 1rem;
-    line-height: .8;
-    color: #d2d2d2;
-    font-family: var(--ncs);
-    text-transform: uppercase;
+  font-size: 3rem;
+  margin-top: 1rem;
+  line-height: .9;
+  color: #d8d8d8;
+  font-family: var(--ncs);
+  text-transform: uppercase;
+  letter-spacing: .02em;
 }
 
 #divisa .cards .card h3 span {
-    font-size: 4rem;
-    background: linear-gradient(130deg, #bfbfbfbd, #a4a4a4, #e0e0e0b1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-size: 4.2rem;
+  background: linear-gradient(110deg, #ffffff 0%, #e5e5e5 35%, #b8b8b8 65%, #6e6e6e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 10px 20px rgba(255,255,255,.08));
 }
 
 #divisa .cards .card p {
-    font-size: 1.4rem;
-    font-weight: 300;
-    color: #aaaaaa;
-    font-size: 1.5rem;
-    margin-top: 1rem;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  font-weight: 300;
+  color: rgba(220,220,220,.70);
+}
+
+/* animações */
+@keyframes borderSpin {
+  0%   { --spin: 0deg; }
+  100% { --spin: 360deg; }
+}
+
+@keyframes sheen {
+  0%, 100% { transform: translateX(-35%) translateY(-10%) rotate(0.001deg); opacity: .45; }
+  50%      { transform: translateX(20%)  translateY(8%)  rotate(0.001deg); opacity: .75; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #divisa .cards .borderCard::after,
+  #divisa .cards .card::before {
+    animation: none !important;
+  }
 }
 
 @media (min-width: 1080px) {
-    section#divisa {
-        padding-top: 0;
-        margin-top: -2%;
+  section#divisa {
+    padding-top: 0;
+    margin-top: -5%;
+    padding-bottom: 6rem;
+    overflow: initial;
+  }
 
-        padding-bottom: 6rem;
-    }
+  section#divisa img.bg {
+    border-radius: 10rem;
+  }
 
-    section#divisa .cards .card {
-        padding: 2rem;
-        padding-block: 5rem;
-    }
+  section#divisa .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    gap: 4rem;
+  }
 
-    section#divisa .cards {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        width: 100%;
-    }
+  section#divisa .cards .card {
+    padding: 2.4rem;
+    padding-block: 5.2rem;
+  }
 
-    section#divisa .cards .card h3 {
-        font-size: 3rem;
-    }
+  section#divisa .cards .card h3 { font-size: 3rem; }
+  section#divisa .cards .card h3 span { font-size: 5.2rem; }
 
-    section#divisa .cards .card h3 span {
-        font-size: 5rem;
-    }
+  section#divisa .cards .borderCard.um,
+  section#divisa .cards .borderCard.tres {
+    transform: translateY(-30%);
+  }
 
-    section#divisa .cards .borderCard:nth-child(1) {
-        background: linear-gradient(168deg, #e2e2e28a, #a4a4a4, #a4a4a4, #26262636 30%);
-    }
-    
-    section#divisa .cards .borderCard:nth-child(2) {
-        background: transparent;
-    }
-    
-    section#divisa .cards .borderCard:nth-child(3) {
-        background: linear-gradient(-168deg, #e2e2e28a, #a4a4a4, #a4a4a4, #26262636 30%);
-    }
-    
-    section#divisa .cards .borderCard:nth-child(1) .card {
-        background: linear-gradient(168deg, #161616, #050505);
-    }
-    
-    
-    section#divisa .cards .borderCard:nth-child(3) .card {
-        background: linear-gradient(-168deg, #161616, #050505);
-    }
-    
-    section#divisa .cards .borderCard:nth-child(2) .card {
-        background: linear-gradient(to bottom, #161616, #050505);
-        position: relative;
-    }
-    
-    section#divisa .cards .borderCard:nth-child(2) .card::before {
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(-130deg, #26262636, #a4a4a4, #a4a4a4, #26262636);
-    }
-    
+  section#divisa .cards .borderCard {
+    contain: layout paint;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    overflow: hidden;
+  }
+
+  section#divisa .cards .card {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* glow desktop sem blur */
+  section#divisa .cards .borderCard::before {
+    inset: 0;
+    filter: none;
+    opacity: .55;
+    background:
+      radial-gradient(circle at var(--hot-x, 30%) var(--hot-y, 25%),
+        rgba(255,255,255,.18) 0%,
+        rgba(255,255,255,.08) 25%,
+        rgba(255,255,255,.04) 45%,
+        rgba(0,0,0,0) 70%);
+  }
+
+  /* borda animada otimizada */
+  section#divisa .cards .borderCard::after {
+    inset: -1px;
+    filter: blur(4px);
+    opacity: .55;
+
+    background:
+      conic-gradient(
+        from 0deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.85) 10%,
+        rgba(255,255,255,.5) 14%,
+        rgba(180,180,180,.55) 20%,
+        rgba(255,255,255,0) 32%,
+        rgba(255,255,255,0) 100%
+      );
+
+    will-change: transform;
+    transform-origin: center center;
+    transform: scale(1.03) translateZ(0);
+    animation: borderSpinDesktopGPU 5s linear infinite !important;
+  }
+
+  section#divisa .cards .card::before {
+    animation: none !important;
+    display: none;
+  }
+
+  section#divisa .cards .card::after {
+    opacity: .7;
+  }
+
+  section#divisa .cards .card h3 span {
+    filter: none;
+    text-shadow: 0 0 18px rgba(255,255,255,.08);
+  }
 }
 
-@media (min-width: 1700px) {
-
+@keyframes borderSpinDesktopGPU {
+  from { transform: scale(1.035) rotate(0deg) translateZ(0); }
+  to   { transform: scale(1.035) rotate(360deg) translateZ(0); }
 }
