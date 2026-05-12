@@ -514,6 +514,27 @@
 
     <div class="wrapper">
       <div class="content">
+        <div class="depoimentos__videos" data-aos="fade-up">
+          <button type="button" class="depoimentos__video card depoimento" data-video="https://www.youtube.com/embed/ShcucfOriyI" aria-label="Assistir depoimento 1">
+            <img src="./assets/depoimentos/video 1.avif" alt="" loading="eager">
+          </button>
+          <button type="button" class="depoimentos__video card depoimento depoimentos__video--hide-desktop" data-video="https://www.youtube.com/embed/QVpL1JFxrw0" aria-label="Assistir depoimento 2">
+            <img src="./assets/depoimentos/video 2.avif" alt="" loading="eager">
+          </button>
+          <button type="button" class="depoimentos__video card depoimento" data-video="https://www.youtube.com/embed/ugqDbiOHej8" aria-label="Assistir depoimento 3">
+            <img src="./assets/depoimentos/video 3.avif" alt="" loading="eager">
+          </button>
+          <button type="button" class="depoimentos__video card depoimento" data-video="https://www.youtube.com/embed/xhlykTHDCzU" aria-label="Assistir depoimento 4">
+            <img src="./assets/depoimentos/video 4.avif" alt="" loading="eager">
+          </button>
+          <button type="button" class="depoimentos__video card depoimento" data-video="https://www.youtube.com/embed/cHUaUY76x9U" aria-label="Assistir depoimento 5">
+            <img src="./assets/depoimentos/video 5.avif" alt="" loading="eager">
+          </button>
+          <button type="button" class="depoimentos__video card depoimento" data-video="https://www.youtube.com/embed/8OK7I1S1URY" aria-label="Assistir depoimento 6">
+            <img src="./assets/depoimentos/video 6.avif" alt="" loading="eager">
+          </button>
+        </div>
+
         <header data-aos="fade-up">
           <h2>TRANSFORME SUAS HABILIDADES EM <span>GRANDES PAGAMENTOS</span></h2>
           <p>A Zero7 desenvolveu um <span>modelo totalmente único</span> para se operar. Aqui, traders podem ter acesso
@@ -647,6 +668,19 @@
           <img src="./assets/depoimentos/14.avif" alt="" loading="eager">
           <img src="./assets/depoimentos/15.avif" alt="" loading="eager">
           <img src="./assets/depoimentos/1.avif" alt="" loading="eager">
+        </div>
+      </div>
+
+      <div class="depoimentos__row depoimentos__row--left">
+        <div class="depoimentos__row-track">
+          <img src="./assets/depoimentos/6.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/9.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/12.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/15.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/6.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/9.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/12.avif" alt="" loading="eager">
+          <img src="./assets/depoimentos/15.avif" alt="" loading="eager">
         </div>
       </div>
     </div>
@@ -857,6 +891,13 @@
       </div>
     </div>
   </section>
+
+  <div id="modalDepoimentos" class="modal-depoimento" style="display: none;">
+    <div class="modal-content-depoimento">
+      <span class="close-depoimento-geral" role="button" aria-label="Fechar depoimento">&times;</span>
+      <div id="video-container-geral"></div>
+    </div>
+  </div>
 
   <footer id="footer">
     <div class="wrapper">
@@ -1096,6 +1137,7 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="./script/global.js?v=22"></script>
+  <script src="./script/depoimentosModal.js?v=1"></script>
   <script src="./script/4selet.js"></script>
   <script src="./script/blackPlanos.js"></script>
   <script src="./script/sectionBa.js"></script>

@@ -5,7 +5,7 @@
 #depoimentos {
   position: relative;
   overflow: hidden;
-  min-height: 90rem;
+  min-height: 115rem;
   padding-block: 0;
 }
 
@@ -179,6 +179,7 @@
 #depoimentos .depoimentos__row:nth-child(2) .depoimentos__row-track { animation-duration: 15s; }
 #depoimentos .depoimentos__row:nth-child(3) .depoimentos__row-track { animation-duration: 20s; }
 #depoimentos .depoimentos__row:nth-child(4) .depoimentos__row-track { animation-duration: 16s; }
+#depoimentos .depoimentos__row:nth-child(5) .depoimentos__row-track { animation-duration: 19s; }
 
 @keyframes depoimentos-marquee-left {
   0%   { transform: translate3d(0, 0, 0); }
@@ -221,12 +222,51 @@
   margin-inline: auto;
 }
 
+/* ============ Grid de vídeos de depoimento ============ */
+#depoimentos .depoimentos__videos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+#depoimentos .depoimentos__video {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  transition: transform 280ms ease, filter 280ms ease;
+}
+
+#depoimentos .depoimentos__video img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 1rem;
+}
+
+#depoimentos .depoimentos__video:hover {
+  transform: scale(1.03);
+  filter: brightness(1.15);
+}
+
+#depoimentos .depoimentos__video:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 4px;
+}
+
 
 
 /* ============ Desktop ============ */
 @media (min-width: 1080px) {
   #depoimentos {
-    min-height: 90rem;
+    min-height: 105rem;
   }
 
   #depoimentos .depoimentos__mosaic {
@@ -234,6 +274,19 @@
   }
 
   #depoimentos .depoimentos__mosaic--mobile {
+    display: none;
+  }
+
+  #depoimentos .depoimentos__videos {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    max-width: 85rem;
+    margin-inline: auto;
+  }
+
+  #depoimentos .depoimentos__video--hide-desktop {
     display: none;
   }
 
@@ -281,7 +334,7 @@
 
 @media (min-width: 1600px) {
   #depoimentos {
-    min-height: 95rem;
+    min-height: 110rem;
   }
 }
 
