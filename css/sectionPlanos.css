@@ -239,14 +239,14 @@
     justify-content: center;
 
     height: var(--h);
-    padding: 0 2.6rem;
+    padding: 0 2rem;
 
     border-radius: 999rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
 
     font-family: var(--ncs);
     font-weight: 500;
-    font-size: 1.4rem;
+    font-size: 1rem;
     letter-spacing: 0.04em;
     text-transform: none;
     color: rgba(255, 255, 255, 0.85);
@@ -271,6 +271,7 @@
     text-shadow: none;
     letter-spacing: 0.04em;
     font-weight: 500;
+    font-size: 1rem;
 }
 
 .z7-btnx.z7-btnx--toggle .z7-btnx__label strong {

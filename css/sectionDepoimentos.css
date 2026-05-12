@@ -1,128 +1,295 @@
+/* ================================
+   SEÇÃO DEPOIMENTOS — Mosaico Marquee com texto sobreposto
+   ================================ */
+
 #depoimentos {
-    overflow: hidden;
-    position: relative;
+  position: relative;
+  overflow: hidden;
+  min-height: 90rem;
+  padding-block: 0;
 }
 
 #depoimentos img.bgsection {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-#depoimentos::before,
-#depoimentos::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    top: 0;
-    left: 0;
-    right: 0;
-    /* background: linear-gradient(to right, transparent, #023c83, #0080c9, #023c83, transparent); */
-    z-index: 2;
-}
-
-#depoimentos::after {
-    top: initial;
-    bottom: 0;
-    display: none;
-}
-
-#depoimentos::before {
-}
-
-#depoimentos header {
-    margin-top: 6rem;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
 #depoimentos header h2 {
-    font-size: 2rem;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
 }
 
 #depoimentos header p {
-    font-size: 1.2rem;
-    margin-top: 1rem;
+  font-size: 1.1rem;
 }
 
-#depoimentos .cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
+#depoimentos header a {
+  font-size: 1.3rem;
 }
 
-#depoimentos .cards .card {
-    position: relative;
-    user-select: none;
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 1rem;
+/* ============ Mosaico (camada de fundo, ocupa a seção) ============ */
+#depoimentos .depoimentos__mosaic {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  padding: 2rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 85%,
+    transparent 100%
+  );
 }
 
-#depoimentos .cards .card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-    transition: all 300ms ease-in-out;
+#depoimentos .depoimentos__col {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
 }
 
-#depoimentos .cards .card:hover img {
-    transform: scale(1.04);
-    filter: brightness(1.2);
+#depoimentos .depoimentos__track {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-#depoimentos .wrapper.carrossel {
-    position: relative;
+#depoimentos .depoimentos__track img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 1rem;
+  flex-shrink: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
+#depoimentos .depoimentos__col--up .depoimentos__track {
+  animation: depoimentos-marquee-up 60s linear infinite;
+}
+
+#depoimentos .depoimentos__col--down .depoimentos__track {
+  animation: depoimentos-marquee-down 60s linear infinite;
+}
+
+#depoimentos .depoimentos__col:nth-child(1) .depoimentos__track { animation-duration: 65s; }
+#depoimentos .depoimentos__col:nth-child(2) .depoimentos__track { animation-duration: 55s; }
+#depoimentos .depoimentos__col:nth-child(3) .depoimentos__track { animation-duration: 70s; }
+#depoimentos .depoimentos__col:nth-child(4) .depoimentos__track { animation-duration: 58s; }
+#depoimentos .depoimentos__col:nth-child(5) .depoimentos__track { animation-duration: 62s; }
+
+@keyframes depoimentos-marquee-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes depoimentos-marquee-down {
+  0%   { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+
+/* Default (mobile): esconder o vertical, mostrar o horizontal */
+#depoimentos .depoimentos__mosaic {
+  display: none;
+}
+
+#depoimentos .depoimentos__mosaic--mobile {
+  display: flex;
+}
+
+/* ============ Mosaico HORIZONTAL — só mobile ============ */
+#depoimentos .depoimentos__mosaic--mobile {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 2rem 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+
+#depoimentos .depoimentos__row {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+#depoimentos .depoimentos__row-track {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+#depoimentos .depoimentos__row-track img {
+  width: 85vw;
+  max-width: 42rem;
+  height: auto;
+  display: block;
+  border-radius: 1rem;
+  flex-shrink: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+#depoimentos .depoimentos__row--left .depoimentos__row-track {
+  animation: depoimentos-marquee-left 17s linear infinite;
+}
+
+#depoimentos .depoimentos__row--right .depoimentos__row-track {
+  animation: depoimentos-marquee-right 17s linear infinite;
+}
+
+#depoimentos .depoimentos__row:nth-child(1) .depoimentos__row-track { animation-duration: 18s; }
+#depoimentos .depoimentos__row:nth-child(2) .depoimentos__row-track { animation-duration: 15s; }
+#depoimentos .depoimentos__row:nth-child(3) .depoimentos__row-track { animation-duration: 20s; }
+#depoimentos .depoimentos__row:nth-child(4) .depoimentos__row-track { animation-duration: 16s; }
+
+@keyframes depoimentos-marquee-left {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes depoimentos-marquee-right {
+  0%   { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* ============ Wrapper com texto (sobreposto, no terço superior) ============ */
+#depoimentos .wrapper {
+  position: relative;
+  z-index: 3;
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+}
+
+#depoimentos .wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -8rem -10% -8rem -10%;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 35%,
+    rgba(0, 2, 5, 0.88) 0%,
+    rgba(0, 2, 5, 0.75) 30%,
+    rgba(0, 2, 5, 0.5) 60%,
+    rgba(0, 2, 5, 0.2) 80%,
+    rgba(0, 2, 5, 0) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(20px);
+}
+
+#depoimentos .content {
+  position: relative;
+  max-width: 85rem;
+  margin-inline: auto;
+}
+
+
+
+/* ============ Desktop ============ */
 @media (min-width: 1080px) {
-    section#depoimentos header {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
+  #depoimentos {
+    min-height: 90rem;
+  }
 
-    section#depoimentos header h2 {
-        font-size: 3rem;
-    }
+  #depoimentos .depoimentos__mosaic {
+    display: grid;
+  }
 
-    section#depoimentos .content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8rem;
-        align-items: center;
-    }
+  #depoimentos .depoimentos__mosaic--mobile {
+    display: none;
+  }
 
-    section#depoimentos .cards {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 1rem;
-    }
+  #depoimentos header h2 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
 
-    section#depoimentos header {
-        text-align: left;
-        align-items: start;
-    }
+  #depoimentos header p {
+    font-size: 1.5rem;
+  }
 
-    section#depoimentos header h2 {
-        font-size: 2.7rem;
-    }
+  #depoimentos header a {
+    font-size: 1.6rem;
+  }
 
-    section#depoimentos header p {
-        font-size: 1.4rem;
-    }
+  #depoimentos .depoimentos__mosaic {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    padding: 3rem;
+  }
 
-    section#depoimentos .wrapper.carrossel {
-        position: relative;
-        width: 100%;
-        padding-inline: 0;
-    }
+  #depoimentos .depoimentos__track {
+    gap: 1.5rem;
+  }
 
-    section#depoimentos img.logo {
-        display: inherit;
-        position: absolute;
-    }
+  #depoimentos .wrapper {
+    padding-top: 12rem;
+    padding-bottom: 6rem;
+  }
+
+  #depoimentos .wrapper::before {
+    inset: -10rem -15% -10rem -15%;
+    background: radial-gradient(
+      ellipse 75% 65% at 50% 40%,
+      rgba(0, 2, 5, 0.85) 0%,
+      rgba(0, 2, 5, 0.7) 35%,
+      rgba(0, 2, 5, 0.45) 65%,
+      rgba(0, 2, 5, 0.18) 85%,
+      rgba(0, 2, 5, 0) 100%
+    );
+    filter: blur(30px);
+  }
+}
+
+@media (min-width: 1600px) {
+  #depoimentos {
+    min-height: 95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #depoimentos .depoimentos__col--up .depoimentos__track,
+  #depoimentos .depoimentos__col--down .depoimentos__track,
+  #depoimentos .depoimentos__row--left .depoimentos__row-track,
+  #depoimentos .depoimentos__row--right .depoimentos__row-track {
+    animation: none;
+  }
 }
