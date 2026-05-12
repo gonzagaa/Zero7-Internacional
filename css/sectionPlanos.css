@@ -78,6 +78,24 @@
     bottom: 0;
 }
 
+/* ===== Sentinelas pra controlar visibilidade da price-bar ===== */
+.price-bar-sentinel {
+    position: absolute;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.price-bar-sentinel--top {
+    top: 0;
+}
+
+.price-bar-sentinel--bottom {
+    bottom: 0;
+}
+
 /* ===== Box — empilha os dois segmented controls ===== */
 .planos .box {
     display: flex;

@@ -21,7 +21,7 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="./css/index.css?v=24">
+  <link rel="stylesheet" href="./css/index.css?v=25">
 
   <!--Primary Meta Tags-->
   <title>Zero7 Tesouraria - O Ecossistema lucrativo para operar day trade.</title>
@@ -229,9 +229,8 @@
 
         <ul>
           <li data-aos="fade-right"><a onclick="closeMenu()" href="#home">Home</a></li>
-          <li data-aos="fade-right"><a onclick="closeMenu()" href="https://zero7.com.br/blog/">Blog</a></li>
           <li data-aos="fade-right"><a onclick="closeMenu()" href="#plan">Planos</a></li>
-          <li data-aos="fade-right"><a onclick="closeMenu()" href="https://zero7.com.br/regulamento/">Regulamento</a>
+          <li data-aos="fade-right"><a onclick="closeMenu()" href="./regulamento/index.html">Regulamento</a>
           </li>
 
           <!-- LANG DROPDOWN -->
@@ -263,7 +262,7 @@
 </li>
 
 <div data-aos="fade-right" class="buttons">
-            <a onclick="closeMenu()" target="_blank" href="https://app.zero7.com.br/login"><button id="navButton"
+            <a onclick="closeMenu()" target="_blank" href="https://app.zero7trading.com"><button id="navButton"
                 class="button">
                 Área do Trader
               </button></a>
@@ -397,7 +396,7 @@
             </div> -->
             <img class="ba-hero__logo" src="./assets/logo blackarrow.svg" alt="Blackarrow">
             <h2 class="ba-hero__title">A plataforma de trading mais inovadora do mercado global</h2>
-            <a href="#plan">
+            <a target="_blank" href="https://www.blackarrowtrading.com/pt/tools">
               <button id="openModalForm" class="button openModalForm ba-cta">Ver todos os recursos</button>
             </a>
             <!-- <div class="ba-hero__stats">
@@ -577,7 +576,7 @@
               <button type="button" class="mode-toggle__btn z7-btnx z7-btnx--toggle is-active" data-mode="com_ativacao" role="radio" aria-checked="true" tabindex="0">
                 <span class="z7-btnx__bg" aria-hidden="true"></span>
                 <span class="z7-btnx__shine" aria-hidden="true"></span>
-                <span class="z7-btnx__label">Desafio <strong>com</strong> taxa de ativação</span>
+                <span class="z7-btnx__label"><strong>Com</strong> taxa de ativação</span>
               </button>
               <span class="tooltip-content">
                 Após atingir a meta, você deverá pagar uma taxa de ativação e avançar para incubadora.
@@ -587,7 +586,7 @@
               <button type="button" class="mode-toggle__btn z7-btnx z7-btnx--toggle" data-mode="sem_ativacao" role="radio" aria-checked="false" tabindex="-1">
                 <span class="z7-btnx__bg" aria-hidden="true"></span>
                 <span class="z7-btnx__shine" aria-hidden="true"></span>
-                <span class="z7-btnx__label">Desafio <strong>sem</strong> taxa de ativação</span>
+                <span class="z7-btnx__label"><strong>Sem</strong> taxa de ativação</span>
               </button>
               <span class="tooltip-content">
                 Alcance a meta e avance direto para incubadora, sem pagar nenhuma taxa adicional.
@@ -688,130 +687,84 @@
     <div class="wrapper">
       <div class="content">
         <header data-aos="fade-up">
-          <h2>Perguntas Frequentes</h2>
+          <h2>Central de Ajuda</h2>
+          <p class="faq__subtitle">Encontre respostas para suas dúvidas em segundos.</p>
         </header>
 
-        <div class="faq">
-          <details data-aos="fade-up-right">
-            <summary>
-              Após atingir minha meta de aprovação, qual a próxima etapa?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Você deverá acessar sua “Área do trader”, em “Minha Carreira” acessar o plano em que você foi aprovado e
-              clicar em “Solicitar Aprovação”. Nosso time irá avaliar e retornar com a resposta em até 3 dia úteis após
-              a solicitação. Você será notificado via e-mail e também poderá consultar o resultado em sua “Área do
-              Trader”.
-            </p>
-          </details>
+        <div class="faq__search" data-aos="fade-up">
+          <ion-icon name="search-outline" class="faq__search-icon"></ion-icon>
+          <input
+            type="search"
+            id="faqSearch"
+            class="faq__search-input"
+            placeholder="Pesquisar na central de ajuda..."
+            autocomplete="off"
+          >
+          <span class="faq__search-loading" hidden>
+            <span class="faq__spinner"></span>
+          </span>
+        </div>
 
-          <details data-aos="fade-up-left">
-            <summary>
-              Qual é a data do pagamento?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Na Zero7 todos os operadores operam por ciclos de 30 dias. E o pagamento é feito conforme o fechamento
-              deste ciclo. Sempre nos dias 10, 20 ou 30 de cada mês.
-            </p>
-          </details>
+        <div class="faq__results" id="faqResults" hidden>
+          <div class="faq__results-header">
+            <span id="faqResultsCount">0 resultados</span>
+            <button type="button" class="faq__clear" id="faqClearSearch">Limpar busca</button>
+          </div>
+          <ul class="faq__results-list" id="faqResultsList"></ul>
+        </div>
 
-          <details data-aos="fade-up-right">
-            <summary>
-              Quais as taxas e valores descontados?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Na Zero7 cobramos apenas as taxas de registro e emolumentos já cobradas pela B3. Hoje, as taxas estão
-              fixadas em: R$ 0,37 por contrato de WIN, R$ 1,47 por contrato de WDO e 0,0250% por volume de ações. Vale
-              ressaltar a afirmação de que a Zero7 não cobra a taxa de corretagem paga à corretora.
-            </p>
-          </details>
+        <div class="faq__categories" id="faqCategories" data-aos="fade-up">
+          <div class="faq__skeleton-grid">
+            <div class="faq__skeleton-card"></div>
+            <div class="faq__skeleton-card"></div>
+            <div class="faq__skeleton-card"></div>
+            <div class="faq__skeleton-card"></div>
+          </div>
+        </div>
 
-          <details data-aos="fade-up-left">
-            <summary>
-              Existe lugar físico para operar?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              No momento todos os operadores da Zero7 operam de forma remota. Mas ter um espaço físico que possa receber
-              nossos operadores, está em nossos projetos futuros.
-            </p>
-          </details>
+        <div class="faq__pagination" id="faqPagination" hidden>
+          <button type="button" class="faq__pagination-btn" id="faqPrev" aria-label="Página anterior">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </button>
+          <span class="faq__pagination-info">
+            <span id="faqPageCurrent">1</span> / <span id="faqPageTotal">1</span>
+          </span>
+          <button type="button" class="faq__pagination-btn" id="faqNext" aria-label="Próxima página">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </button>
+        </div>
 
-          <details data-aos="fade-up-right">
-            <summary>
-              Posso operar utilizando minha própria técnica?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Sim! A Zero7 procura traders profissionais, por isso, entendemos que cada um tem o seu jeito de operar.
-              Então, fique à vontade para aplicar suas técnicas e só não esqueça de respeitar os limites do seu plano.
-            </p>
-          </details>
+        <div class="faq__cta" data-aos="fade-up">
+          <a
+            href="https://help.zero7trading.com/hc/pt-br"
+            target="_blank"
+            rel="noopener"
+            class="faq__cta-link"
+          >
+            Acessar a Central de Ajuda completa
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </a>
+        </div>
+      </div>
+    </div>
 
-          <details data-aos="fade-up-left">
-            <summary>
-              Após comprar o plano, quando eu começo minha avaliação?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Após a confirmação do seu pagamento, deve acessar sua "Área do Trader" e escolher o dia em que deseja
-              começar sua avaliação, conforme datas disponíveis.
-            </p>
-          </details>
-
-          <details data-aos="fade-up-right">
-            <summary>
-              Depois de aprovado em quanto tempo eu começo a operar em conta real?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Após a aprovação, os operadores passam para a incubadora, onde permanecem em ambiente simulado, a fim de
-              avaliar seu emocional e sua consistência, mas já receberão um prêmio conforme seu desempenho.
-              Durante o período de incubadora, existem pré-requisitos para solicitação da análise de transição para a
-              conta real, que são: permanecer, no mínimo, dois ciclos consecutivos com lucro líquido positivo e atingir,
-              na somatória desses ciclos, um valor igual ou superior à meta de aprovação.
-              Vale ressaltar que a Zero7 se reserva o direito de escolher em qual ambiente o operador irá permanecer
-              operando.
-            </p>
-          </details>
-
-          <details data-aos="fade-up-left">
-            <summary>
-              A Zero7 tesouraria possui Drawdown?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Não há Drawdown na Zero7. Você deverá respeitar seu limite de perda diária e o limite de perda total. E o
-              saldo positivo que você acumula, será somado ao seu limite. Ex: operando o plano Trainee WIN/WDO você terá
-              um limite de perda total de R$ 997,00. Se em seu período de avaliação já tiver conquistado um saldo de R$
-              500,00, para ser desqualificado terá que perder os R$ 500,00 + R$ 997,00, um total de R$ 1.497,00.
-            </p>
-          </details>
-
-          <details data-aos="fade-up-right">
-            <summary>
-              Vou operar minha própria conta?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              Não! Você será cadastrado na Sinacor/B3 como um operador da Zero7. E assim, irá emitir ordens na conta da
-              Zero7.
-            </p>
-          </details>
-
-          <details data-aos="fade-up-left">
-            <summary>
-              Tenho que pagar mensalidade para operar?
-              <ion-icon name="close-outline"></ion-icon>
-            </summary>
-            <p>
-              O valor único pago no plano da Zero7 te dá o direito de fazer nossa avaliação e sendo aprovado, operar em
-              nossa mesa com os mesmos parâmetros do plano contratado. Você não terá que pagar nenhum outro valor, muito
-              menos uma mensalidade.
-            </p>
-          </details>
+    <div class="faq__modal" id="faqModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle">
+      <div class="faq__modal-backdrop" data-faq-close></div>
+      <div class="faq__modal-panel">
+        <button type="button" class="faq__modal-close" data-faq-close aria-label="Fechar">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+        <div class="faq__modal-content">
+          <span class="faq__modal-breadcrumb" id="faqModalBreadcrumb"></span>
+          <h3 class="faq__modal-title" id="faqModalTitle"></h3>
+          <div class="faq__modal-body" id="faqModalBody"></div>
+          <a
+            class="faq__modal-source"
+            id="faqModalSource"
+            href="#"
+            target="_blank"
+            rel="noopener"
+          >Abrir no Zendesk <ion-icon name="open-outline"></ion-icon></a>
         </div>
       </div>
     </div>
@@ -836,16 +789,15 @@
           <h3>Navegação</h3>
 
           <p><a href="#home">Home</a></p>
-          <p><a href="https://zero7.com.br/blog/">Blog</a></p>
           <p><a href="#plan">Planos</a></p>
-          <p><a href="https://zero7.com.br/regulamento/">Regulamento</a></p>
-          <p><a target="_blank" href="https://app.zero7.com.br/login">Área do Trader</a></p>
+          <p><a href="./regulamento/index.html">Regulamento</a></p>
+          <p><a target="_blank" href="https://app.zero7trading.com">Área do Trader</a></p>
         </div>
 
         <div class="contato">
           <h3>Suporte</h3>
-          <p><a target="_blank" href="tel:0800-191-2277">0800 191 2277</a></p>
-          <p>contato@zero7.com.br</p>
+          <p><a target="_blank" href="https://app.zero7trading.com">Área do Trader</a></p>
+          <p>support@zero7trading.com</p>
         </div>
 
         <div class="redes-sociais">
@@ -896,9 +848,36 @@
     </div>
   </section>
 
-  <a target="_blank" href="https://wa.link/9d2x9e" class="btn-whatsapp-pulse">
-    <ion-icon name="logo-whatsapp"></ion-icon>
-  </a>
+  <!-- Start of zero7tradingsupport Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=c12eea4d-976b-4410-861d-86a4ba652a32"> </script>
+<!-- End of zero7tradingsupport Zendesk Widget script -->
+
+<style>
+  /* Botão flutuante do Zendesk */
+  iframe#launcher,
+  iframe[title*="Button to launch messaging"],
+  iframe[title*="Botão"] {
+    z-index: 100 !important;
+  }
+
+  /* Janela do chat aberta */
+  iframe#webWidget,
+  iframe[title*="Messaging window"],
+  iframe[title*="Janela"] {
+    z-index: 100 !important;
+  }
+
+  /* Balão de mensagem proativa + botão de fechar */
+  iframe[title="Mensagem da empresa"],
+  iframe[title="Fechar mensagem"] {
+    z-index: 100 !important;
+  }
+
+  /* Wrapper div que segura o balão (tem z-index inline 999999) */
+  div:has(> div > iframe[title="Mensagem da empresa"]) {
+    z-index: 100 !important;
+  }
+</style>
 
   <aside id="priceBar" class="price-bar" role="region" aria-label="Resumo do plano selecionado">
     <button type="button" class="price-bar__minimize" aria-label="Minimizar barra de preço" aria-expanded="true">
@@ -959,6 +938,8 @@
       easing: (t) => 1 - Math.pow(1 - t, 4), // Função de easing para suavidade
     });
 
+    window.lenis = lenis;
+
     // Listen for the scroll event and log the event data
     lenis.on("scroll", (e) => {
       console.log(e);
@@ -1000,8 +981,8 @@
 
       const createAnimations = () => {
         const ano = new CountUp("ano", 0, 2023, 0, 3, optionsAno);
-        const traders = new CountUp("traders", 0, 15, 0, 3, optionsTraders);
-        const pagamentos = new CountUp("pagamentos", 0, 10, 0, 3, optionsPagamentos);
+        const traders = new CountUp("traders", 0, 25, 0, 3, optionsTraders);
+        const pagamentos = new CountUp("pagamentos", 0, 17, 0, 3, optionsPagamentos);
 
         if (!ano.error) ano.start();
         if (!traders.error) traders.start();
@@ -1030,6 +1011,7 @@
   <script src="./script/4selet.js"></script>
   <script src="./script/blackPlanos.js"></script>
   <script src="./script/sectionBa.js"></script>
-  <script src="./js/sectionPlanos.js?v=5" defer></script>
+  <script src="./script/sectionFaq.js?v=1" defer></script>
+  <script src="./js/sectionPlanos.js?v=11" defer></script>
 </body>
 </html>

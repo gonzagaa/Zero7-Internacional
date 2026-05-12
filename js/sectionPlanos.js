@@ -160,14 +160,22 @@
     tbody.innerHTML = '';
     LINHAS.forEach(({ key, label, fonte }, i) => {
       const dados = obterCelula(key, fonte);
+      let desafio = dados.desafio;
+      const incubadora = dados.incubadora;
+
+      // Modo "sem taxa de ativação": linha "Taxa de ativação" não cobra no Desafio
+      if (key === 'taxaAtivacao' && state.modo === 'sem_ativacao') {
+        desafio = '—';
+      }
+
       const tr = document.createElement('tr');
       tr.style.setProperty('--row-index', i);
-      const cDesafio = isCurrency(dados.desafio) ? 'cell--currency' : '';
-      const cIncubadora = isCurrency(dados.incubadora) ? 'cell--currency' : '';
+      const cDesafio = isCurrency(desafio) ? 'cell--currency' : '';
+      const cIncubadora = isCurrency(incubadora) ? 'cell--currency' : '';
       tr.innerHTML = `
         <td data-label="Condição"><span class="cell-label">${label}</span></td>
-        <td data-label="Desafio"${tdAttrs(cDesafio)}>${dados.desafio}</td>
-        <td data-label="Incubadora"${tdAttrs(cIncubadora)}>${dados.incubadora}</td>
+        <td data-label="Desafio"${tdAttrs(cDesafio)}>${desafio}</td>
+        <td data-label="Incubadora"${tdAttrs(cIncubadora)}>${incubadora}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -260,7 +268,10 @@
   }
 
   /* ============================================================
-     Price bar — visibilidade via IntersectionObserver
+     Price bar — visibilidade via sentinela do topo + section #faq
+       - aparição: sentinela no topo de #plan cruza pra dentro da viewport
+       - saída:    section #faq começa a entrar pela base da viewport
+     Barra visível quando topo de #plan entrou E #faq ainda não apareceu.
      ============================================================ */
   function setupBarVisibility(secao) {
     if (!refs.priceBar || !secao) return;
@@ -269,17 +280,74 @@
       document.body.classList.add('price-bar-visible');
       return;
     }
-    const observer = new IntersectionObserver(
+
+    // Sentinela do topo (controla aparição) — idempotente
+    let sentinelTop = secao.querySelector('.price-bar-sentinel--top');
+    if (!sentinelTop) {
+      sentinelTop = document.createElement('div');
+      sentinelTop.className = 'price-bar-sentinel price-bar-sentinel--top';
+      sentinelTop.setAttribute('aria-hidden', 'true');
+      secao.insertBefore(sentinelTop, secao.firstChild);
+    }
+
+    // Sentinela de baixo não é mais necessária — remover se existir
+    const oldBottom = secao.querySelector('.price-bar-sentinel--bottom');
+    if (oldBottom) oldBottom.remove();
+
+    // Próxima seção (#faq) é o gatilho de saída
+    const faqSection = document.querySelector('#faq');
+
+    // Fração da viewport que pode mostrar a #faq antes da barra sumir
+    // (calibrar entre 0.05 e 0.20)
+    const ATRASO_SAIDA = 0.20;
+    const limiarFaq = () => window.innerHeight * (1 - ATRASO_SAIDA);
+
+    let topEntered = false;
+    let faqVisible = false;
+
+    const atualizar = () => {
+      const visivel = topEntered && !faqVisible;
+      refs.priceBar.classList.toggle('price-bar--visible', visivel);
+      document.body.classList.toggle('price-bar-visible', visivel);
+    };
+
+    const topObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const visivel = entry.isIntersecting;
-          refs.priceBar.classList.toggle('price-bar--visible', visivel);
-          document.body.classList.toggle('price-bar-visible', visivel);
+          topEntered = entry.boundingClientRect.top < window.innerHeight;
         });
+        atualizar();
       },
       { threshold: 0, rootMargin: '0px' }
     );
-    observer.observe(secao);
+    topObserver.observe(sentinelTop);
+
+    if (faqSection) {
+      const faqObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            faqVisible = entry.boundingClientRect.top < limiarFaq();
+          });
+          atualizar();
+        },
+        {
+          threshold: 0,
+          rootMargin: `0px 0px ${-ATRASO_SAIDA * 100}% 0px`,
+        }
+      );
+      faqObserver.observe(faqSection);
+    } else {
+      console.warn('[price-bar] section #faq não encontrada — saída automática desativada.');
+    }
+
+    // Estado inicial — caso a página carregue já com scroll dentro/depois da seção
+    requestAnimationFrame(() => {
+      topEntered = sentinelTop.getBoundingClientRect().top < window.innerHeight;
+      if (faqSection) {
+        faqVisible = faqSection.getBoundingClientRect().top < limiarFaq();
+      }
+      atualizar();
+    });
   }
 
   /* ============================================================
@@ -348,6 +416,7 @@
   function bindEventos() {
     bindSeg(refs.segMode, refs.botoesModo, 'mode', (modo) => {
       state.modo = modo;
+      renderTabela();
       renderPreco();
       renderLabel();
     }, 'is-active');
