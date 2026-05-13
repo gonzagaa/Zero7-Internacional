@@ -13,6 +13,7 @@
     transition: all 200ms ease-in-out;
     margin-bottom: 0;
 
+    z-index: 101;
   }
   
   #home .wrapper {
@@ -48,13 +49,12 @@
 
   #home h1 {
     color: #ffffff;
-    font-size: 2.5rem;
+    font-size: 3.7rem;
   
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-family: 'Neue Plak Light', sans-serif;
     line-height: 1;
-
   }
   
   #home h1 span {
@@ -114,7 +114,7 @@
   
   
   #home p {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 300;
     color: #c0c0c0;
     line-height: 1.4;
@@ -147,7 +147,8 @@
     max-width: 100vw;
     height: auto;
 
-      filter: saturate(140%);
+    mask-image: linear-gradient(to bottom, #000, transparent);
+
   }
   
   #home .image img.bg {
@@ -159,6 +160,7 @@
     object-fit: cover;
     aspect-ratio: 16/9;
     filter: brightness(.5);
+
   }
   
   #home .image img.desktop {
