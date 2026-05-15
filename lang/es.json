@@ -128,6 +128,16 @@
       "pesquise_direto": "busca directamente en el Centro de Ayuda"
     }
   },
+  "obrigado": {
+    "title": "Gracias — Zero7 Trading",
+    "badge": "PEDIDO CONFIRMADO",
+    "titulo": "¡GRACIAS!",
+    "subtitulo": "¡Tu plan ha sido contratado con éxito!",
+    "descricao": "Bienvenido(a) a Zero7 Trading y gracias por elegirnos como aliado en tu jornada como Trader.",
+    "cta_label": "Para iniciar tu evaluación, ¡accede al Área del Trader!",
+    "cta": "Área del Trader",
+    "cta_aria": "Acceder al Área del Trader"
+  },
   "footer": {
     "endereco": "Av. Dep. Jamel Cecílio, nº 2929 - Jardim Goiás, Goiânia - GO, 74810-240, Brasil",
     "horario": "De lunes a viernes, de 8h a 18h",

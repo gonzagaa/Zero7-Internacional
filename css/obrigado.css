@@ -1,225 +1,109 @@
-#obrigado {
-    height: auto;
-    overflow: hidden;
-    position: relative;
-    padding-block: 10rem;
+section#obrigado.obrigado {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12rem 2rem 8rem;
 }
 
-#obrigado .wrapper {
-    height: 100%;
-}
-
-#obrigado img.bgsection {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-#obrigado .content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#obrigado header {
-    margin-bottom: 0;
-}
-
-#obrigado h1 {
-    color: #ffffff;
-    font-size: 4.5rem;
-  
-    margin-top: 1rem;
-    font-family: var(--ncs);
-    text-transform: uppercase;
-    font-weight: 500;
-    line-height: 1;
-
-    background: linear-gradient(45deg, #1da4f3, #056ba6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-#obrigado header p {
-    font-size: 1.7rem;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1.4;
-
-    margin-bottom: 1rem;
-}
-
-#obrigado .text p {
-    font-size: 1.4rem;
-    color: #d0d0d0;
-    margin-top: .5rem;
-}
-
-#obrigado .text p span {
-    font-weight: 600;
-}
-
-#obrigado .content .cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-
-    margin-block: 4rem;
-}
-
-#obrigado .card {
-    background: linear-gradient(to right, #001120, #01050b);
-    position: relative;
-    border-radius: 1rem;
-
-    height: 100%;
-}
-
-#obrigado .card img {
-    width: 100%;
-    aspect-ratio: 16/6;
-    object-position: 50% 30%;
-    object-fit: cover;
-    mask-image: linear-gradient(to bottom, #000 60%, transparent);
-}
-
-#obrigado .card .text {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-}
-
-#obrigado .card .text h3 {
-    color: #ffffff;
-    font-size: 1.5rem;
-  
-    font-family: var(--ncs);
-    text-transform: uppercase;
-    font-weight: 500;
-
-    margin-bottom: .5rem;
-}
-
-#obrigado .card .text p {
-    font-size: 1.2rem;
-}
-
-#obrigado .card .text button {
-    margin-top: 2rem;
-    font-size: 1.4rem;
-    padding-block: 1.4rem;
-    padding-inline: 2rem;
-}
-
-#obrigado header h2 {
-    font-size: 2rem;
-}
-
-#obrigado header button {
-    margin-top: 2rem;
-}
-
-/* Overlay */
-.modalMerlin {
-  position: fixed;
-  top: 0;
-  left: 0;
+section#obrigado .bgsection {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.7);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 9999;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.5;
 }
 
-/* Quando ativo */
-.modalMerlin.active {
-  display: flex;
-  opacity: 1;
-}
-
-/* Conteúdo do modal */
-.modal-content {
-    overflow: hidden;
-    position: relative;
-  background: #fff;
-  border-radius: 10px;
-  max-width: 800px;
-  width: 90%;
-  transform: translateY(-50px);
-  transition: transform 0.3s ease;
+section#obrigado .wrapper {
   position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
 }
 
-.modal-content img.bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    z-index: -1;
+section#obrigado .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
 }
 
-/* Animação de entrada */
-.modalMerlin.active .modal-content {
-  transform: translateY(0);
+.obrigado__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  border-radius: 999rem;
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(11, 93, 59, 0.04));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 2rem rgba(52, 211, 153, 0.06);
 }
 
-/* Botão fechar */
-.close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.close:hover {
-  color: #000;
+.obrigado__titulo {
+  font-family: var(--ncs), 'Inter', sans-serif;
+  font-size: clamp(5rem, 12vw, 11rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 4rem rgba(255, 255, 255, 0.15);
+  margin: 0;
 }
 
-@media (min-width: 1080px) {
-    section#obrigado .content h1 {
-      font-size: 7rem;
-      line-height: 1;
-      color: #f8fffd;
-      margin-bottom: 0;
-    }
+.obrigado__subtitulo {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  max-width: 70rem;
+}
 
-    section#obrigado .content h1 span {
-      font-size: 5rem;
-      min-width: 27rem;
-    }
+.obrigado__descricao {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #d0d0d0;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 65rem;
+}
 
-    section#obrigado .content header p {
-      font-weight: 500;
-      font-size: 2.5rem;
-    }
+.obrigado__cta-label {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #aaa;
+  margin: 2rem 0 0.5rem;
+}
 
-    section#obrigado .content .cards {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-  
+@media (max-width: 768px) {
+  section#obrigado.obrigado {
+    padding: 10rem 1.5rem 6rem;
+  }
+
+  section#obrigado .content {
+    gap: 1.5rem;
+  }
+
+  .obrigado__subtitulo {
+    font-size: 1.8rem;
+  }
+
+  .obrigado__descricao {
+    font-size: 1.4rem;
+  }
+
+  .obrigado__cta-label {
+    font-size: 1.3rem;
+  }
 }
