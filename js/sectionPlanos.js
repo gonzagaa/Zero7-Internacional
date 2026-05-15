@@ -57,6 +57,12 @@
     return `Plano ${state.capital}`;
   }
 
+  function checkoutHref() {
+    const capital = state.dados?.capitais?.[state.capital];
+    if (!capital?.checkout) return null;
+    return state.modo === 'com_ativacao' ? capital.checkout.comAtivacao : capital.checkout.semAtivacao;
+  }
+
   /* ============================================================
      Segmented control — blob deslizante
      ============================================================ */
@@ -267,6 +273,12 @@
     else refs.precoBadge.textContent = badgeTexto();
   }
 
+  function renderCheckoutHref() {
+    if (!refs.precoCta) return;
+    const href = checkoutHref();
+    if (href) refs.precoCta.setAttribute('href', href);
+  }
+
   /* ============================================================
      Price bar — visibilidade via sentinela do topo + section #faq
        - aparição: sentinela no topo de #plan cruza pra dentro da viewport
@@ -419,6 +431,7 @@
       renderTabela();
       renderPreco();
       renderLabel();
+      renderCheckoutHref();
     }, 'is-active');
 
     bindSeg(refs.segCapital, refs.botoesCapital, 'capital', (capital) => {
@@ -426,6 +439,7 @@
       renderTabela();
       renderPreco();
       renderBadge();
+      renderCheckoutHref();
     });
 
     window.addEventListener('resize', () => {
@@ -467,6 +481,7 @@
     refs.precoLabel = $('.price-bar__mode');
     refs.precoValor = $('.price-bar__price');
     refs.precoBadge = $('.price-bar__badge');
+    refs.precoCta = $('.price-bar__cta');
     refs.minimizeBtn = $('.price-bar__minimize');
   }
 
@@ -521,6 +536,7 @@
     renderPreco({ animar: false });
     renderLabel({ animar: false });
     renderBadge({ animar: false });
+    renderCheckoutHref();
 
     ativarSeg(refs.segMode);
     ativarSeg(refs.segCapital);

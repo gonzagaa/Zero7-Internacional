@@ -15,6 +15,10 @@
       "precos": {
         "comAtivacao": "$19,00",
         "semAtivacao": "$66,50"
+      },
+      "checkout": {
+        "comAtivacao": "https://app.zero7trading.com/checkout/d89445",
+        "semAtivacao": "https://app.zero7trading.com/checkout/cf9875"
       }
     },
     "50k": {
@@ -25,6 +29,10 @@
       "precos": {
         "comAtivacao": "$29,00",
         "semAtivacao": "$97,50"
+      },
+      "checkout": {
+        "comAtivacao": "https://app.zero7trading.com/checkout/3b4f89",
+        "semAtivacao": "https://app.zero7trading.com/checkout/650761"
       }
     },
     "100k": {
@@ -35,6 +43,10 @@
       "precos": {
         "comAtivacao": "$39,00",
         "semAtivacao": "$136,50"
+      },
+      "checkout": {
+        "comAtivacao": "https://app.zero7trading.com/checkout/c0e0dc",
+        "semAtivacao": "https://app.zero7trading.com/checkout/54834c"
       }
     },
     "150k": {
@@ -45,6 +57,10 @@
       "precos": {
         "comAtivacao": "$49,00",
         "semAtivacao": "$171,50"
+      },
+      "checkout": {
+        "comAtivacao": "https://app.zero7trading.com/checkout/c853a3",
+        "semAtivacao": "https://app.zero7trading.com/checkout/e1fb33"
       }
     },
     "250k": {
@@ -55,6 +71,10 @@
       "precos": {
         "comAtivacao": "$59,00",
         "semAtivacao": "$206,50"
+      },
+      "checkout": {
+        "comAtivacao": "https://app.zero7trading.com/checkout/cece3b",
+        "semAtivacao": "https://app.zero7trading.com/checkout/f5cf5c"
       }
     }
   }
