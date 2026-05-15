@@ -3,15 +3,31 @@
   const JSON_PATH = './data/planos.json';
 
   const LINHAS = [
-    { key: 'contratos',    label: 'Contratos',        fonte: 'capital' },
-    { key: 'minimoDias',   label: 'Mínimo de dias',   fonte: 'fixa' },
-    { key: 'maximoDias',   label: 'Máximo de dias',   fonte: 'fixa' },
-    { key: 'metaLucro',    label: 'Meta de lucro',    fonte: 'capital' },
-    { key: 'drawdown',     label: 'Drawdown',         fonte: 'fixa' },
-    { key: 'perdaTotal',   label: 'Perda total',      fonte: 'capital' },
-    { key: 'taxaAtivacao', label: 'Taxa de ativação', fonte: 'capital' },
-    { key: 'recompensa',   label: 'Recompensa',       fonte: 'fixa' },
+    { key: 'contratos',    i18nKey: 'plan.linha_contratos',      fonte: 'capital' },
+    { key: 'minimoDias',   i18nKey: 'plan.linha_minimo_dias',    fonte: 'fixa' },
+    { key: 'maximoDias',   i18nKey: 'plan.linha_maximo_dias',    fonte: 'fixa' },
+    { key: 'metaLucro',    i18nKey: 'plan.linha_meta_lucro',     fonte: 'capital' },
+    { key: 'drawdown',     i18nKey: 'plan.linha_drawdown',       fonte: 'fixa' },
+    { key: 'perdaTotal',   i18nKey: 'plan.linha_perda_total',    fonte: 'capital' },
+    { key: 'taxaAtivacao', i18nKey: 'plan.linha_taxa_ativacao',  fonte: 'capital' },
+    { key: 'recompensa',   i18nKey: 'plan.linha_recompensa',     fonte: 'fixa' },
   ];
+
+  function getCurrentLang() {
+    return (window.i18n && window.i18n.getLang && window.i18n.getLang()) || 'pt';
+  }
+  function tr(key) {
+    return (window.i18n && window.i18n.t) ? window.i18n.t(key) : key;
+  }
+  function pick(value) {
+    if (value == null) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object') {
+      const lang = getCurrentLang();
+      return value[lang] || value.pt || value.en || value.es || '';
+    }
+    return String(value);
+  }
 
   const EASE_OUT = 'cubic-bezier(0.4, 0, 0.2, 1)';
   const ROW_STAGGER_MS = 40;
@@ -44,8 +60,8 @@
 
   function modoLabelTexto() {
     return state.modo === 'com_ativacao'
-      ? 'Desafio com taxa de ativação'
-      : 'Desafio sem taxa de ativação';
+      ? tr('plan.modo_label_com')
+      : tr('plan.modo_label_sem');
   }
 
   function precoTexto() {
@@ -54,7 +70,7 @@
   }
 
   function badgeTexto() {
-    return `Plano ${state.capital}`;
+    return tr('plan.badge').replace('{capital}', state.capital);
   }
 
   function checkoutHref() {
@@ -164,26 +180,31 @@
   function montarLinhas() {
     const tbody = refs.tbody;
     tbody.innerHTML = '';
-    LINHAS.forEach(({ key, label, fonte }, i) => {
+    const labelCondicao = tr('plan.tabela_condicao');
+    const labelDesafio = tr('plan.tabela_desafio');
+    const labelIncubadora = tr('plan.tabela_incubadora');
+
+    LINHAS.forEach(({ key, i18nKey, fonte }, i) => {
       const dados = obterCelula(key, fonte);
-      let desafio = dados.desafio;
-      const incubadora = dados.incubadora;
+      let desafio = pick(dados.desafio);
+      const incubadora = pick(dados.incubadora);
 
       // Modo "sem taxa de ativação": linha "Taxa de ativação" não cobra no Desafio
       if (key === 'taxaAtivacao' && state.modo === 'sem_ativacao') {
         desafio = '—';
       }
 
-      const tr = document.createElement('tr');
-      tr.style.setProperty('--row-index', i);
+      const label = tr(i18nKey);
+      const row = document.createElement('tr');
+      row.style.setProperty('--row-index', i);
       const cDesafio = isCurrency(desafio) ? 'cell--currency' : '';
       const cIncubadora = isCurrency(incubadora) ? 'cell--currency' : '';
-      tr.innerHTML = `
-        <td data-label="Condição"><span class="cell-label">${label}</span></td>
-        <td data-label="Desafio"${tdAttrs(cDesafio)}>${desafio}</td>
-        <td data-label="Incubadora"${tdAttrs(cIncubadora)}>${incubadora}</td>
+      row.innerHTML = `
+        <td data-label="${labelCondicao}"><span class="cell-label">${label}</span></td>
+        <td data-label="${labelDesafio}"${tdAttrs(cDesafio)}>${desafio}</td>
+        <td data-label="${labelIncubadora}"${tdAttrs(cIncubadora)}>${incubadora}</td>
       `;
-      tbody.appendChild(tr);
+      tbody.appendChild(row);
     });
   }
 
@@ -371,7 +392,7 @@
     if (refs.minimizeBtn) {
       refs.minimizeBtn.setAttribute(
         'aria-label',
-        state.minimizado ? 'Expandir barra de preço' : 'Minimizar barra de preço'
+        state.minimizado ? tr('plan.bar_expandir') : tr('plan.bar_minimizar')
       );
       refs.minimizeBtn.setAttribute('aria-expanded', state.minimizado ? 'false' : 'true');
     }
@@ -544,6 +565,16 @@
     setupBarVisibility(secao);
     setupMinimize();
     bindEventos();
+
+    document.addEventListener('i18n:change', () => {
+      if (!state.dados) return;
+      renderTabela({ animar: false });
+      renderPreco({ animar: false });
+      renderLabel({ animar: false });
+      renderBadge({ animar: false });
+      renderCheckoutHref();
+      aplicarEstadoMinimizado();
+    });
   }
 
   if (document.readyState === 'loading') {

@@ -1,0 +1,148 @@
+{
+  "_meta": {
+    "code": "pt",
+    "label": "PT-BR",
+    "name": "Português",
+    "flag": "./assets/br.avif"
+  },
+  "header": {
+    "menu": {
+      "home": "Home",
+      "planos": "Planos",
+      "regulamento": "Regulamento"
+    },
+    "botao_trader": "Área do Trader",
+    "abrir_menu": "Abrir menu",
+    "fechar_menu": "Fechar menu"
+  },
+  "hero": {
+    "titulo_inicio": "Seu ecossistema de trading:",
+    "titulo_destaque": "Acessível, seguro, lucrativo",
+    "descricao": "Uma mesa proprietária para desenvolver sua carreira como trader de qualquer lugar do mundo, operando em grande volume e lucrando em uma das profissões mais rentáveis do mundo.",
+    "cta": "Iniciar desafio",
+    "cta_aria": "Começar agora mesmo"
+  },
+  "divisa": {
+    "desde": "Desde",
+    "jornada": "nossa jornada começou",
+    "mil": "mil",
+    "traders": "traders na comunidade",
+    "milhoes": "milhões",
+    "pagamentos": "em pagamentos realizados"
+  },
+  "topicos": {
+    "titulo_inicio": "Como funciona a",
+    "titulo_destaque": "Zero7",
+    "titulo_fim": "?",
+    "card_desafio": "Etapa para aplicar sua técnica de operações e alcançar a meta estipulada no plano contratado. Todos os planos contam com um gerenciamento de risco específico, e os traders que alcançam a meta respeitando o nosso GR, alcançam altos voos no universo do trading, já que ele foi validado para que os traders cheguem mais longe. Todos os planos contam com 60 dias corridos para chegar até a meta. Após completar esta etapa, os traders passam para a fase de incubadora.",
+    "card_incubadora": "Só de estar nesta etapa, os traders já demonstram muito talento. E esse é o ambiente ideal para, agora, provar a sua consistência. O ambiente de operações ainda é simulado, mas os traders recebem um prêmio de até 90% em dinheiro pela sua performance a cada ciclo de 30 dias. Suas contas são monitoradas, e ao final de dois ciclos e o alcance novamente da meta do plano, os traders são analisados pelo nosso time de risco, e então, os melhores podem ser selecionados para nossa conta real.",
+    "card_trader": "Ambiente para os verdadeiros traders que demonstraram que suas habilidades valem muito dinheiro. O ambiente será uma subconta financiada pela Zero7, experimentando uma alavancagem até 20x maior do que em sua conta pessoal. O pagamento pela performance é feito ao final de um ciclo de 30 dias. Os traders estão livres para administrarem suas operações da maneira que lhes for mais agradável, sendo em técnica, quantidade de dias operados ou valor financeiro alcançado. E avançando em nosso plano de carreira, os traders não precisam investir nem mais um real, para operarem contratos ilimitados dentro da Zero7."
+  },
+  "pagamento": {
+    "titulo": "Formas de Pagamento"
+  },
+  "ba": {
+    "hero_titulo": "A plataforma de trading mais inovadora do mercado global",
+    "hero_cta": "Ver todos os recursos",
+    "label_eyebrow": "BLACKARROW",
+    "label_titulo": "Tecnologia de alta performance para traders de verdade.",
+    "label_descricao": "Descubra milhares de oportunidades no mercado global, seja qual for o seu perfil de trader."
+  },
+  "depoimentos": {
+    "video_aria_1": "Assistir depoimento 1",
+    "video_aria_2": "Assistir depoimento 2",
+    "video_aria_3": "Assistir depoimento 3",
+    "video_aria_4": "Assistir depoimento 4",
+    "video_aria_5": "Assistir depoimento 5",
+    "video_aria_6": "Assistir depoimento 6",
+    "titulo": {
+      "html": "TRANSFORME SUAS HABILIDADES EM <span>GRANDES PAGAMENTOS</span>"
+    },
+    "descricao": {
+      "html": "A Zero7 desenvolveu um <span>modelo totalmente único</span> para se operar. Aqui, traders podem ter acesso a grandes contas, com muitos lotes, mas pagando até <span>20 vezes menos</span> do que o valor que teriam que disponibilizar em suas contas pessoais. Depois de aprovados na avaliação - com 60 dias para finalizar -, os traders iniciam sua jornada na mesa através da Incubadora, onde podem operar em ambiente simulado mas sendo recompensados com até <span>90% dos lucros</span> que fizerem, <span>sem risco nenhum ao seu próprio capital</span>. Depois, podem progredir para a conta real e avançarem com um plano de carreira desenhado para terem <span>cada vez mais lucros</span>. A Zero7 conta ainda com inúmeros benefícios, como <span>Aprovação Permanente</span>, <span>treinamentos</span> e <span>cursos completos disponíveis na Área do Trader</span>."
+    },
+    "cta": "Contrate um plano agora",
+    "cta_aria": "Começar agora mesmo"
+  },
+  "plan": {
+    "titulo": "Mini índice / Dólar",
+    "aria_modo": "Tipo de desafio",
+    "aria_capital": "Capital do plano",
+    "modo_com": { "html": "<strong>Com</strong> taxa de ativação" },
+    "modo_sem": { "html": "<strong>Sem</strong> taxa de ativação" },
+    "tooltip_com": "Após atingir a meta, você deverá pagar uma taxa de ativação e avançar para incubadora.",
+    "tooltip_sem": "Alcance a meta e avance direto para incubadora, sem pagar nenhuma taxa adicional.",
+    "tabela_condicao": "Condição",
+    "tabela_desafio": "Desafio",
+    "tabela_incubadora": "Incubadora",
+    "bar_aria": "Resumo do plano selecionado",
+    "bar_minimizar": "Minimizar barra de preço",
+    "bar_expandir": "Expandir barra de preço",
+    "bar_cta": "Quero esse plano",
+    "bar_cta_aria": "Quero esse plano",
+    "badge": "Plano {capital}",
+    "modo_label_com": "Desafio com taxa de ativação",
+    "modo_label_sem": "Desafio sem taxa de ativação",
+    "linha_contratos": "Contratos",
+    "linha_minimo_dias": "Mínimo de dias",
+    "linha_maximo_dias": "Máximo de dias",
+    "linha_meta_lucro": "Meta de lucro",
+    "linha_drawdown": "Drawdown",
+    "linha_perda_total": "Perda total",
+    "linha_taxa_ativacao": "Taxa de ativação",
+    "linha_recompensa": "Recompensa"
+  },
+  "faq": {
+    "titulo": "Central de Ajuda",
+    "subtitulo": "Encontre respostas para suas dúvidas em segundos.",
+    "search_placeholder": "Pesquisar na central de ajuda...",
+    "limpar_busca": "Limpar busca",
+    "pag_anterior": "Página anterior",
+    "pag_proxima": "Próxima página",
+    "cta_completa": {
+      "html": "Acessar a Central de Ajuda completa <ion-icon name=\"arrow-forward-outline\"></ion-icon>"
+    },
+    "fechar": "Fechar",
+    "abrir_zendesk": {
+      "html": "Abrir no Zendesk <ion-icon name=\"open-outline\"></ion-icon>"
+    },
+    "js": {
+      "artigo_um": "1 artigo",
+      "artigo_muitos": "{n} artigos",
+      "resultado_um": "1 resultado",
+      "resultado_muitos": "{n} resultados",
+      "categoria_label": "Categoria",
+      "fechar": "Fechar",
+      "nenhum_artigo": "Nenhum artigo nesta categoria ainda.",
+      "erro_carregar": "Não foi possível carregar a Central de Ajuda agora.",
+      "acesse_central": "Acesse nossa Central de Ajuda",
+      "nenhum_resultado": "Nenhum resultado para \"{query}\"",
+      "tente_outras": "Tente buscar com outras palavras ou acesse a Central de Ajuda completa.",
+      "erro_buscar": "Não foi possível buscar agora",
+      "tente_novamente": {
+        "html": "Tente novamente em instantes ou {link}."
+      },
+      "pesquise_direto": "pesquise direto na Central de Ajuda"
+    }
+  },
+  "footer": {
+    "endereco": "Av. Dep. Jamel Cecílio, nº 2929 - Jardim Goiás, Goiânia - GO, 74810-240",
+    "horario": "Segunda a sexta-feira, 8h às 18h",
+    "navegacao_titulo": "Navegação",
+    "nav_home": "Home",
+    "nav_planos": "Planos",
+    "nav_regulamento": "Regulamento",
+    "nav_trader": "Área do Trader",
+    "suporte_titulo": "Suporte",
+    "suporte_trader": "Área do Trader",
+    "social_titulo": "Social"
+  },
+  "author": {
+    "copyright": "© 2025 | Todos os direitos reservados.",
+    "link_privacidade": "Política de Privacidade",
+    "link_cookie": "Cookie",
+    "link_uso": "Políticas de Uso",
+    "razao_social": "Zero7 Tesouraria LTDA | CNPJ: 49.452.697/0001-20",
+    "disclaimer": "Todas as informações aqui apresentadas são destinadas exclusivamente a fins educacionais sobre trading nos mercados financeiros. Elas não constituem recomendação de investimento, análise de oportunidade ou orientação para negócios relacionados à negociação de instrumentos financeiros. A Zero7 oferece apenas serviços de trading simulado e ferramentas educacionais para traders. As informações contidas neste site não se destinam a residentes de países ou jurisdições onde tal distribuição ou uso contrarie as leis ou regulamentos locais. A Zero7 não atua como corretora e não aceita depósitos. A solução técnica para plataformas e a fonte de dados são fornecidas por terceiros."
+  }
+}

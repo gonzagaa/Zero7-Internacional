@@ -1,0 +1,148 @@
+{
+  "_meta": {
+    "code": "en",
+    "label": "EN",
+    "name": "English",
+    "flag": "./assets/en.avif"
+  },
+  "header": {
+    "menu": {
+      "home": "Home",
+      "planos": "Plans",
+      "regulamento": "Rules"
+    },
+    "botao_trader": "Trader Area",
+    "abrir_menu": "Open menu",
+    "fechar_menu": "Close menu"
+  },
+  "hero": {
+    "titulo_inicio": "Your trading ecosystem:",
+    "titulo_destaque": "Accessible, secure, profitable",
+    "descricao": "A proprietary trading firm to grow your career as a trader from anywhere in the world, operating at high volume and profiting in one of the most rewarding professions out there.",
+    "cta": "Start the challenge",
+    "cta_aria": "Get started now"
+  },
+  "divisa": {
+    "desde": "Since",
+    "jornada": "our journey began",
+    "mil": "thousand",
+    "traders": "traders in the community",
+    "milhoes": "million",
+    "pagamentos": "in payouts processed"
+  },
+  "topicos": {
+    "titulo_inicio": "How does",
+    "titulo_destaque": "Zero7",
+    "titulo_fim": " work?",
+    "card_desafio": "The stage where you apply your trading technique and reach the profit target set by your chosen plan. Every plan includes specific risk management rules, and traders who hit the target while respecting our RM framework reach high levels in the trading world, since the framework was designed to take traders further. Every plan gives you 60 calendar days to reach the target. After completing this stage, traders move on to the incubator phase.",
+    "card_incubadora": "Just being at this stage shows real talent. And this is the ideal environment to prove your consistency. The trading environment is still simulated, but traders receive a reward of up to 90% in cash for their performance every 30-day cycle. Accounts are monitored, and at the end of two cycles, after hitting the plan's target again, traders are evaluated by our risk team — the best ones can then be selected for our live account.",
+    "card_trader": "An environment for the real traders who proved their skills are worth serious money. This is a sub-account funded by Zero7, with leverage up to 20x greater than your personal account. Performance payouts happen at the end of every 30-day cycle. Traders are free to manage their operations however they prefer — by technique, by number of trading days, or by financial target. And as you advance in our career plan, traders no longer need to invest a single dollar to trade unlimited contracts inside Zero7."
+  },
+  "pagamento": {
+    "titulo": "Payment Methods"
+  },
+  "ba": {
+    "hero_titulo": "The most innovative trading platform on the global market",
+    "hero_cta": "See all features",
+    "label_eyebrow": "BLACKARROW",
+    "label_titulo": "High-performance technology for real traders.",
+    "label_descricao": "Discover thousands of opportunities in the global market, whatever your trader profile."
+  },
+  "depoimentos": {
+    "video_aria_1": "Watch testimonial 1",
+    "video_aria_2": "Watch testimonial 2",
+    "video_aria_3": "Watch testimonial 3",
+    "video_aria_4": "Watch testimonial 4",
+    "video_aria_5": "Watch testimonial 5",
+    "video_aria_6": "Watch testimonial 6",
+    "titulo": {
+      "html": "TURN YOUR SKILLS INTO <span>BIG PAYOUTS</span>"
+    },
+    "descricao": {
+      "html": "Zero7 has developed a <span>completely unique trading model</span>. Here, traders can access large accounts, with many lots, paying up to <span>20 times less</span> than the amount they would need to put up in their personal accounts. After passing the evaluation — with 60 days to complete — traders start their journey on the desk through the Incubator, where they can trade in a simulated environment while being rewarded with up to <span>90% of the profits</span> they make, with <span>zero risk to their own capital</span>. Then, they can progress to the live account and grow through a career plan designed to deliver <span>increasing payouts over time</span>. Zero7 also offers countless benefits, such as <span>Permanent Approval</span>, <span>training</span>, and <span>complete courses available in the Trader Area</span>."
+    },
+    "cta": "Get a plan now",
+    "cta_aria": "Get started now"
+  },
+  "plan": {
+    "titulo": "Mini Index / Dollar",
+    "aria_modo": "Challenge type",
+    "aria_capital": "Plan capital",
+    "modo_com": { "html": "<strong>With</strong> activation fee" },
+    "modo_sem": { "html": "<strong>No</strong> activation fee" },
+    "tooltip_com": "After reaching the target, you pay an activation fee and move on to the incubator.",
+    "tooltip_sem": "Reach the target and move straight to the incubator, with no additional fees.",
+    "tabela_condicao": "Condition",
+    "tabela_desafio": "Challenge",
+    "tabela_incubadora": "Incubator",
+    "bar_aria": "Selected plan summary",
+    "bar_minimizar": "Minimize price bar",
+    "bar_expandir": "Expand price bar",
+    "bar_cta": "Get this plan",
+    "bar_cta_aria": "Get this plan",
+    "badge": "{capital} Plan",
+    "modo_label_com": "Challenge with activation fee",
+    "modo_label_sem": "Challenge with no activation fee",
+    "linha_contratos": "Contracts",
+    "linha_minimo_dias": "Minimum days",
+    "linha_maximo_dias": "Maximum days",
+    "linha_meta_lucro": "Profit target",
+    "linha_drawdown": "Drawdown",
+    "linha_perda_total": "Total loss",
+    "linha_taxa_ativacao": "Activation fee",
+    "linha_recompensa": "Reward"
+  },
+  "faq": {
+    "titulo": "Help Center",
+    "subtitulo": "Find answers to your questions in seconds.",
+    "search_placeholder": "Search the help center...",
+    "limpar_busca": "Clear search",
+    "pag_anterior": "Previous page",
+    "pag_proxima": "Next page",
+    "cta_completa": {
+      "html": "Go to the full Help Center <ion-icon name=\"arrow-forward-outline\"></ion-icon>"
+    },
+    "fechar": "Close",
+    "abrir_zendesk": {
+      "html": "Open in Zendesk <ion-icon name=\"open-outline\"></ion-icon>"
+    },
+    "js": {
+      "artigo_um": "1 article",
+      "artigo_muitos": "{n} articles",
+      "resultado_um": "1 result",
+      "resultado_muitos": "{n} results",
+      "categoria_label": "Category",
+      "fechar": "Close",
+      "nenhum_artigo": "No articles in this category yet.",
+      "erro_carregar": "Could not load the Help Center right now.",
+      "acesse_central": "Visit our Help Center",
+      "nenhum_resultado": "No results for \"{query}\"",
+      "tente_outras": "Try other words or visit the full Help Center.",
+      "erro_buscar": "Could not search right now",
+      "tente_novamente": {
+        "html": "Try again in a moment or {link}."
+      },
+      "pesquise_direto": "search directly in the Help Center"
+    }
+  },
+  "footer": {
+    "endereco": "Av. Dep. Jamel Cecílio, nº 2929 - Jardim Goiás, Goiânia - GO, 74810-240, Brazil",
+    "horario": "Monday to Friday, 8am to 6pm",
+    "navegacao_titulo": "Navigation",
+    "nav_home": "Home",
+    "nav_planos": "Plans",
+    "nav_regulamento": "Rules",
+    "nav_trader": "Trader Area",
+    "suporte_titulo": "Support",
+    "suporte_trader": "Trader Area",
+    "social_titulo": "Social"
+  },
+  "author": {
+    "copyright": "© 2025 | All rights reserved.",
+    "link_privacidade": "Privacy Policy",
+    "link_cookie": "Cookies",
+    "link_uso": "Terms of Use",
+    "razao_social": "Zero7 Tesouraria LTDA | CNPJ: 49.452.697/0001-20",
+    "disclaimer": "All information presented here is intended solely for educational purposes about trading in the financial markets. It does not constitute investment advice, opportunity analysis, or business guidance related to the trading of financial instruments. Zero7 offers only simulated trading services and educational tools for traders. The information contained on this website is not intended for residents of countries or jurisdictions where such distribution or use would be contrary to local laws or regulations. Zero7 does not act as a broker and does not accept deposits. The technical solution for platforms and the data source are provided by third parties."
+  }
+}

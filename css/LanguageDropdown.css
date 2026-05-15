@@ -43,7 +43,8 @@ nav#navigation .menu ul .lang-li .lang-menu{
   transform: translateY(6px) scale(.98) !important;
   transition: opacity .18s ease, transform .18s ease !important;
   z-index: 9999 !important;
-  overflow: hidden;
+  height: auto !important;
+  max-height: none !important;
 }
 
 /* itens do menu */
@@ -59,6 +60,22 @@ nav#navigation .menu ul .lang-li .lang-item{
 }
 nav#navigation .menu ul .lang-li .lang-item:hover{
   background: rgba(255,255,255,.06) !important;
+}
+
+/* idioma atualmente selecionado — permanece visível e clicável */
+nav#navigation .menu ul .lang-li .lang-item.is-active{
+  background: rgba(255,255,255,.05) !important;
+  position: relative;
+}
+nav#navigation .menu ul .lang-li .lang-item.is-active::after{
+  content: "✓";
+  position: absolute;
+  right: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #34d399;
+  font-size: .9rem;
+  line-height: 1;
 }
 
 nav#navigation .menu ul .lang-li .lang-item span {

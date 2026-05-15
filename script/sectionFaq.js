@@ -2,8 +2,26 @@
   'use strict';
 
   const ZENDESK_BASE = 'https://help.zero7trading.com/api/v2/help_center';
-  const ZENDESK_HELP_URL = 'https://help.zero7trading.com/hc/pt-br';
-  const LOCALE = 'pt-br';
+  const ZENDESK_LOCALES = { pt: 'pt-br', en: 'en-us', es: 'es' };
+  const ZENDESK_HELP_URLS = {
+    pt: 'https://help.zero7trading.com/hc/pt-br',
+    en: 'https://help.zero7trading.com/hc/en-us',
+    es: 'https://help.zero7trading.com/hc/es'
+  };
+
+  function getCurrentLang() {
+    return (window.i18n && window.i18n.getLang && window.i18n.getLang()) || 'pt';
+  }
+  function getZendeskLocale() {
+    return ZENDESK_LOCALES[getCurrentLang()] || 'pt-br';
+  }
+  function getZendeskHelpUrl() {
+    return ZENDESK_HELP_URLS[getCurrentLang()] || ZENDESK_HELP_URLS.pt;
+  }
+  function tr(key) {
+    return (window.i18n && window.i18n.t) ? window.i18n.t(key) : key;
+  }
+
   const PER_PAGE = 100;
   const SEARCH_DEBOUNCE_MS = 350;
   const SEARCH_MIN_CHARS = 2;
@@ -54,8 +72,62 @@
 
     if (!el.categories || !el.searchInput) return;
 
+    el.centralLink = $('faqCentralLink');
+
     bindEvents();
-    loadHelpCenter();
+    updateCentralLink();
+
+    document.addEventListener('i18n:change', onLangChange);
+
+    if (getCurrentLang() && window.i18n && window.i18n.getLang && window.i18n.getLang()) {
+      loadHelpCenter();
+    }
+  }
+
+  function updateCentralLink() {
+    const link = el.centralLink || document.getElementById('faqCentralLink');
+    if (link) link.setAttribute('href', getZendeskHelpUrl());
+  }
+
+  async function onLangChange() {
+    if (state.searchAbort) {
+      state.searchAbort.abort();
+      state.searchAbort = null;
+    }
+    if (state.searchTimer) {
+      clearTimeout(state.searchTimer);
+      state.searchTimer = null;
+    }
+    if (el.searchInput) el.searchInput.value = '';
+    if (el.results) el.results.hidden = true;
+    if (el.resultsList) el.resultsList.innerHTML = '';
+    if (el.categories) el.categories.hidden = false;
+    hideSpinner();
+
+    state.categories = [];
+    state.allCategories = [];
+    state.sections = [];
+    state.articles = [];
+    state.sectionsByCategory = new Map();
+    state.articlesBySection = new Map();
+    state.articleCountByCategory = new Map();
+    state.currentPage = 1;
+    state.activeCategoryId = null;
+
+    closeExpandedPanel();
+    updateCentralLink();
+
+    if (el.categories) {
+      el.categories.innerHTML =
+        '<div class="faq__skeleton-grid">' +
+          '<div class="faq__skeleton-card"></div>' +
+          '<div class="faq__skeleton-card"></div>' +
+          '<div class="faq__skeleton-card"></div>' +
+          '<div class="faq__skeleton-card"></div>' +
+        '</div>';
+    }
+
+    await loadHelpCenter();
   }
 
   function getCategoriesPerPage() {
@@ -109,10 +181,11 @@
 
   async function loadHelpCenter() {
     try {
+      const locale = getZendeskLocale();
       const [catRes, secRes, artRes] = await Promise.all([
-        fetchJson(ZENDESK_BASE + '/' + LOCALE + '/categories.json?page[size]=' + PER_PAGE),
-        fetchJson(ZENDESK_BASE + '/' + LOCALE + '/sections.json?page[size]=' + PER_PAGE),
-        fetchJson(ZENDESK_BASE + '/' + LOCALE + '/articles.json?page[size]=' + PER_PAGE),
+        fetchJson(ZENDESK_BASE + '/' + locale + '/categories.json?page[size]=' + PER_PAGE),
+        fetchJson(ZENDESK_BASE + '/' + locale + '/sections.json?page[size]=' + PER_PAGE),
+        fetchJson(ZENDESK_BASE + '/' + locale + '/articles.json?page[size]=' + PER_PAGE),
       ]);
 
       state.categories = Array.isArray(catRes.categories) ? catRes.categories : [];
@@ -164,11 +237,13 @@
   }
 
   function pluralizeArticles(n) {
-    return n === 1 ? '1 artigo' : n + ' artigos';
+    const key = n === 1 ? 'faq.js.artigo_um' : 'faq.js.artigo_muitos';
+    return tr(key).replace('{n}', n);
   }
 
   function pluralizeResults(n) {
-    return n === 1 ? '1 resultado' : n + ' resultados';
+    const key = n === 1 ? 'faq.js.resultado_um' : 'faq.js.resultado_muitos';
+    return tr(key).replace('{n}', n);
   }
 
   function escapeHtml(str) {
@@ -314,10 +389,10 @@
     panel.innerHTML =
       '<div class="faq__expanded-header">' +
         '<div>' +
-          '<span class="faq__expanded-eyebrow">Categoria</span>' +
+          '<span class="faq__expanded-eyebrow">' + escapeHtml(tr('faq.js.categoria_label')) + '</span>' +
           '<h3 class="faq__expanded-title"></h3>' +
         '</div>' +
-        '<button type="button" class="faq__expanded-close" aria-label="Fechar">' +
+        '<button type="button" class="faq__expanded-close" aria-label="' + escapeHtml(tr('faq.js.fechar')) + '">' +
           '<ion-icon name="close-outline"></ion-icon>' +
         '</button>' +
       '</div>' +
@@ -387,7 +462,7 @@
     if (!hasContent) {
       const empty = document.createElement('p');
       empty.className = 'faq__results-empty';
-      empty.textContent = 'Nenhum artigo nesta categoria ainda.';
+      empty.textContent = tr('faq.js.nenhum_artigo');
       wrapper.appendChild(empty);
     }
 
@@ -464,9 +539,9 @@
   function renderFallback() {
     el.categories.innerHTML =
       '<div class="faq__fallback">' +
-        '<p>Não foi possível carregar a Central de Ajuda agora.</p>' +
-        '<a href="' + ZENDESK_HELP_URL + '" target="_blank" rel="noopener">' +
-          'Acesse nossa Central de Ajuda' +
+        '<p>' + escapeHtml(tr('faq.js.erro_carregar')) + '</p>' +
+        '<a href="' + getZendeskHelpUrl() + '" target="_blank" rel="noopener">' +
+          escapeHtml(tr('faq.js.acesse_central')) +
           ' <ion-icon name="arrow-forward-outline"></ion-icon>' +
         '</a>' +
       '</div>';
@@ -542,7 +617,7 @@
 
     const url = ZENDESK_BASE +
       '/articles/search.json?query=' + encodeURIComponent(query) +
-      '&locale=' + LOCALE +
+      '&locale=' + getZendeskLocale() +
       '&per_page=20';
 
     try {
@@ -567,10 +642,10 @@
     el.resultsList.innerHTML = '';
 
     if (!results.length) {
-      el.resultsCount.textContent = 'Nenhum resultado para “' + query + '”';
+      el.resultsCount.textContent = tr('faq.js.nenhum_resultado').replace('{query}', query);
       const li = document.createElement('li');
       li.className = 'faq__results-empty';
-      li.textContent = 'Tente buscar com outras palavras ou acesse a Central de Ajuda completa.';
+      li.textContent = tr('faq.js.tente_outras');
       el.resultsList.appendChild(li);
       return;
     }
@@ -603,13 +678,13 @@
 
   function renderSearchError(query) {
     el.resultsList.innerHTML = '';
-    el.resultsCount.textContent = 'Não foi possível buscar agora';
+    el.resultsCount.textContent = tr('faq.js.erro_buscar');
     const li = document.createElement('li');
     li.className = 'faq__results-empty';
-    li.innerHTML = 'Tente novamente em instantes ou ' +
-      '<a href="' + ZENDESK_HELP_URL + '?query=' + encodeURIComponent(query) +
+    const link = '<a href="' + getZendeskHelpUrl() + '?query=' + encodeURIComponent(query) +
       '" target="_blank" rel="noopener" style="color:#ffffff;text-decoration:underline">' +
-      'pesquise direto na Central de Ajuda</a>.';
+      escapeHtml(tr('faq.js.pesquise_direto')) + '</a>';
+    li.innerHTML = tr('faq.js.tente_novamente.html').replace('{link}', link);
     el.resultsList.appendChild(li);
   }
 
@@ -626,7 +701,7 @@
 
   async function fetchArticleById(articleId) {
     try {
-      const data = await fetchJson(ZENDESK_BASE + '/' + LOCALE + '/articles/' + articleId + '.json');
+      const data = await fetchJson(ZENDESK_BASE + '/' + getZendeskLocale() + '/articles/' + articleId + '.json');
       if (data && data.article) {
         showModal(data.article);
       }
@@ -680,7 +755,7 @@
     el.modalTitle.textContent = article.title || '';
     el.modalBreadcrumb.textContent = buildBreadcrumb(article);
     el.modalBody.innerHTML = article.body || '';
-    el.modalSource.href = article.html_url || ZENDESK_HELP_URL;
+    el.modalSource.href = article.html_url || getZendeskHelpUrl();
 
     const links = el.modalBody.querySelectorAll('a');
     links.forEach(function (a) {
