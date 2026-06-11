@@ -1,74 +1,112 @@
 /* =====================================================================
-   TARJA TOPO — banner promocional fixo acima do menu.
-   - Personalize cores: 4 vars principais no topo de .tarja-topo
-   - Personalize copy: lang/{pt,en,es}.json -> chave "tarja"
-   - Personalize data/link: js/tarjaTopo.js -> TARJA_CONFIG
+   TARJA TOPO — versão refinada mantendo o visual verde premium
+   Mantém o mesmo HTML atual
    ===================================================================== */
 
 .tarja-topo {
-  /* -------- TOKENS DE PERSONALIZAÇÃO -------- */
-  --tarja-c1: #0a4f8c;
-  --tarja-c2: #0080c9;
-  --tarja-c3: #04305f;
-  --tarja-accent: #0c8ee0;
+  --tarja-c1: #22ba7d;
+  --tarja-c2: #16bd7a;
+  --tarja-c3: #08744e;
+  --tarja-c4: #043424;
+
+  --tarja-accent: #0fc980;
   --tarja-text: #ffffff;
   --tarja-btn-bg: #ffffff;
-  --tarja-btn-text: #06243f;
+  --tarja-btn-text: #050806;
 
-  /* -------- POSICIONAMENTO FIXO -------- */
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
-  z-index: 200; /* acima do nav (102) */
+  z-index: 200;
 
+  width: 100%;
   color: var(--tarja-text);
   font-family: var(--tts), sans-serif;
+
   overflow: hidden;
   isolation: isolate;
 
-  /* Camadas: 1) listras diagonais sutis | 2) glow lateral | 3) base azul diagonal */
   background:
-    repeating-linear-gradient(116deg, rgba(255, 255, 255, 0.055) 0 2px, transparent 2px 30px),
-    radial-gradient(130% 200% at 88% 50%, rgba(120, 200, 255, 0.40), transparent 58%),
-    linear-gradient(104deg, var(--tarja-c1) 0%, var(--tarja-c2) 46%, var(--tarja-c3) 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+    radial-gradient(circle at 12% 50%, rgba(255, 255, 255, 0.16), transparent 24%),
+    radial-gradient(circle at 82% 20%, rgba(92, 255, 180, 0.32), transparent 30%),
+    linear-gradient(105deg,
+      var(--tarja-c1) 0%,
+      var(--tarja-c2) 42%,
+      var(--tarja-c3) 76%,
+      var(--tarja-c4) 100%
+    );
 
-  /* -------- ANIMAÇÃO DE ENTRADA/SAÍDA -------- */
+  box-shadow:
+    0 1.4rem 3.4rem rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.24);
+
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
+
   transition:
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 320ms ease,
     visibility 0s linear 420ms;
 }
 
-/* Faixa de luz diagonal por cima de tudo */
+/* textura diagonal mais bonita */
 .tarja-topo::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    116deg,
-    transparent 38%,
-    rgba(255, 255, 255, 0.10) 50%,
-    transparent 62%
-  );
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.085) 0 1px,
+      transparent 1px 2.2rem
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      transparent 28%,
+      transparent 72%,
+      rgba(0, 0, 0, 0.16) 100%
+    );
+
+  opacity: 0.55;
 }
 
-/* Ativação via classe no body */
+/* grão/sombra sutil pra tirar cara de chapado */
+.tarja-topo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 70% 100%, rgba(0, 0, 0, 0.18), transparent 28%),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.09) 0%,
+      transparent 45%,
+      rgba(0, 0, 0, 0.10) 100%
+    );
+
+  mix-blend-mode: soft-light;
+  opacity: 0.8;
+}
+
+/* ativa via JS */
 body.tarja-ativa .tarja-topo {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
+
   transition:
     transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 320ms ease,
@@ -76,119 +114,219 @@ body.tarja-ativa .tarja-topo {
 }
 
 /* =====================================================================
-   WRAPPER INTERNO + COPY + SELO + BOTÃO
+   WRAPPER
    ===================================================================== */
 
-/* DESKTOP: bloco coeso e centralizado.
-   Tamanhos em rem calibrados para html { font-size: 62.5% } (1rem = 10px). */
 .tarja-topo__wrapper {
   position: relative;
   z-index: 1;
-  max-width: 1280px;
+
+  width: min(100%, 1280px);
+  min-height: 6.4rem;
   margin: 0 auto;
-  min-height: 6rem;
-  padding: 1.2rem 2.4rem;
+  padding: 1rem 2.4rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2.2rem;
+  gap: 2rem;
 }
+
+/* cápsula bem sutil, igual o primeiro, mas menos “seca” */
+.tarja-topo__wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0.9rem 1.4rem;
+  z-index: -1;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.075) 48%,
+      rgba(255, 255, 255, 0.035) 100%
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 1rem 2.6rem rgba(0, 0, 0, 0.10);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* =====================================================================
+   TEXTO / HIERARQUIA
+   ===================================================================== */
 
 .tarja-topo__copy {
   margin: 0;
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  line-height: 1.05;
-  text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+
   color: var(--tarja-text);
+  text-align: center;
+  text-transform: uppercase;
+
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.035em;
+
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.20);
 }
 
-/* Selo "70%OFF" — número grande itálico + %OFF empilhado */
+/* desconto com mais presença, mas sem virar bagunça */
 .tarja-destaque {
+  position: relative;
+
   display: inline-flex;
   align-items: flex-start;
-  gap: 0.3rem;
-  margin-left: 0.6rem;
-  transform: translateY(0.2rem);
+  gap: 0.32rem;
+
+  margin-left: 0.1rem;
+  transform: translateY(0.1rem);
+
+  padding: 0.15rem 0.15rem 0.1rem;
+}
+
+/* brilho atrás do 70, bem sutil */
+.tarja-destaque::before {
+  content: "";
+  position: absolute;
+  left: -0.8rem;
+  right: -0.8rem;
+  top: 50%;
+  height: 72%;
+  z-index: -1;
+
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-50%) rotate(-2deg);
+  filter: blur(0.2px);
 }
 
 .tarja-destaque b {
-  font-size: 3.6rem;
-  font-weight: 900;
+  font-size: 4.1rem;
+  font-weight: 950;
   font-style: italic;
-  line-height: 0.78;
-  letter-spacing: -0.02em;
+  line-height: 0.72;
+  letter-spacing: -0.08em;
+  color: #ffffff;
 }
 
 .tarja-destaque .suf {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-weight: 800;
+
+  padding-top: 0.1rem;
+
+  font-weight: 950;
   font-style: italic;
-  line-height: 1;
-  padding-top: 0.3rem;
+  line-height: 0.88;
+  color: #ffffff;
 }
 
 .tarja-destaque .suf span:first-child {
-  font-size: 1.35rem;
+  font-size: 1.34rem;
+  letter-spacing: -0.04em;
 }
 
 .tarja-destaque .suf span:last-child {
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  opacity: 0.92;
+  margin-top: 0.1rem;
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  opacity: 0.95;
 }
 
-/* Botão pill — agrupado no fluxo, ao lado da copy */
+/* =====================================================================
+   BOTÃO
+   ===================================================================== */
+
 .tarja-topo__btn {
+  position: relative;
+
   display: inline-flex;
   align-items: center;
-  gap: 1.2rem;
+  justify-content: center;
+  gap: 1.15rem;
   flex: none;
-  margin: 0;
+
+  min-height: 4.6rem;
+  padding: 0.66rem 0.72rem 0.66rem 2.1rem;
+
+  border-radius: 999px;
   background: var(--tarja-btn-bg);
   color: var(--tarja-btn-text);
+
   text-decoration: none;
-  font-size: 1.35rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 1rem 1.1rem 1rem 2.2rem;
-  border-radius: 999px;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
   white-space: nowrap;
+
+  font-size: 1.28rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+
+  box-shadow:
+    0 1rem 2.7rem rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms ease,
+    filter 240ms ease;
 }
 
 .tarja-topo__btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
-  filter: brightness(1.02);
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+
+  box-shadow:
+    0 1.4rem 3.2rem rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 
 .tarja-topo__btn .arrow {
-  width: 3.2rem;
-  height: 3.2rem;
+  width: 3.55rem;
+  height: 3.55rem;
   flex: none;
-  border-radius: 50%;
-  background: var(--tarja-accent);
+
   display: grid;
   place-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  border-radius: 50%;
+  background:
+    linear-gradient(135deg, #25e99b 0%, #11b976 58%, #078452 100%);
+
+  box-shadow:
+    0 0.75rem 1.7rem rgba(3, 101, 64, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .tarja-topo__btn .arrow svg {
   width: 1.5rem;
   height: 1.5rem;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tarja-topo__btn:hover .arrow svg {
+  transform: translateX(2px);
 }
 
 /* =====================================================================
-   AJUSTES NO NAV / BODY QUANDO A TARJA ESTÁ ATIVA
-   --tarja-h é setado via JS com a altura real do banner.
+   BODY / NAV
    ===================================================================== */
 
 body.tarja-ativa {
@@ -196,19 +334,18 @@ body.tarja-ativa {
   transition: padding-top 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Mobile/base: nav fica fixed top:0 -> desloca pra debaixo da tarja */
 body.tarja-ativa nav#navigation {
   top: var(--tarja-h, 0px);
-  transition: top 420ms cubic-bezier(0.22, 1, 0.36, 1),
-              left 300ms ease-in-out,
-              width 300ms ease-in-out,
-              border-radius 300ms ease-in-out,
-              background-color 300ms ease-in-out,
-              backdrop-filter 300ms ease-in-out;
+
+  transition:
+    top 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 300ms ease-in-out,
+    width 300ms ease-in-out,
+    border-radius 300ms ease-in-out,
+    background-color 300ms ease-in-out,
+    backdrop-filter 300ms ease-in-out;
 }
 
-/* Desktop: nav era flutuante (top:3rem, margens, border-radius).
-   Cola direto na tarja, full-width, sem border-radius. */
 @media (min-width: 1080px) {
   body.tarja-ativa nav#navigation {
     top: var(--tarja-h, 0px);
@@ -226,51 +363,87 @@ body.tarja-ativa nav#navigation {
 }
 
 /* =====================================================================
-   RESPONSIVO DA PRÓPRIA TARJA
+   MOBILE
    ===================================================================== */
 
-/* MOBILE: copy em 2 linhas, botão vira só a seta (texto ocultado via CSS) */
 @media (max-width: 1080px) {
+  .tarja-topo {
+    background:
+      radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.18), transparent 26%),
+      radial-gradient(circle at 92% 10%, rgba(104, 255, 190, 0.28), transparent 30%),
+      linear-gradient(110deg,
+        #20a06d 0%,
+        #16c77f 46%,
+        #098a59 100%
+      );
+  }
+
   .tarja-topo__wrapper {
+    min-height: 5.8rem;
+    padding: 0.8rem 1.25rem;
     justify-content: space-between;
-    padding: 1rem 1.4rem;
-    gap: 1.2rem;
-    min-height: 0;
+    gap: 1rem;
+  }
+
+  .tarja-topo__wrapper::before {
+    display: none;
   }
 
   .tarja-topo__copy {
-    font-size: 1.35rem;
-    text-align: left;
-    line-height: 1.2;
     flex: 1 1 auto;
     min-width: 0;
-    padding-right: 0.4rem;
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 0.55rem;
+
+    text-align: left;
+    font-size: 1.13rem;
+    line-height: 1.08;
+    letter-spacing: 0.025em;
   }
 
   .tarja-destaque {
-    transform: translateY(0.1rem);
-    margin-left: 0.4rem;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+
+    margin-left: 0;
+    transform: translateY(0);
+    align-self: center;
+  }
+
+  .tarja-destaque::before {
+    left: -0.45rem;
+    right: -0.45rem;
+    height: 76%;
   }
 
   .tarja-destaque b {
-    font-size: 2.2rem;
+    font-size: 2.55rem;
+    line-height: 0.72;
+  }
+
+  .tarja-destaque .suf {
+    padding-top: 0;
   }
 
   .tarja-destaque .suf span:first-child {
-    font-size: 0.9rem;
+    font-size: 1.58rem;
   }
 
   .tarja-destaque .suf span:last-child {
-    font-size: 0.72rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
   }
 
   .tarja-topo__btn {
-    font-size: 0;
     padding: 0;
-    gap: 0;
-    flex: none;
+    min-height: auto;
     background: transparent;
     box-shadow: none;
+    font-size: 0;
+    gap: 0;
   }
 
   .tarja-topo__btn > span[data-i18n] {
@@ -279,25 +452,79 @@ body.tarja-ativa nav#navigation {
 
   .tarja-topo__btn:hover {
     transform: none;
+    box-shadow: none;
+    filter: none;
   }
 
   .tarja-topo__btn .arrow {
-    width: 4rem;
-    height: 4rem;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    width: 3.95rem;
+    height: 3.95rem;
+
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.03)),
+      linear-gradient(135deg, #26e99b 0%, #11b976 58%, #078452 100%);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    box-shadow:
+      0 0.8rem 1.9rem rgba(0, 0, 0, 0.26),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
 
   .tarja-topo__btn .arrow svg {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 1.65rem;
+    height: 1.65rem;
   }
 }
 
-/* Respeita usuário com motion reduzido */
+@media (max-width: 430px) {
+  .tarja-topo__wrapper {
+    min-height: 5.5rem;
+    padding-inline: 2rem;
+  }
+
+  .tarja-topo__copy {
+    font-size: 1.52rem;
+    column-gap: 0.42rem;
+
+    gap: 0;
+  }
+
+  .tarja-destaque b {
+    font-size: 3.35rem;
+  }
+
+  .tarja-topo__btn .arrow {
+    width: 3.7rem;
+    height: 3.7rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .tarja-topo__copy {
+    font-size: 0.95rem;
+  }
+
+  .tarja-destaque b {
+    font-size: 2.15rem;
+  }
+
+  .tarja-topo__btn .arrow {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+/* =====================================================================
+   MOTION REDUZIDO
+   ===================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
   .tarja-topo,
+  .tarja-topo__btn,
+  .tarja-topo__btn .arrow svg,
   body.tarja-ativa,
   body.tarja-ativa nav#navigation {
-    transition: none;
+    transition: none !important;
   }
 }
