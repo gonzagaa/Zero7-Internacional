@@ -1,34 +1,34 @@
-@import './global.css';
-@import './home.css';
-@import './sectionDivisa.css';
-@import './sectionCards.css';
-@import './sectionTopicos.css';
-@import './sectionNumeros.css';
-@import './sectionDepoimentos.css';
-@import './sectionPlanos.css';
-@import './button.css';
-@import './priceBar.css';
-@import './sectionFaq.css';
-@import './sectionContato.css';
-@import './divSuporte.css';
-@import './sectionBa.css';
+@import './global.css?v=30';
+@import './home.css?v=30';
+@import './sectionDivisa.css?v=30';
+@import './sectionCards.css?v=30';
+@import './sectionTopicos.css?v=30';
+@import './sectionNumeros.css?v=30';
+@import './sectionDepoimentos.css?v=30';
+@import './sectionPlanos.css?v=30';
+@import './button.css?v=30';
+@import './priceBar.css?v=30';
+@import './sectionFaq.css?v=30';
+@import './sectionContato.css?v=30';
+@import './divSuporte.css?v=30';
+@import './sectionBa.css?v=30';
 
-@import './navigation.css';
-@import './head.css';
-@import './buttonWpp.css';
-@import './modalDepoimento.css';
-@import './tarja.css';
-@import './tarjaNav.css';
-@import './tarjaImage.css';
-@import './popup.css';
+@import './navigation.css?v=30';
+@import './head.css?v=30';
+@import './buttonWpp.css?v=30';
+@import './modalDepoimento.css?v=30';
+@import './tarja.css?v=30';
+@import './tarjaNav.css?v=30';
+@import './tarjaImage.css?v=30';
+@import './popup.css?v=30';
 
-@import './author.css';
-@import './footer.css';
-@import './footerPagamento.css';
-@import './coutdownDois.css';
+@import './author.css?v=30';
+@import './footer.css?v=30';
+@import './footerPagamento.css?v=30';
+@import './coutdownDois.css?v=30';
 
-@import './planosBlur.css';
-@import './obrigado.css';
-@import './LanguageDropdown.css';
+@import './planosBlur.css?v=30';
+@import './obrigado.css?v=30';
+@import './LanguageDropdown.css?v=30';
 
-
+@import './tarjaTopo.css?v=30';

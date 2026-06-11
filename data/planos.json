@@ -42,7 +42,9 @@
       },
       "precos": {
         "comAtivacao": "$19,00",
-        "semAtivacao": "$66,50"
+        "semAtivacao": "$66,50",
+        "comAtivacaoDe": "$69,00",
+        "semAtivacaoDe": "$229,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/d89445",
@@ -68,7 +70,9 @@
       },
       "precos": {
         "comAtivacao": "$29,00",
-        "semAtivacao": "$97,50"
+        "semAtivacao": "$97,50",
+        "comAtivacaoDe": "$99,00",
+        "semAtivacaoDe": "$329,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/3b4f89",
@@ -94,7 +98,9 @@
       },
       "precos": {
         "comAtivacao": "$39,00",
-        "semAtivacao": "$136,50"
+        "semAtivacao": "$136,50",
+        "comAtivacaoDe": "$139,00",
+        "semAtivacaoDe": "$459,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/c0e0dc",
@@ -120,7 +126,9 @@
       },
       "precos": {
         "comAtivacao": "$49,00",
-        "semAtivacao": "$171,50"
+        "semAtivacao": "$171,50",
+        "comAtivacaoDe": "$169,00",
+        "semAtivacaoDe": "$569,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/c853a3",
@@ -146,7 +154,9 @@
       },
       "precos": {
         "comAtivacao": "$59,00",
-        "semAtivacao": "$206,50"
+        "semAtivacao": "$206,50",
+        "comAtivacaoDe": "$199,00",
+        "semAtivacaoDe": "$719,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/cece3b",

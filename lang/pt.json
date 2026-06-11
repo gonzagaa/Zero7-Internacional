@@ -15,6 +15,12 @@
     "abrir_menu": "Abrir menu",
     "fechar_menu": "Fechar menu"
   },
+  "tarja": {
+    "texto": {
+      "html": "Opere no mercado internacional com até <span class=\"tarja-destaque\"><b>70</b><span class=\"suf\"><span>%</span><span>OFF</span></span></span>"
+    },
+    "botao": "Ver Oferta"
+  },
   "hero": {
     "titulo_inicio": "Seu ecossistema de trading:",
     "titulo_destaque": "Acessível, seguro, lucrativo",

@@ -1,0 +1,303 @@
+/* =====================================================================
+   TARJA TOPO — banner promocional fixo acima do menu.
+   - Personalize cores: 4 vars principais no topo de .tarja-topo
+   - Personalize copy: lang/{pt,en,es}.json -> chave "tarja"
+   - Personalize data/link: js/tarjaTopo.js -> TARJA_CONFIG
+   ===================================================================== */
+
+.tarja-topo {
+  /* -------- TOKENS DE PERSONALIZAÇÃO -------- */
+  --tarja-c1: #0a4f8c;
+  --tarja-c2: #0080c9;
+  --tarja-c3: #04305f;
+  --tarja-accent: #0c8ee0;
+  --tarja-text: #ffffff;
+  --tarja-btn-bg: #ffffff;
+  --tarja-btn-text: #06243f;
+
+  /* -------- POSICIONAMENTO FIXO -------- */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 200; /* acima do nav (102) */
+
+  color: var(--tarja-text);
+  font-family: var(--tts), sans-serif;
+  overflow: hidden;
+  isolation: isolate;
+
+  /* Camadas: 1) listras diagonais sutis | 2) glow lateral | 3) base azul diagonal */
+  background:
+    repeating-linear-gradient(116deg, rgba(255, 255, 255, 0.055) 0 2px, transparent 2px 30px),
+    radial-gradient(130% 200% at 88% 50%, rgba(120, 200, 255, 0.40), transparent 58%),
+    linear-gradient(104deg, var(--tarja-c1) 0%, var(--tarja-c2) 46%, var(--tarja-c3) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+
+  /* -------- ANIMAÇÃO DE ENTRADA/SAÍDA -------- */
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms ease,
+    visibility 0s linear 420ms;
+}
+
+/* Faixa de luz diagonal por cima de tudo */
+.tarja-topo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    116deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.10) 50%,
+    transparent 62%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ativação via classe no body */
+body.tarja-ativa .tarja-topo {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition:
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms ease,
+    visibility 0s linear 0s;
+}
+
+/* =====================================================================
+   WRAPPER INTERNO + COPY + SELO + BOTÃO
+   ===================================================================== */
+
+/* DESKTOP: bloco coeso e centralizado.
+   Tamanhos em rem calibrados para html { font-size: 62.5% } (1rem = 10px). */
+.tarja-topo__wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: 6rem;
+  padding: 1.2rem 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+}
+
+.tarja-topo__copy {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  color: var(--tarja-text);
+}
+
+/* Selo "70%OFF" — número grande itálico + %OFF empilhado */
+.tarja-destaque {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  margin-left: 0.6rem;
+  transform: translateY(0.2rem);
+}
+
+.tarja-destaque b {
+  font-size: 3.6rem;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.78;
+  letter-spacing: -0.02em;
+}
+
+.tarja-destaque .suf {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1;
+  padding-top: 0.3rem;
+}
+
+.tarja-destaque .suf span:first-child {
+  font-size: 1.35rem;
+}
+
+.tarja-destaque .suf span:last-child {
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  opacity: 0.92;
+}
+
+/* Botão pill — agrupado no fluxo, ao lado da copy */
+.tarja-topo__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex: none;
+  margin: 0;
+  background: var(--tarja-btn-bg);
+  color: var(--tarja-btn-text);
+  text-decoration: none;
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 1rem 1.1rem 1rem 2.2rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  white-space: nowrap;
+}
+
+.tarja-topo__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.02);
+}
+
+.tarja-topo__btn .arrow {
+  width: 3.2rem;
+  height: 3.2rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--tarja-accent);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.tarja-topo__btn .arrow svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* =====================================================================
+   AJUSTES NO NAV / BODY QUANDO A TARJA ESTÁ ATIVA
+   --tarja-h é setado via JS com a altura real do banner.
+   ===================================================================== */
+
+body.tarja-ativa {
+  padding-top: var(--tarja-h, 0px);
+  transition: padding-top 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Mobile/base: nav fica fixed top:0 -> desloca pra debaixo da tarja */
+body.tarja-ativa nav#navigation {
+  top: var(--tarja-h, 0px);
+  transition: top 420ms cubic-bezier(0.22, 1, 0.36, 1),
+              left 300ms ease-in-out,
+              width 300ms ease-in-out,
+              border-radius 300ms ease-in-out,
+              background-color 300ms ease-in-out,
+              backdrop-filter 300ms ease-in-out;
+}
+
+/* Desktop: nav era flutuante (top:3rem, margens, border-radius).
+   Cola direto na tarja, full-width, sem border-radius. */
+@media (min-width: 1080px) {
+  body.tarja-ativa nav#navigation {
+    top: var(--tarja-h, 0px);
+    left: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+@media (min-width: 1700px) {
+  body.tarja-ativa nav#navigation {
+    left: 0;
+    width: 100%;
+  }
+}
+
+/* =====================================================================
+   RESPONSIVO DA PRÓPRIA TARJA
+   ===================================================================== */
+
+/* MOBILE: copy em 2 linhas, botão vira só a seta (texto ocultado via CSS) */
+@media (max-width: 1080px) {
+  .tarja-topo__wrapper {
+    justify-content: space-between;
+    padding: 1rem 1.4rem;
+    gap: 1.2rem;
+    min-height: 0;
+  }
+
+  .tarja-topo__copy {
+    font-size: 1.35rem;
+    text-align: left;
+    line-height: 1.2;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: 0.4rem;
+  }
+
+  .tarja-destaque {
+    transform: translateY(0.1rem);
+    margin-left: 0.4rem;
+  }
+
+  .tarja-destaque b {
+    font-size: 2.2rem;
+  }
+
+  .tarja-destaque .suf span:first-child {
+    font-size: 0.9rem;
+  }
+
+  .tarja-destaque .suf span:last-child {
+    font-size: 0.72rem;
+  }
+
+  .tarja-topo__btn {
+    font-size: 0;
+    padding: 0;
+    gap: 0;
+    flex: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .tarja-topo__btn > span[data-i18n] {
+    display: none;
+  }
+
+  .tarja-topo__btn:hover {
+    transform: none;
+  }
+
+  .tarja-topo__btn .arrow {
+    width: 4rem;
+    height: 4rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .tarja-topo__btn .arrow svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+
+/* Respeita usuário com motion reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .tarja-topo,
+  body.tarja-ativa,
+  body.tarja-ativa nav#navigation {
+    transition: none;
+  }
+}

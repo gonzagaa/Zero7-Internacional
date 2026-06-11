@@ -252,54 +252,60 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+/* ============================================================
+   LEGADO DESATIVADO — substituído por js/tarjaTopo.js.
+   Os blocos abaixo apontavam para elementos (#dias, #horas, ...,
+   .tarjaTimerNav) que NÃO existem mais no HTML, causando erros.
+   Mantidos comentados para referência histórica.
+   ============================================================
 // Data final: 24 de junho de 2025 às 00:01:00 (horário local)
-const dataFinal = new Date("2025-10-31T12:00:00");
-
-const diasEl = document.getElementById('dias');
-const horasEl = document.getElementById('horas');
-const minutosEl = document.getElementById('minutos');
-const segundosEl = document.getElementById('segundos');
-const mensagemEl = document.getElementById('mensagem');
-
-function atualizarContagem() {
-  const agora = new Date();
-  const diferenca = dataFinal - agora;
-
-  if (diferenca <= 0) {
-    clearInterval(intervalo);
-    diasEl.innerText = "00";
-    horasEl.innerText = "00";
-    minutosEl.innerText = "00";
-    segundosEl.innerText = "00";
-    mensagemEl.innerText = "Tempo esgotado!";
-    return;
-  }
-
-  const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-  const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
-  const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
-
-  diasEl.innerText = dias.toString().padStart(2, '0');
-  horasEl.innerText = horas.toString().padStart(2, '0');
-  minutosEl.innerText = minutos.toString().padStart(2, '0');
-  segundosEl.innerText = segundos.toString().padStart(2, '0');
-}
-
-const intervalo = setInterval(atualizarContagem, 1000);
-atualizarContagem(); // Inicializa já com os valores corretos
-
-document.addEventListener("DOMContentLoaded", () => {
-  const tarja = document.querySelector(".tarjaTimerNav");
-  const nav = document.querySelector("#navigation");
-  const header = document.querySelector("#home");
-
-  if (!tarja || !nav || !header) return;
-
-  // Após 3 segundos, ativa a tarja e mantém fixa
-  setTimeout(() => {
-    tarja.classList.add("active");
-    nav.classList.add("activeTarja");
-    header.classList.add("activeTarjaHome");
-  }, 3000);
-});
+// const dataFinal = new Date("2025-10-31T12:00:00");
+//
+// const diasEl = document.getElementById('dias');
+// const horasEl = document.getElementById('horas');
+// const minutosEl = document.getElementById('minutos');
+// const segundosEl = document.getElementById('segundos');
+// const mensagemEl = document.getElementById('mensagem');
+//
+// function atualizarContagem() {
+//   const agora = new Date();
+//   const diferenca = dataFinal - agora;
+//
+//   if (diferenca <= 0) {
+//     clearInterval(intervalo);
+//     diasEl.innerText = "00";
+//     horasEl.innerText = "00";
+//     minutosEl.innerText = "00";
+//     segundosEl.innerText = "00";
+//     mensagemEl.innerText = "Tempo esgotado!";
+//     return;
+//   }
+//
+//   const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+//   const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+//   const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+//
+//   diasEl.innerText = dias.toString().padStart(2, '0');
+//   horasEl.innerText = horas.toString().padStart(2, '0');
+//   minutosEl.innerText = minutos.toString().padStart(2, '0');
+//   segundosEl.innerText = segundos.toString().padStart(2, '0');
+// }
+//
+// const intervalo = setInterval(atualizarContagem, 1000);
+// atualizarContagem();
+//
+// document.addEventListener("DOMContentLoaded", () => {
+//   const tarja = document.querySelector(".tarjaTimerNav");
+//   const nav = document.querySelector("#navigation");
+//   const header = document.querySelector("#home");
+//
+//   if (!tarja || !nav || !header) return;
+//
+//   setTimeout(() => {
+//     tarja.classList.add("active");
+//     nav.classList.add("activeTarja");
+//     header.classList.add("activeTarjaHome");
+//   }, 3000);
+// });
+*/

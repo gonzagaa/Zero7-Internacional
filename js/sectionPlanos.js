@@ -40,7 +40,7 @@
   };
 
   const refs = {};
-  const anims = { tabela: null, valor: null, label: null, badge: null };
+  const anims = { tabela: null, valor: null, precoFrom: null, label: null, badge: null };
   let prefersReducedMotion = false;
   let resizeRaf = null;
 
@@ -67,6 +67,11 @@
   function precoTexto() {
     const { precos } = state.dados.capitais[state.capital];
     return state.modo === 'com_ativacao' ? precos.comAtivacao : precos.semAtivacao;
+  }
+
+  function precoOriginalTexto() {
+    const { precos } = state.dados.capitais[state.capital];
+    return state.modo === 'com_ativacao' ? precos.comAtivacaoDe : precos.semAtivacaoDe;
   }
 
   function badgeTexto() {
@@ -288,6 +293,19 @@
     else refs.precoLabel.textContent = modoLabelTexto();
   }
 
+  function renderPrecoOriginal({ animar = true } = {}) {
+    if (!refs.precoFrom) return;
+    const texto = precoOriginalTexto();
+    if (!texto) {
+      refs.precoFrom.textContent = '';
+      refs.precoFrom.style.display = 'none';
+      return;
+    }
+    refs.precoFrom.style.display = '';
+    if (animar) fadeScaleSwap(refs.precoFrom, texto, 'precoFrom', { outDur: 130, inDur: 160, scale: 0.96 });
+    else refs.precoFrom.textContent = texto;
+  }
+
   function renderBadge({ animar = true } = {}) {
     if (!refs.precoBadge) return;
     if (animar) fadeScaleSwap(refs.precoBadge, badgeTexto(), 'badge', { outDur: 100, inDur: 120, scale: 0.98 });
@@ -451,6 +469,7 @@
       state.modo = modo;
       renderTabela();
       renderPreco();
+      renderPrecoOriginal();
       renderLabel();
       renderCheckoutHref();
     }, 'is-active');
@@ -459,6 +478,7 @@
       state.capital = capital;
       renderTabela();
       renderPreco();
+      renderPrecoOriginal();
       renderBadge();
       renderCheckoutHref();
     });
@@ -501,6 +521,7 @@
     refs.priceBar = $('#priceBar');
     refs.precoLabel = $('.price-bar__mode');
     refs.precoValor = $('.price-bar__price');
+    refs.precoFrom = $('.price-bar__price-from');
     refs.precoBadge = $('.price-bar__badge');
     refs.precoCta = $('.price-bar__cta');
     refs.minimizeBtn = $('.price-bar__minimize');
@@ -555,6 +576,7 @@
 
     renderTabela({ animar: false });
     renderPreco({ animar: false });
+    renderPrecoOriginal({ animar: false });
     renderLabel({ animar: false });
     renderBadge({ animar: false });
     renderCheckoutHref();
@@ -570,6 +592,7 @@
       if (!state.dados) return;
       renderTabela({ animar: false });
       renderPreco({ animar: false });
+      renderPrecoOriginal({ animar: false });
       renderLabel({ animar: false });
       renderBadge({ animar: false });
       renderCheckoutHref();
