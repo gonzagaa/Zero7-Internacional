@@ -88,6 +88,10 @@
     justify-content: center;
 }
 
+.faq__search-loading[hidden] {
+    display: none;
+}
+
 #faq .faq__spinner {
     width: 1.6rem;
     height: 1.6rem;
@@ -794,25 +798,9 @@
     margin-bottom: 2.5rem;
 }
 
-#faq .faq__expanded-header > div:first-child {
-    display: flex;
-    flex-direction: column;
-    gap: .4rem;
+#faq .faq__expanded-title {
     flex: 1;
     min-width: 0;
-}
-
-#faq .faq__expanded-eyebrow {
-    display: inline-block;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    color: rgba(255, 255, 255, 0.45);
-    font-family: var(--tts);
-    margin: 0;
-}
-
-#faq .faq__expanded-title {
     font-family: 'Neue Plak Bold', var(--tts);
     font-size: 2.4rem;
     color: #ffffff;

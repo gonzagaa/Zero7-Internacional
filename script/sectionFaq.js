@@ -172,7 +172,10 @@
   }
 
   async function fetchJson(url, signal) {
-    const res = await fetch(url, { signal: signal });
+    const res = await fetch(url, {
+      signal: signal,
+      cache: 'no-cache',
+    });
     if (!res.ok) {
       throw new Error('Zendesk request failed: ' + res.status + ' ' + url);
     }
@@ -370,6 +373,40 @@
     }
   }
 
+  function getStickyOffset() {
+    let total = 0;
+    const tarja = document.querySelector('.tarja-topo');
+    if (tarja) total += tarja.getBoundingClientRect().height;
+    const nav = document.getElementById('navigation');
+    if (nav) {
+      const cs = window.getComputedStyle(nav);
+      if (cs.position === 'fixed' || cs.position === 'sticky') {
+        total += nav.getBoundingClientRect().height;
+      }
+    }
+    // pequena folga estética
+    return total + 16;
+  }
+
+  function smoothScrollTo(target, extraOffset) {
+    if (!target) return;
+    const extra = typeof extraOffset === 'number' ? extraOffset : 0;
+    const off = -getStickyOffset() + extra;
+    if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+      try {
+        window.lenis.scrollTo(target, { offset: off, duration: 1.1 });
+        return;
+      } catch (e) { /* fallback abaixo */ }
+    }
+    try {
+      const rect = target.getBoundingClientRect();
+      const top = rect.top + window.pageYOffset + off;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    } catch (e) {
+      target.scrollIntoView();
+    }
+  }
+
   /* ========== PAINEL DE EXPANSÃO ========== */
 
   function ensureExpandedPanel() {
@@ -388,10 +425,7 @@
     panel.hidden = true;
     panel.innerHTML =
       '<div class="faq__expanded-header">' +
-        '<div>' +
-          '<span class="faq__expanded-eyebrow">' + escapeHtml(tr('faq.js.categoria_label')) + '</span>' +
-          '<h3 class="faq__expanded-title"></h3>' +
-        '</div>' +
+        '<h3 class="faq__expanded-title"></h3>' +
         '<button type="button" class="faq__expanded-close" aria-label="' + escapeHtml(tr('faq.js.fechar')) + '">' +
           '<ion-icon name="close-outline"></ion-icon>' +
         '</button>' +
@@ -409,7 +443,9 @@
     el.expandedTitle = panel.querySelector('.faq__expanded-title');
     el.expandedContent = panel.querySelector('.faq__expanded-content');
 
-    panel.querySelector('.faq__expanded-close').addEventListener('click', closeExpandedPanel);
+    panel.querySelector('.faq__expanded-close').addEventListener('click', function () {
+      closeExpandedPanel({ scrollBack: true });
+    });
 
     return panel;
   }
@@ -481,7 +517,7 @@
 
   function toggleExpandedPanel(categoryId) {
     if (state.activeCategoryId === categoryId) {
-      closeExpandedPanel();
+      closeExpandedPanel({ scrollBack: true });
       return;
     }
     openExpandedPanel(categoryId);
@@ -509,23 +545,36 @@
       // forçar reflow pra a transição funcionar
       void panel.offsetHeight;
       panel.classList.add('is-open');
+      requestAnimationFrame(function () {
+        smoothScrollTo(panel);
+      });
     } else {
       // swap suave: fade-out via .is-swapping → troca → fade-in
       el.expandedContent.classList.add('is-swapping');
       setTimeout(function () {
         writeContent();
         el.expandedContent.classList.remove('is-swapping');
+        smoothScrollTo(panel);
       }, 180);
     }
   }
 
-  function closeExpandedPanel() {
+  function closeExpandedPanel(opts) {
+    const scrollBack = !!(opts && opts.scrollBack);
+    const panel = el.expandedPanel;
+    const wasOpen = !!(panel && panel.classList.contains('is-open'));
+
     state.activeCategoryId = null;
     setActiveCard(null);
 
-    const panel = el.expandedPanel;
-    if (!panel) return;
-    if (!panel.classList.contains('is-open') && panel.hidden) return;
+    if (!panel) {
+      if (scrollBack && wasOpen) smoothScrollTo(el.section);
+      return;
+    }
+    if (!panel.classList.contains('is-open') && panel.hidden) {
+      if (scrollBack && wasOpen) smoothScrollTo(el.section);
+      return;
+    }
 
     panel.classList.remove('is-open');
     setTimeout(function () {
@@ -534,6 +583,10 @@
         if (el.expandedContent) el.expandedContent.innerHTML = '';
       }
     }, 320);
+
+    if (scrollBack && wasOpen) {
+      smoothScrollTo(el.section);
+    }
   }
 
   function renderFallback() {
