@@ -47,7 +47,7 @@
       return dict;
     }
     const basePath = (typeof window !== 'undefined' && window.I18N_LANG_PATH) || './lang/';
-    const resp = await fetch(basePath + lang + '.json', { cache: 'no-cache' });
+    const resp = await fetch(basePath + lang + '.json?v=' + Date.now(), { cache: 'no-cache' });
     if (!resp.ok) throw new Error('Failed to load lang ' + lang + ' (' + resp.status + ')');
     const data = await resp.json();
     cache[lang] = data;
