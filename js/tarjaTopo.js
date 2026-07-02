@@ -8,7 +8,7 @@
   'use strict';
 
   const TARJA_CONFIG = {
-    deadline: "2026-06-30T23:59:00", // data/hora local em que a tarja some
+    deadline: "2026-07-31T23:59:00", // data/hora local em que a tarja some
     link: "#plan" // destino do botão (âncora da section#plan)
   };
 
