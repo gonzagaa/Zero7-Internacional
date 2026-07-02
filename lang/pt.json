@@ -8,8 +8,7 @@
   "header": {
     "menu": {
       "home": "Home",
-      "planos": "Planos",
-      "regulamento": "Regulamento"
+      "planos": "Planos"
     },
     "botao_trader": "Área do Trader",
     "abrir_menu": "Abrir menu",
@@ -150,7 +149,7 @@
     "navegacao_titulo": "Navegação",
     "nav_home": "Home",
     "nav_planos": "Planos",
-    "nav_regulamento": "Regulamento",
+    "nav_regulamento": "Termos e Condições",
     "nav_trader": "Área do Trader",
     "suporte_titulo": "Suporte",
     "suporte_trader": "Área do Trader",
