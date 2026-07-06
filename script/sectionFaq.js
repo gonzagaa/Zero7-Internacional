@@ -2,11 +2,11 @@
   'use strict';
 
   const ZENDESK_BASE = 'https://help.zero7trading.com/api/v2/help_center';
-  const ZENDESK_LOCALES = { pt: 'pt-br', en: 'en-us', es: 'es' };
+  const ZENDESK_LOCALES = { pt: 'pt-br', en: 'en-001', es: 'es-419' };
   const ZENDESK_HELP_URLS = {
     pt: 'https://help.zero7trading.com/hc/pt-br',
-    en: 'https://help.zero7trading.com/hc/en-us',
-    es: 'https://help.zero7trading.com/hc/es'
+    en: 'https://help.zero7trading.com/hc/en-001',
+    es: 'https://help.zero7trading.com/hc/es-419'
   };
 
   function getCurrentLang() {
