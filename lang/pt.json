@@ -98,7 +98,11 @@
     "linha_drawdown": "Drawdown",
     "linha_perda_total": "Perda total",
     "linha_taxa_ativacao": "Taxa de ativação",
-    "linha_recompensa": "Recompensa"
+    "linha_recompensa": "Recompensa",
+    "card_desafio_titulo": "O desafio",
+    "card_incubadora_titulo": "Sua conta remunerada",
+    "card_desconto": "-{pct}%",
+    "valor_sem_limite": "Sem limite de dias"
   },
   "faq": {
     "titulo": "Central de Ajuda",

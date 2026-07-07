@@ -1,13 +1,12 @@
 /* ============================================================
-   Sticky Price Bar (rodapé) — visual + interações
+   Sticky Price Bar (rodapé) — faixa fina de FALLBACK
+   Só aparece quando o CTA do card não está visível na viewport.
    (todas as unidades em rem: 1rem = 10px via html { font-size: 62.5% })
    ============================================================ */
 
 :root {
-    --price-bar-height-desktop: 10rem;
-    --price-bar-height-mobile-full: 13rem;
-    --price-bar-height-mobile-min: 3.6rem;
-    --price-bar-z: 60;
+    --price-bar-height: 6.4rem;
+    --price-bar-z: 9999999;
 }
 
 .price-bar {
@@ -15,24 +14,22 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999999;
+    z-index: var(--price-bar-z);
     transform: translateY(110%);
     opacity: 0;
     pointer-events: none;
-    background: rgba(8, 8, 8, 0.88);
+    background: rgba(8, 8, 8, 0.9);
     -webkit-backdrop-filter: blur(24px) saturate(140%);
     backdrop-filter: blur(24px) saturate(140%);
     border-top: 1px solid #ffffff15;
-    box-shadow:
-        0 -2rem 6rem -1rem rgba(0, 0, 0, 0.65),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    box-shadow: 0 -1.6rem 5rem -1rem rgba(0, 0, 0, 0.65);
     transition:
         transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
-        opacity 200ms ease,
-        padding 250ms ease;
+        opacity 200ms ease;
     will-change: transform, opacity;
 }
 
+/* Filete verde no topo da barra */
 .price-bar::before {
     content: '';
     position: absolute;
@@ -58,128 +55,60 @@
 }
 
 .price-bar__inner {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.6rem;
     max-width: 128rem;
     margin: 0 auto;
-    transition: padding 250ms ease, gap 250ms ease;
-}
-
-.price-bar__info {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    min-width: 0;
-    flex: 1 1 auto;
-    transition: opacity 200ms ease, max-height 250ms ease, margin 200ms ease;
 }
 
 .price-bar__badge {
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    padding: 0.6rem 1.4rem;
+    padding: 0.4rem 1.2rem;
     border: 1px solid rgba(52, 211, 153, 0.25);
     border-radius: 999px;
-    background: linear-gradient(
-        135deg,
-        rgba(52, 211, 153, 0.08),
-        rgba(11, 93, 59, 0.04)
-    );
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(11, 93, 59, 0.04));
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     white-space: nowrap;
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 0 2rem rgba(52, 211, 153, 0.06);
-    will-change: opacity, transform;
-}
-
-.price-bar__mode {
-    color: #e0e0e0;
-    font-size: 1.4rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-    will-change: opacity, transform;
-}
-
-.price-bar__action {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex-shrink: 0;
-}
-
-.price-bar__pricing {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 1.1rem;
-    flex-shrink: 0;
-    line-height: 1;
-}
-
-.price-bar__price-from {
-    position: relative;
-    color: #c8c8c8;
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    line-height: 1;
-    font-feature-settings: "tnum" 1;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    text-decoration: line-through;
-    text-decoration-thickness: 2px;
-    text-decoration-color: rgba(255, 110, 110, 0.85);
-    text-underline-offset: 0;
-    opacity: 1;
-    transition: opacity 200ms ease;
-    will-change: opacity, transform;
 }
 
 .price-bar__price {
+    flex: 1 1 auto;
     color: #fff;
-    font-size: 3.2rem;
+    font-size: 2.2rem;
     font-weight: 800;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
     line-height: 1;
+    text-align: right;
+    white-space: nowrap;
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    text-shadow: 0 0 3rem rgba(255, 255, 255, 0.12);
+    text-shadow: 0 0 2rem rgba(255, 255, 255, 0.1);
     will-change: opacity, transform;
 }
 
-/* CTA visual: usa .z7-btnx do button.css; .price-bar__cta serve como hook
-   estrutural (fade no minimizado + JS). Variação compacta abaixo. */
+/* CTA compacto — usa .z7-btnx do button.css */
 .z7-btnx--barra {
-    --h: 5.6rem;
-    --capw: 5rem;
-    padding-left: 2.8rem;
-    padding-right: calc(var(--capw) + (var(--in) * 2) + 0.8rem);
-    font-size: 1.4rem;
+    --h: 4.4rem;
+    --capw: 3.8rem;
+    padding-left: 1.8rem;
+    padding-right: calc(var(--capw) + (var(--in) * 2) + 0.6rem);
+    font-size: 1.3rem;
     flex-shrink: 0;
 }
 
 .z7-btnx--barra .z7-btnx__arrow {
-    font-size: 1.8rem;
-}
-
-.price-bar__minimize {
-    display: none;
+    font-size: 1.6rem;
 }
 
 /* ===== WhatsApp button (não pode ser sobreposto pela barra) ===== */
@@ -188,152 +117,44 @@
 }
 
 body.price-bar-visible .btn-whatsapp-pulse {
-    bottom: calc(var(--price-bar-height-desktop) + 1rem);
+    bottom: calc(var(--price-bar-height) + 1rem);
 }
 
 /* ============================================================
-   Mobile (≤ 768px) — barra em duas linhas + minimização
+   Mobile
    ============================================================ */
 @media (max-width: 768px) {
     .price-bar__inner {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
-        padding: 1rem 1.25rem;
-    }
-
-    .price-bar__info {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
+        gap: 1rem;
+        padding: 0.8rem 1.2rem;
     }
 
     .price-bar__badge {
         font-size: 0.95rem;
-        padding: 0.5rem 1.2rem;
-        letter-spacing: 0.15em;
-    }
-
-    .price-bar__mode {
-        font-size: 1.15rem;
-        text-align: right;
-        flex: 1 1 auto;
-    }
-
-    .price-bar__action {
-        justify-content: space-between;
-        gap: 1rem;
+        padding: 0.4rem 1rem;
+        letter-spacing: 0.12em;
     }
 
     .price-bar__price {
-        font-size: 2.6rem;
-        letter-spacing: -0.02em;
-    }
-
-    .price-bar__pricing {
-        gap: 0.8rem;
-    }
-
-    .price-bar__price-from {
-        font-size: 1.7rem;
+        font-size: 1.9rem;
     }
 
     .z7-btnx--barra {
-        --h: 4.8rem;
-        --capw: 4.2rem;
-        padding-left: 2rem;
-        padding-right: calc(var(--capw) + (var(--in) * 2) + 0.6rem);
-        font-size: 1.25rem;
+        --h: 4.2rem;
+        --capw: 3.6rem;
+        padding-left: 1.5rem;
+        font-size: 1.2rem;
     }
+}
 
-    .z7-btnx--barra .z7-btnx__arrow {
-        font-size: 1.6rem;
-    }
-
-    .price-bar__minimize {
-        display: inline-flex;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        width: 2.8rem;
-        height: 2.8rem;
-        padding: 0;
-        background: transparent;
-        border: 1px solid #ffffff18;
-        border-radius: 999px;
-        color: #888;
-        cursor: pointer;
-        z-index: 2;
-        transition:
-            color 200ms ease,
-            background 200ms ease,
-            transform 250ms ease;
-    }
-
-    .price-bar__minimize:hover,
-    .price-bar__minimize:focus-visible {
-        color: #fff;
-        background: #ffffff08;
-        outline: none;
-    }
-
-    .price-bar__minimize svg {
-        transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* ===== Estado minimizado (apenas mobile) ===== */
-    .price-bar--minimized .price-bar__inner {
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        gap: 0;
-    }
-
-    .price-bar--minimized .price-bar__info,
-    .price-bar--minimized .price-bar__cta {
-        opacity: 0;
-        max-height: 0;
-        margin: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        border-width: 0;
-        overflow: hidden;
-        pointer-events: none;
-    }
-
-    .price-bar--minimized .price-bar__action {
-        gap: 0;
-    }
-
-    .price-bar--minimized .price-bar__price {
-        font-size: 1.1rem;
-        font-weight: 700;
-    }
-
-    .price-bar--minimized .price-bar__price-from {
+/* Telas muito estreitas: prioriza preço + CTA */
+@media (max-width: 400px) {
+    .price-bar__badge {
         display: none;
     }
 
-    .price-bar--minimized .price-bar__minimize svg {
-        transform: rotate(180deg);
-    }
-
-    .price-bar--minimized {
-        cursor: pointer;
-    }
-
-    /* WhatsApp lift no mobile */
-    body.price-bar-visible .btn-whatsapp-pulse {
-        bottom: calc(var(--price-bar-height-mobile-full) + 0.75rem);
-    }
-
-    body.price-bar-visible.price-bar-minimized .btn-whatsapp-pulse {
-        bottom: calc(var(--price-bar-height-mobile-min) + 0.75rem);
+    .price-bar__price {
+        text-align: left;
     }
 }
 
@@ -342,21 +163,7 @@ body.price-bar-visible .btn-whatsapp-pulse {
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
     .price-bar,
-    .price-bar__inner,
-    .price-bar__info,
-    .price-bar__cta,
-    .price-bar__minimize,
-    .price-bar__minimize svg,
     .btn-whatsapp-pulse {
         transition: none;
-    }
-}
-
-/* ============================================================
-   Desktop ≥ 1080px
-   ============================================================ */
-@media (min-width: 1080px) {
-    .price-bar__inner {
-        padding: 1.25rem 2rem;
     }
 }

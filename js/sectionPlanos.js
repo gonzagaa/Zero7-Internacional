@@ -2,6 +2,8 @@
   const SECTION_SELECTOR = '#plan';
   const JSON_PATH = './data/planos.json';
 
+  // Tópicos do card — cada linha lê os DOIS valores (.desafio e .incubadora).
+  // Desafio e Conta Remunerada exibem exatamente os mesmos 8 tópicos, na mesma ordem.
   const LINHAS = [
     { key: 'contratos',    i18nKey: 'plan.linha_contratos',      fonte: 'capital' },
     { key: 'minimoDias',   i18nKey: 'plan.linha_minimo_dias',    fonte: 'fixa' },
@@ -12,6 +14,9 @@
     { key: 'taxaAtivacao', i18nKey: 'plan.linha_taxa_ativacao',  fonte: 'capital' },
     { key: 'recompensa',   i18nKey: 'plan.linha_recompensa',     fonte: 'fixa' },
   ];
+
+  // Valores de placeholder no JSON que nunca devem aparecer crus
+  const PLACEHOLDERS = new Set(['---', '—', '']);
 
   function getCurrentLang() {
     return (window.i18n && window.i18n.getLang && window.i18n.getLang()) || 'pt';
@@ -36,11 +41,11 @@
     dados: null,
     capital: '25k',
     modo: 'com_ativacao',
-    minimizado: false,
   };
 
   const refs = {};
-  const anims = { tabela: null, valor: null, precoFrom: null, label: null, badge: null };
+  const swapAnims = new WeakMap();
+  let cardAnim = null;
   let prefersReducedMotion = false;
   let resizeRaf = null;
 
@@ -85,6 +90,22 @@
   }
 
   /* ============================================================
+     Desconto dinâmico (pill) — parse de valores BR "$1.497,00"
+     ============================================================ */
+  function parseBRL(str) {
+    if (typeof str !== 'string') return NaN;
+    const limpo = str.replace(/[^\d.,]/g, '').replace(/\./g, '').replace(',', '.');
+    return parseFloat(limpo);
+  }
+
+  function descontoPct() {
+    const de = parseBRL(precoOriginalTexto());
+    const por = parseBRL(precoTexto());
+    if (!isFinite(de) || !isFinite(por) || de <= 0 || por <= 0 || por >= de) return null;
+    return Math.round((1 - por / de) * 100);
+  }
+
+  /* ============================================================
      Segmented control — blob deslizante
      ============================================================ */
   function posicionarBlob(seg) {
@@ -124,7 +145,7 @@
     try { animation.cancel(); } catch (_) {}
   }
 
-  async function fadeScaleSwap(el, novoTexto, animKey, opts = {}) {
+  async function fadeScaleSwap(el, novoTexto, opts = {}) {
     if (!el) return;
     if (el.textContent === novoTexto) return;
 
@@ -132,8 +153,8 @@
     const inDur = opts.inDur ?? 180;
     const scale = opts.scale ?? 0.94;
 
-    safeCancel(anims[animKey]);
-    anims[animKey] = null;
+    safeCancel(swapAnims.get(el));
+    swapAnims.delete(el);
 
     if (prefersReducedMotion) {
       el.textContent = novoTexto;
@@ -147,7 +168,7 @@
       ],
       { duration: outDur, easing: EASE_OUT, fill: 'forwards' }
     );
-    anims[animKey] = out;
+    swapAnims.set(el, out);
 
     try { await out.finished; } catch (_) { return; }
 
@@ -160,7 +181,7 @@
       ],
       { duration: inDur, easing: EASE_OUT, fill: 'forwards' }
     );
-    anims[animKey] = inAnim;
+    swapAnims.set(el, inAnim);
 
     try {
       await inAnim.finished;
@@ -168,65 +189,142 @@
       inAnim.cancel();
     } catch (_) { return; }
 
-    if (anims[animKey] === inAnim) anims[animKey] = null;
+    if (swapAnims.get(el) === inAnim) swapAnims.delete(el);
   }
 
   /* ============================================================
-     Tabela
+     Card — valores por tópico + montagem (desktop e mobile)
      ============================================================ */
-  function isCurrency(v) {
+  function valorMonetario(v) {
     return typeof v === 'string' && v.trim().startsWith('$');
   }
 
-  function tdAttrs(extra) {
-    return extra ? ` class="${extra}"` : '';
+  // Resolve texto/tratamento de uma célula (por tópico e coluna).
+  // Sem esconder linha — a paridade dos 8 tópicos é obrigatória.
+  function valorCelula(key, cel, coluna) {
+    let valor = pick(cel[coluna]);
+    let highlight = false;
+    let sublabel = '';
+
+    if (coluna === 'desafio') {
+      // Modo "sem taxa de ativação": a taxa do Desafio vira "—"
+      if (key === 'taxaAtivacao' && state.modo === 'sem_ativacao') valor = '—';
+    } else {
+      // Coluna Incubadora — nunca mostrar "---" cru
+      if (key === 'maximoDias' && PLACEHOLDERS.has(String(valor).trim())) {
+        valor = tr('plan.valor_sem_limite');          // "Sem limite de dias"
+        highlight = true;
+      } else if (key === 'taxaAtivacao' && PLACEHOLDERS.has(String(valor).trim())) {
+        valor = '—';                                   // conta remunerada não tem taxa
+      } else if (key === 'recompensa') {
+        highlight = true;                              // 90% em destaque verde (só o número)
+      }
+    }
+
+    return { valor, highlight, sublabel, currency: valorMonetario(valor) };
   }
 
-  function montarLinhas() {
-    const tbody = refs.tbody;
-    tbody.innerHTML = '';
-    const labelCondicao = tr('plan.tabela_condicao');
-    const labelDesafio = tr('plan.tabela_desafio');
-    const labelIncubadora = tr('plan.tabela_incubadora');
+  // ---- Mobile: dois painéis, cada um com seus próprios rótulos ----
+  function montarLista(ul, coluna) {
+    if (!ul) return;
+    ul.innerHTML = '';
 
     LINHAS.forEach(({ key, i18nKey, fonte }, i) => {
-      const dados = obterCelula(key, fonte);
-      let desafio = pick(dados.desafio);
-      const incubadora = pick(dados.incubadora);
+      const cel = obterCelula(key, fonte);
+      const { valor, highlight, sublabel, currency } = valorCelula(key, cel, coluna);
 
-      // Modo "sem taxa de ativação": linha "Taxa de ativação" não cobra no Desafio
-      if (key === 'taxaAtivacao' && state.modo === 'sem_ativacao') {
-        desafio = '—';
+      const li = document.createElement('li');
+      li.className = 'plan-card__item' + (highlight ? ' plan-card__item--highlight' : '');
+      li.style.setProperty('--row-index', i);
+
+      const labelEl = document.createElement('span');
+      labelEl.className = 'plan-card__item-label';
+      labelEl.textContent = tr(i18nKey);
+
+      const valueEl = document.createElement('span');
+      valueEl.className = 'plan-card__item-value' + (currency ? ' plan-card__item-value--currency' : '');
+      valueEl.append(valor);
+      if (sublabel) {
+        const sub = document.createElement('small');
+        sub.className = 'plan-card__item-sub';
+        sub.textContent = sublabel;
+        valueEl.appendChild(sub);
       }
 
-      const label = tr(i18nKey);
-      const row = document.createElement('tr');
-      row.style.setProperty('--row-index', i);
-      const cDesafio = isCurrency(desafio) ? 'cell--currency' : '';
-      const cIncubadora = isCurrency(incubadora) ? 'cell--currency' : '';
-      row.innerHTML = `
-        <td data-label="${labelCondicao}"><span class="cell-label">${label}</span></td>
-        <td data-label="${labelDesafio}"${tdAttrs(cDesafio)}>${desafio}</td>
-        <td data-label="${labelIncubadora}"${tdAttrs(cIncubadora)}>${incubadora}</td>
-      `;
-      tbody.appendChild(row);
+      li.appendChild(labelEl);
+      li.appendChild(valueEl);
+      ul.appendChild(li);
     });
   }
 
-  async function renderTabela({ animar = true } = {}) {
-    const wrapper = refs.tableWrapper;
-    if (!wrapper || !refs.tbody) return;
+  // ---- Desktop: comparação de 3 colunas [Desafio · rótulo · Incubadora] ----
+  function compareRotulo(texto) {
+    const el = document.createElement('span');
+    el.className = 'plan-card__clabel';
+    el.textContent = texto;
+    return el;
+  }
 
-    if (!animar || prefersReducedMotion) {
-      safeCancel(anims.tabela);
-      anims.tabela = null;
-      montarLinhas();
-      wrapper.dataset.capital = state.capital;
+  function compareValor(side, data) {
+    // Valores longos ganham fonte menor p/ caber em UMA linha no box de largura fixa
+    const longo = String(data.valor).length > 14;
+    const el = document.createElement('span');
+    el.className = `plan-card__cval plan-card__cval--${side}`
+      + (data.highlight ? ' plan-card__cval--highlight' : '')
+      + (data.currency ? ' plan-card__cval--currency' : '')
+      + (longo ? ' plan-card__cval--long' : '');
+    el.textContent = data.valor;
+    return el;
+  }
+
+  function compareCabecalho(cls, texto, decorativo) {
+    const el = document.createElement('span');
+    el.className = 'plan-card__chead ' + cls;
+    if (decorativo) el.setAttribute('aria-hidden', 'true');
+    el.textContent = texto;
+    return el;
+  }
+
+  function montarCompare() {
+    const grid = refs.compareGrid;
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    // Cabeçalhos sobre as colunas de valor + seta ao centro
+    grid.appendChild(compareCabecalho('plan-card__chead--challenge', tr('plan.card_desafio_titulo')));
+    grid.appendChild(compareCabecalho('plan-card__chead--flow', '→', true));
+    grid.appendChild(compareCabecalho('plan-card__chead--reward', tr('plan.card_incubadora_titulo')));
+
+    LINHAS.forEach(({ key, i18nKey, fonte }) => {
+      const cel = obterCelula(key, fonte);
+      grid.appendChild(compareValor('challenge', valorCelula(key, cel, 'desafio')));
+      grid.appendChild(compareRotulo(tr(i18nKey)));
+      grid.appendChild(compareValor('reward', valorCelula(key, cel, 'incubadora')));
+    });
+  }
+
+  async function renderCard({ animar = true } = {}) {
+    const rebuild = () => {
+      montarCompare();
+      montarLista(refs.listaDesafio, 'desafio');
+      montarLista(refs.listaIncubadora, 'incubadora');
+      if (refs.card) {
+        refs.card.dataset.capital = state.capital;
+        refs.card.dataset.mode = state.modo;
+      }
+    };
+
+    const wrapper = refs.comparison;
+
+    if (!animar || prefersReducedMotion || !wrapper) {
+      safeCancel(cardAnim);
+      cardAnim = null;
+      rebuild();
       return;
     }
 
-    safeCancel(anims.tabela);
-    anims.tabela = null;
+    safeCancel(cardAnim);
+    cardAnim = null;
 
     const out = wrapper.animate(
       [
@@ -235,39 +333,23 @@
       ],
       { duration: 200, easing: EASE_OUT, fill: 'forwards' }
     );
-    anims.tabela = out;
+    cardAnim = out;
 
     try { await out.finished; } catch (_) { return; }
 
-    montarLinhas();
-    wrapper.dataset.capital = state.capital;
-
-    Array.from(refs.tbody.children).forEach((tr, i) => {
-      tr.animate(
-        [
-          { opacity: 0, transform: 'translateY(8px)' },
-          { opacity: 1, transform: 'translateY(0)' },
-        ],
-        {
-          duration: 350,
-          delay: i * ROW_STAGGER_MS,
-          easing: EASE_OUT,
-          fill: 'backwards',
-        }
-      );
-    });
+    rebuild();
 
     try { out.commitStyles(); } catch (_) {}
     out.cancel();
 
     const inWrapper = wrapper.animate(
       [
-        { opacity: 0, transform: 'translateY(0)' },
+        { opacity: 0, transform: 'translateY(8px)' },
         { opacity: 1, transform: 'translateY(0)' },
       ],
-      { duration: 220, easing: EASE_OUT, fill: 'forwards' }
+      { duration: 240, easing: EASE_OUT, fill: 'forwards' }
     );
-    anims.tabela = inWrapper;
+    cardAnim = inWrapper;
 
     try {
       await inWrapper.finished;
@@ -275,165 +357,75 @@
       inWrapper.cancel();
     } catch (_) { return; }
 
-    if (anims.tabela === inWrapper) anims.tabela = null;
+    if (cardAnim === inWrapper) cardAnim = null;
   }
 
   /* ============================================================
-     Price bar — atualizações dinâmicas
+     Render do card
      ============================================================ */
   function renderPreco({ animar = true } = {}) {
-    if (!refs.precoValor) return;
-    if (animar) fadeScaleSwap(refs.precoValor, precoTexto(), 'valor', { scale: 0.95 });
-    else refs.precoValor.textContent = precoTexto();
+    if (!refs.cardPrice) return;
+    const texto = precoTexto();
+    if (animar) fadeScaleSwap(refs.cardPrice, texto, { scale: 0.95 });
+    else refs.cardPrice.textContent = texto;
   }
 
   function renderLabel({ animar = true } = {}) {
-    if (!refs.precoLabel) return;
-    if (animar) fadeScaleSwap(refs.precoLabel, modoLabelTexto(), 'label', { outDur: 100, inDur: 120, scale: 0.98 });
-    else refs.precoLabel.textContent = modoLabelTexto();
+    if (!refs.cardMode) return;
+    const texto = modoLabelTexto();
+    if (animar) fadeScaleSwap(refs.cardMode, texto, { outDur: 100, inDur: 120, scale: 0.98 });
+    else refs.cardMode.textContent = texto;
   }
 
   function renderPrecoOriginal({ animar = true } = {}) {
-    if (!refs.precoFrom) return;
+    if (!refs.cardPriceFrom) return;
     const texto = precoOriginalTexto();
     if (!texto) {
-      refs.precoFrom.textContent = '';
-      refs.precoFrom.style.display = 'none';
+      // Sem preço "de": esconde riscado + pill (a linha inteira some)
+      refs.cardPriceFrom.textContent = '';
+      refs.cardPriceFrom.hidden = true;
+      if (refs.cardPriceLine) refs.cardPriceLine.hidden = true;
       return;
     }
-    refs.precoFrom.style.display = '';
-    if (animar) fadeScaleSwap(refs.precoFrom, texto, 'precoFrom', { outDur: 130, inDur: 160, scale: 0.96 });
-    else refs.precoFrom.textContent = texto;
+    if (refs.cardPriceLine) refs.cardPriceLine.hidden = false;
+    refs.cardPriceFrom.hidden = false;
+    if (animar) fadeScaleSwap(refs.cardPriceFrom, texto, { outDur: 130, inDur: 160, scale: 0.96 });
+    else refs.cardPriceFrom.textContent = texto;
   }
 
   function renderBadge({ animar = true } = {}) {
-    if (!refs.precoBadge) return;
-    if (animar) fadeScaleSwap(refs.precoBadge, badgeTexto(), 'badge', { outDur: 100, inDur: 120, scale: 0.98 });
-    else refs.precoBadge.textContent = badgeTexto();
+    if (!refs.cardBadge) return;
+    const texto = badgeTexto();
+    if (animar) fadeScaleSwap(refs.cardBadge, texto, { outDur: 100, inDur: 120, scale: 0.98 });
+    else refs.cardBadge.textContent = texto;
+  }
+
+  function renderDiscount() {
+    if (!refs.cardDiscount) return;
+    const pct = descontoPct();
+    if (pct == null) {
+      refs.cardDiscount.hidden = true;
+      refs.cardDiscount.textContent = '';
+      return;
+    }
+    refs.cardDiscount.hidden = false;
+    refs.cardDiscount.textContent = tr('plan.card_desconto').replace('{pct}', pct);
   }
 
   function renderCheckoutHref() {
-    if (!refs.precoCta) return;
+    if (!refs.cardCta) return;
     const href = checkoutHref();
-    if (href) refs.precoCta.setAttribute('href', href);
+    if (href) refs.cardCta.setAttribute('href', href);
   }
 
-  /* ============================================================
-     Price bar — visibilidade via sentinela do topo + section #faq
-       - aparição: sentinela no topo de #plan cruza pra dentro da viewport
-       - saída:    section #faq começa a entrar pela base da viewport
-     Barra visível quando topo de #plan entrou E #faq ainda não apareceu.
-     ============================================================ */
-  function setupBarVisibility(secao) {
-    if (!refs.priceBar || !secao) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      refs.priceBar.classList.add('price-bar--visible');
-      document.body.classList.add('price-bar-visible');
-      return;
-    }
-
-    // Sentinela do topo (controla aparição) — idempotente
-    let sentinelTop = secao.querySelector('.price-bar-sentinel--top');
-    if (!sentinelTop) {
-      sentinelTop = document.createElement('div');
-      sentinelTop.className = 'price-bar-sentinel price-bar-sentinel--top';
-      sentinelTop.setAttribute('aria-hidden', 'true');
-      secao.insertBefore(sentinelTop, secao.firstChild);
-    }
-
-    // Sentinela de baixo não é mais necessária — remover se existir
-    const oldBottom = secao.querySelector('.price-bar-sentinel--bottom');
-    if (oldBottom) oldBottom.remove();
-
-    // Próxima seção (#faq) é o gatilho de saída
-    const faqSection = document.querySelector('#faq');
-
-    // Fração da viewport que pode mostrar a #faq antes da barra sumir
-    // (calibrar entre 0.05 e 0.20)
-    const ATRASO_SAIDA = 0.20;
-    const limiarFaq = () => window.innerHeight * (1 - ATRASO_SAIDA);
-
-    let topEntered = false;
-    let faqVisible = false;
-
-    const atualizar = () => {
-      const visivel = topEntered && !faqVisible;
-      refs.priceBar.classList.toggle('price-bar--visible', visivel);
-      document.body.classList.toggle('price-bar-visible', visivel);
-    };
-
-    const topObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          topEntered = entry.boundingClientRect.top < window.innerHeight;
-        });
-        atualizar();
-      },
-      { threshold: 0, rootMargin: '0px' }
-    );
-    topObserver.observe(sentinelTop);
-
-    if (faqSection) {
-      const faqObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            faqVisible = entry.boundingClientRect.top < limiarFaq();
-          });
-          atualizar();
-        },
-        {
-          threshold: 0,
-          rootMargin: `0px 0px ${-ATRASO_SAIDA * 100}% 0px`,
-        }
-      );
-      faqObserver.observe(faqSection);
-    } else {
-      console.warn('[price-bar] section #faq não encontrada — saída automática desativada.');
-    }
-
-    // Estado inicial — caso a página carregue já com scroll dentro/depois da seção
-    requestAnimationFrame(() => {
-      topEntered = sentinelTop.getBoundingClientRect().top < window.innerHeight;
-      if (faqSection) {
-        faqVisible = faqSection.getBoundingClientRect().top < limiarFaq();
-      }
-      atualizar();
-    });
-  }
-
-  /* ============================================================
-     Price bar — minimizar (mobile)
-     ============================================================ */
-  function aplicarEstadoMinimizado() {
-    refs.priceBar.classList.toggle('price-bar--minimized', state.minimizado);
-    document.body.classList.toggle('price-bar-minimized', state.minimizado);
-    if (refs.minimizeBtn) {
-      refs.minimizeBtn.setAttribute(
-        'aria-label',
-        state.minimizado ? tr('plan.bar_expandir') : tr('plan.bar_minimizar')
-      );
-      refs.minimizeBtn.setAttribute('aria-expanded', state.minimizado ? 'false' : 'true');
-    }
-  }
-
-  function setupMinimize() {
-    if (!refs.priceBar) return;
-
-    if (refs.minimizeBtn) {
-      refs.minimizeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        state.minimizado = !state.minimizado;
-        aplicarEstadoMinimizado();
-      });
-    }
-
-    refs.priceBar.addEventListener('click', (e) => {
-      if (!state.minimizado) return;
-      if (e.target.closest('.price-bar__minimize')) return;
-      if (e.target.closest('.price-bar__cta')) return;
-      state.minimizado = false;
-      aplicarEstadoMinimizado();
-    });
+  function renderTudo({ animar = true } = {}) {
+    renderCard({ animar });
+    renderPreco({ animar });
+    renderPrecoOriginal({ animar });
+    renderLabel({ animar });
+    renderBadge({ animar });
+    renderDiscount();
+    renderCheckoutHref();
   }
 
   /* ============================================================
@@ -467,20 +459,12 @@
   function bindEventos() {
     bindSeg(refs.segMode, refs.botoesModo, 'mode', (modo) => {
       state.modo = modo;
-      renderTabela();
-      renderPreco();
-      renderPrecoOriginal();
-      renderLabel();
-      renderCheckoutHref();
+      renderTudo({ animar: true });
     }, 'is-active');
 
     bindSeg(refs.segCapital, refs.botoesCapital, 'capital', (capital) => {
       state.capital = capital;
-      renderTabela();
-      renderPreco();
-      renderPrecoOriginal();
-      renderBadge();
-      renderCheckoutHref();
+      renderTudo({ animar: true });
     });
 
     window.addEventListener('resize', () => {
@@ -515,16 +499,19 @@
     refs.segCapital = $('.seg--capital', secao);
     refs.botoesModo = $$('.mode-toggle .mode-toggle__btn[data-mode]', secao);
     refs.botoesCapital = $$('.seg--capital .seg__option[data-capital]', secao);
-    refs.tableWrapper = $('.table-wrapper', secao);
-    refs.tbody = $('.pricing-table tbody', secao);
 
-    refs.priceBar = $('#priceBar');
-    refs.precoLabel = $('.price-bar__mode');
-    refs.precoValor = $('.price-bar__price');
-    refs.precoFrom = $('.price-bar__price-from');
-    refs.precoBadge = $('.price-bar__badge');
-    refs.precoCta = $('.price-bar__cta');
-    refs.minimizeBtn = $('.price-bar__minimize');
+    refs.card = $('.plan-card', secao);
+    refs.comparison = $('.plan-card__comparison', secao);
+    refs.compareGrid = $('.plan-card__compare', secao);
+    refs.cardBadge = $('.plan-card__badge', secao);
+    refs.cardDiscount = $('.plan-card__discount', secao);
+    refs.cardPriceLine = $('.plan-card__price-line', secao);
+    refs.cardPriceFrom = $('.plan-card__price-from', secao);
+    refs.cardPrice = $('.plan-card__price', secao);
+    refs.cardMode = $('.plan-card__mode', secao);
+    refs.cardCta = $('.plan-card__cta', secao);
+    refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
+    refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);
   }
 
   function sincronizarEstadoComDOM() {
@@ -552,7 +539,7 @@
     if (!secao) return;
 
     inicializarRefs(secao);
-    if (!refs.tbody || !refs.priceBar) return;
+    if (!refs.card) return;
 
     prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -574,29 +561,16 @@
       state.capital = Object.keys(state.dados.capitais)[0];
     }
 
-    renderTabela({ animar: false });
-    renderPreco({ animar: false });
-    renderPrecoOriginal({ animar: false });
-    renderLabel({ animar: false });
-    renderBadge({ animar: false });
-    renderCheckoutHref();
+    renderTudo({ animar: false });
 
     ativarSeg(refs.segMode);
     ativarSeg(refs.segCapital);
 
-    setupBarVisibility(secao);
-    setupMinimize();
     bindEventos();
 
     document.addEventListener('i18n:change', () => {
       if (!state.dados) return;
-      renderTabela({ animar: false });
-      renderPreco({ animar: false });
-      renderPrecoOriginal({ animar: false });
-      renderLabel({ animar: false });
-      renderBadge({ animar: false });
-      renderCheckoutHref();
-      aplicarEstadoMinimizado();
+      renderTudo({ animar: false });
     });
   }
 

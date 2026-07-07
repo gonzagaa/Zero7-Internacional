@@ -98,7 +98,11 @@
     "linha_drawdown": "Drawdown",
     "linha_perda_total": "Total loss",
     "linha_taxa_ativacao": "Activation fee",
-    "linha_recompensa": "Reward"
+    "linha_recompensa": "Reward",
+    "card_desafio_titulo": "The challenge",
+    "card_incubadora_titulo": "Your funded account",
+    "card_desconto": "-{pct}%",
+    "valor_sem_limite": "No day limit"
   },
   "faq": {
     "titulo": "Help Center",

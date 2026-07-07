@@ -33,7 +33,7 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="./css/index.css?v=20260706">
+  <link rel="stylesheet" href="./css/index.css?v=20260707-8">
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -784,19 +784,76 @@
         </div>
         </header>
 
-        <div class="table-wrapper" data-capital="25k">
-    <table class="pricing-table">
-      <thead>
-        <tr>
-          <th data-i18n="plan.tabela_condicao">Condição</th>
-          <th data-i18n="plan.tabela_desafio">Desafio</th>
-          <th data-i18n="plan.tabela_incubadora">Incubadora</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Conteúdo renderizado dinamicamente pelo sectionPlanos.js -->
-      </tbody>
-    </table>
+        <div class="plan-card" data-capital="25k" data-mode="com_ativacao" data-aos="fade-up">
+
+          <!-- Topo: faixa de duas colunas (lede à esquerda, CTA à direita) -->
+          <div class="plan-card__topbar">
+            <!-- Lado esquerdo: preço + meta lado a lado -->
+            <div class="plan-card__pricing">
+              <!-- Sub-coluna 1: preço (protagonista) -->
+              <div class="plan-card__hero">
+                <div class="plan-card__price-line">
+                  <span class="plan-card__price-from" aria-label="Preço original">$69,00</span>
+                  <span class="plan-card__discount" hidden>-72%</span>
+                </div>
+                <span class="plan-card__price">$19,00</span>
+              </div>
+
+              <!-- Sub-coluna 2: meta (apoio) -->
+              <div class="plan-card__meta">
+                <div class="plan-card__header">
+                  <span class="plan-card__badge">Plano 25k</span>
+                </div>
+                <span class="plan-card__mode">Desafio com taxa de ativação</span>
+              </div>
+            </div>
+
+            <!-- 3. CTA — conserto principal -->
+            <a class="plan-card__cta z7-btnx z7-btnx--card" href="#" target="_blank" rel="noopener noreferrer" data-i18n-attr="aria-label:plan.bar_cta_aria">
+              <span class="z7-btnx__bg" aria-hidden="true"></span>
+              <span class="z7-btnx__shine" aria-hidden="true"></span>
+              <span class="z7-btnx__label" data-i18n="plan.bar_cta">Quero esse plano</span>
+              <span class="z7-btnx__cap" aria-hidden="true">
+                <span class="z7-btnx__arrow">→</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- Comparação Desafio × Conta remunerada (paridade de tópicos) -->
+          <div class="plan-card__comparison">
+
+            <!-- Desktop (≥768px): comparação de 3 colunas, rótulo único ao centro -->
+            <div class="plan-card__compare">
+              <!-- Cabeçalhos + linhas renderizados dinamicamente pelo sectionPlanos.js -->
+            </div>
+
+            <!-- Mobile (≤768px): dois painéis empilhados, cada um com seus rótulos -->
+            <div class="plan-card__panels">
+
+              <!-- O desafio (o que você compra) -->
+              <section class="plan-card__panel plan-card__panel--challenge">
+                <h3 class="plan-card__panel-title" data-i18n="plan.card_desafio_titulo">O desafio</h3>
+                <ul class="plan-card__list" data-block="desafio">
+                  <!-- Linhas renderizadas dinamicamente pelo sectionPlanos.js -->
+                </ul>
+              </section>
+
+              <!-- Conector: sequência paga → aprovado → recebe -->
+              <div class="plan-card__flow" aria-hidden="true">
+                <span class="plan-card__flow-arrow">→</span>
+              </div>
+
+              <!-- Sua conta remunerada (consequência/prêmio) -->
+              <section class="plan-card__panel plan-card__panel--reward">
+                <h3 class="plan-card__panel-title" data-i18n="plan.card_incubadora_titulo">Sua conta remunerada</h3>
+                <ul class="plan-card__list" data-block="incubadora">
+                  <!-- Linhas renderizadas dinamicamente pelo sectionPlanos.js -->
+                </ul>
+              </section>
+
+            </div>
+
+          </div>
         </div>
 
       </div>
@@ -1023,35 +1080,6 @@
   }
 </style>
 
-  <aside id="priceBar" class="price-bar" role="region" data-i18n-attr="aria-label:plan.bar_aria">
-    <button type="button" class="price-bar__minimize" data-i18n-attr="aria-label:plan.bar_minimizar" aria-expanded="true">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-
-    <div class="price-bar__inner">
-      <div class="price-bar__info">
-        <span class="price-bar__badge">Plano 25k</span>
-        <span class="price-bar__mode">Desafio com taxa de ativação</span>
-      </div>
-      <div class="price-bar__action">
-        <div class="price-bar__pricing">
-          <span class="price-bar__price-from" aria-label="Preço original">$69,00</span>
-          <span class="price-bar__price">$19,00</span>
-        </div>
-        <a class="price-bar__cta z7-btnx z7-btnx--barra" href="#" target="_blank" rel="noopener noreferrer" role="button" data-i18n-attr="aria-label:plan.bar_cta_aria">
-          <span class="z7-btnx__bg" aria-hidden="true"></span>
-          <span class="z7-btnx__shine" aria-hidden="true"></span>
-          <span class="z7-btnx__label" data-i18n="plan.bar_cta">Quero esse plano</span>
-          <span class="z7-btnx__cap" aria-hidden="true">
-            <span class="z7-btnx__arrow">→</span>
-          </span>
-        </a>
-      </div>
-    </div>
-  </aside>
-
   <!-- Google Tag Manager (noscriptt) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KCJQPMC" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
@@ -1165,7 +1193,7 @@
   <script src="./script/blackPlanos.js?v=20260706"></script>
   <script src="./script/sectionBa.js?v=20260706"></script>
   <script src="./script/sectionFaq.js?v=20260706" defer></script>
-  <script src="./js/sectionPlanos.js?v=20260706" defer></script>
+  <script src="./js/sectionPlanos.js?v=20260707-8" defer></script>
   <script src="./js/tarjaTopo.js?v=20260706"></script>
 </body>
 </html>

@@ -78,24 +78,6 @@
     bottom: 0;
 }
 
-/* ===== Sentinelas pra controlar visibilidade da price-bar ===== */
-.price-bar-sentinel {
-    position: absolute;
-    left: 0;
-    width: 1px;
-    height: 1px;
-    pointer-events: none;
-    opacity: 0;
-}
-
-.price-bar-sentinel--top {
-    top: 0;
-}
-
-.price-bar-sentinel--bottom {
-    bottom: 0;
-}
-
 /* ===== Box — empilha os dois segmented controls ===== */
 .planos .box {
     display: flex;
@@ -443,101 +425,391 @@
 }
 
 /* ============================================================
-   Tabela premium
+   Plan card — card comercial (substitui a antiga tabela)
    ============================================================ */
-.table-wrapper {
+.plan-card {
+    --pc-green-1: #25e99b;
+    --pc-green-2: #11b976;
+    --pc-green-3: #078452;
+    --pc-green-tint: #6ff0b8;
+    --pc-line: #ffffff12;
+
+    position: relative;
     margin-top: 3rem;
     width: 100%;
-    overflow-x: auto;
-    border-radius: 2rem;
+    max-width: 92rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    padding: 2.4rem;
+    border-radius: 2.4rem;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 30%),
+        radial-gradient(120% 90% at 50% -10%, rgba(52, 211, 153, 0.08), transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 32%),
         #0a0a0a;
     border: 1px solid #ffffff15;
     box-shadow:
         0 4rem 8rem -2rem rgba(0, 0, 0, 0.6),
-        0 0 10rem -3rem rgba(255, 255, 255, 0.05);
-    padding: 1.6rem;
-    transition: opacity 200ms ease, transform 200ms ease;
+        0 0 10rem -3rem rgba(52, 211, 153, 0.12);
+    transition: opacity 200ms ease;
 }
 
-.pricing-table {
-    width: 100%;
-    min-width: 56rem;
-    border-collapse: collapse;
-    color: #d8d8d8;
+/* Comparação — desktop: acima da faixa de preço/CTA (via order) */
+.plan-card__comparison {
+    order: 1;
+    transition: opacity 200ms ease, transform 200ms ease;
+    will-change: opacity, transform;
+}
+
+/* Faixa do topo — pilha vertical centralizada (desktop: abaixo da comparação) */
+.plan-card__topbar {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.2rem;
+}
+
+/* Desktop: achata os agrupamentos p/ empilhar tudo direto na topbar.
+   No mobile eles voltam a display:flex (ver bloco ≤768px). */
+.plan-card__pricing,
+.plan-card__hero,
+.plan-card__meta {
+    display: contents;
+}
+
+/* Desktop: badge sobe pro topo da pilha; os demais seguem a ordem do DOM
+   (linha do "de" → preço → mode → CTA) */
+.plan-card__topbar .plan-card__header {
+    order: -1;
+}
+
+/* 1. Header — nome do plano + desconto */
+.plan-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.plan-card__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.6rem;
+    border: 1px solid rgba(52, 211, 153, 0.25);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.10), rgba(11, 93, 59, 0.05));
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
 }
 
-.pricing-table thead th {
-    padding: 1.4rem 1.5rem;
-    text-align: left;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 1.15rem;
-    font-weight: 700;
+.plan-card__discount {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--pc-green-1), var(--pc-green-3));
+    color: #04180f;
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 0.6rem 2rem -0.4rem rgba(37, 233, 155, 0.5);
+}
+
+.plan-card__discount[hidden] {
+    display: none;
+}
+
+/* Linha do "de": preço riscado + pill de desconto, lado a lado */
+.plan-card__price-line {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.plan-card__price-line[hidden] {
+    display: none;
+}
+
+.plan-card__price-from {
+    color: #b8b8b8;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: rgba(255, 110, 110, 0.85);
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+    will-change: opacity, transform;
+}
+
+.plan-card__price-from[hidden] {
+    display: none;
+}
+
+.plan-card__price {
     color: #fff;
-    background: linear-gradient(180deg, #161616, #0d0d0d);
-    border-bottom: 1px solid #ffffff15;
+    font-size: 3.6rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 4rem rgba(52, 211, 153, 0.2);
+    will-change: opacity, transform;
 }
 
-/* Linha gradiente sutil entre header e tbody */
-.pricing-table tbody {
-    background: linear-gradient(to right, transparent, #ffffff20, transparent) top / 100% 2px no-repeat;
-}
-
-.pricing-table tbody tr {
-    transition: background-color 250ms ease;
-}
-
-.pricing-table tbody tr:hover {
-    background-color: #ffffff05;
-}
-
-.pricing-table tbody td {
-    padding: 1.4rem 1.5rem;
-    border-bottom: 1px solid #ffffff08;
+.plan-card__mode {
+    color: #d0d0d0;
     font-size: 1.4rem;
     font-weight: 500;
-    color: #d8d8d8;
-    text-align: left;
-    vertical-align: middle;
+    letter-spacing: 0.01em;
+    will-change: opacity, transform;
+}
+
+/* 3. CTA — variação do .z7-btnx, largura destacada */
+.z7-btnx.z7-btnx--card {
+    --h: 6.4rem;
+    --capw: 5.4rem;
+    align-self: center;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 44rem;
+    margin-top: 0.6rem;
+    padding-left: 3rem;
+    padding-right: calc(var(--capw) + (var(--in) * 2) + 0.8rem);
+    font-size: 1.6rem;
+}
+
+.z7-btnx.z7-btnx--card .z7-btnx__arrow {
+    font-size: 2rem;
+}
+
+/* ============================================================
+   Desktop (base) — comparação de 3 colunas [Desafio · rótulo · Incubadora]
+   Rótulo único ao centro; visual leve, sem gridlines pesadas.
+   ============================================================ */
+.plan-card__compare {
+    display: grid;
+    grid-template-columns: 16rem auto 16rem;
+    justify-content: center;
+    align-items: center;
+    column-gap: 1.2rem;
+    row-gap: 0.8rem;
+}
+
+/* Cabeçalhos sobre as colunas de valor (centrados sobre cada box) + seta */
+.plan-card__chead {
+    padding: 0 0.4rem 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.plan-card__chead--reward {
+    color: var(--pc-green-tint);
+}
+
+.plan-card__chead--flow {
+    padding: 0 1.2rem 1rem;
+    font-size: 2rem;
+    color: rgba(52, 211, 153, 0.7);
+}
+
+/* Rótulo único do tópico, ao centro (discreto) */
+.plan-card__clabel {
+    padding: 0 1rem;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a8a8a;
+}
+
+/* Valores — caixinhas de LARGURA (coluna fixa) e ALTURA (min-height) uniformes.
+   Texto em uma linha, centralizado. */
+.plan-card__cval {
+    min-height: 4.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.2rem;
+    border-radius: 1.4rem;
+    border: 1px solid var(--pc-line);
+    text-align: center;
+    white-space: nowrap;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ececec;
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
 }
 
-.pricing-table tbody tr:last-child td {
+/* Desafio: box neutro (dark) */
+.plan-card__cval--challenge {
+    background: linear-gradient(180deg, #141414, #0e0e0e);
+}
+
+/* Conta remunerada: box com leve tint verde */
+.plan-card__cval--reward {
+    background:
+        radial-gradient(120% 120% at 50% 0%, rgba(52, 211, 153, 0.10), transparent 70%),
+        linear-gradient(180deg, rgba(52, 211, 153, 0.05), rgba(8, 132, 82, 0.02));
+    border-color: rgba(52, 211, 153, 0.22);
+}
+
+.plan-card__cval--currency {
+    letter-spacing: -0.01em;
+}
+
+/* Destaque verde dentro do box: recompensa (90%) e "sem limite de dias" */
+.plan-card__cval--highlight {
+    color: var(--pc-green-tint);
+    font-weight: 800;
+    font-size: 1.7rem;
+}
+
+/* Valores longos: fonte menor p/ caber em UMA linha na largura fixa.
+   Depois de --highlight p/ vencer no caso "Sem limite de dias". */
+.plan-card__cval--long {
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   Painéis (mobile only) — escondidos no desktop
+   ============================================================ */
+.plan-card__panels {
+    display: none;
+    gap: 1.2rem;
+}
+
+.plan-card__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 2rem;
+    border-radius: 1.6rem;
+    border: 1px solid var(--pc-line);
+}
+
+/* Desafio = painel primário (o que se compra) */
+.plan-card__panel--challenge {
+    background: linear-gradient(180deg, #121212, #0d0d0d);
+}
+
+/* Conta remunerada = prêmio/consequência (tratamento verde, não espelhado) */
+.plan-card__panel--reward {
+    background:
+        radial-gradient(120% 80% at 50% 0%, rgba(52, 211, 153, 0.10), transparent 60%),
+        linear-gradient(180deg, rgba(52, 211, 153, 0.04), rgba(8, 132, 82, 0.02));
+    border-color: rgba(52, 211, 153, 0.22);
+}
+
+.plan-card__panel-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.plan-card__panel--reward .plan-card__panel-title {
+    color: var(--pc-green-tint);
+}
+
+/* Listas de specs (mobile) */
+.plan-card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-card__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid #ffffff08;
+    will-change: opacity, transform;
+}
+
+.plan-card__item:last-child {
     border-bottom: 0;
 }
 
-/* Separadores verticais minimalistas entre colunas */
-.pricing-table th:not(:last-child),
-.pricing-table td:not(:last-child) {
-    border-right: 1px solid #ffffff05;
+.plan-card__item-label {
+    color: #a8a8a8;
+    font-size: 1.35rem;
+    font-weight: 500;
 }
 
-/* Coluna "Condição" — primeira coluna */
-.pricing-table tbody td:first-child {
+.plan-card__item-value {
+    color: #f0f0f0;
     font-size: 1.4rem;
     font-weight: 600;
-    color: #fff;
+    text-align: right;
+    font-feature-settings: "tnum" 1;
+    font-variant-numeric: tabular-nums;
 }
 
-.cell-label {
-    display: inline-block;
-    transition: transform 250ms ease;
-    will-change: transform;
-}
-
-.pricing-table tbody tr:hover .cell-label {
-    transform: translateX(0.2rem);
-}
-
-/* Valores monetários — peso reforçado, sem mudança de cor */
-.cell--currency {
+.plan-card__item-value--currency {
     font-weight: 700;
     letter-spacing: -0.01em;
+}
+
+/* Sublabel do valor (ex.: "dos lucros são seus" junto do 90%) */
+.plan-card__item-sub {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #9fd9c1;
+}
+
+/* Linha reformulada positivamente (ex.: "sem limite de dias") */
+.plan-card__item--highlight .plan-card__item-label,
+.plan-card__item--highlight .plan-card__item-value {
+    color: var(--pc-green-tint);
+    font-weight: 700;
+}
+
+/* Conector entre painéis */
+.plan-card__flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(52, 211, 153, 0.7);
+}
+
+.plan-card__flow-arrow {
+    display: inline-block;
+    font-size: 2.4rem;
+    line-height: 1;
 }
 
 /* ============================================================
@@ -545,10 +817,94 @@
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
     .seg[data-ready="true"] .seg__blob,
-    .pricing-table tbody tr,
-    .cell-label,
+    .plan-card,
+    .plan-card__comparison,
+    .plan-card__item,
     .tooltip-content {
         transition: none;
+    }
+}
+
+/* ============================================================
+   Desktop ≥ 769px — cabeçalho (nome + mode) no topo, comparação no meio,
+   preço horizontal compacto + CTA embaixo. Mobile (≤768px) fica intacto.
+   ============================================================ */
+@media (min-width: 769px) {
+    /* Card com a largura do próprio conteúdo (comparação) + padding — sem vãos pretos */
+    .plan-card {
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    /* Achata topbar/pricing p/ posicionar cada bloco direto no card */
+    .plan-card__topbar,
+    .plan-card__pricing {
+        display: contents;
+    }
+
+    /* Ordem: cabeçalho → comparação → preço → CTA */
+    .plan-card__comparison {
+        order: 2;
+    }
+
+    /* Cabeçalho do card — nome do plano + mode label (subtítulo discreto) */
+    .plan-card__meta {
+        order: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    /* Título do plano mais presente */
+    .plan-card__meta .plan-card__badge {
+        font-size: 1.5rem;
+        padding: 0.8rem 2.2rem;
+        letter-spacing: 0.18em;
+    }
+
+    .plan-card__meta .plan-card__mode {
+        font-size: 1.3rem;
+        color: #b0b0b0;
+    }
+
+    /* Bloco de preço (rodapé) — horizontal e compacto:
+       [de riscado / pill] à esquerda; $por grande à direita */
+    .plan-card__hero {
+        order: 3;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1.4rem;
+    }
+
+    /* Preço invertido: [de riscado / pill] à esquerda, $por à direita */
+    .plan-card__hero .plan-card__price {
+        order: 2;
+    }
+
+    .plan-card__hero .plan-card__price-line {
+        order: 1;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .plan-card__price-from {
+        font-size: 1.5rem;
+    }
+
+    .plan-card__discount {
+        font-size: 1.1rem;
+        padding: 0.35rem 1rem;
+    }
+
+    /* CTA logo abaixo do preço */
+    .z7-btnx.z7-btnx--card {
+        order: 4;
+        margin-top: 0.4rem;
     }
 }
 
@@ -583,23 +939,36 @@
         min-width: 11rem;
     }
 
-    .table-wrapper {
+    .plan-card {
         margin-top: 4rem;
-        padding: 2rem;
+        padding: 3.2rem;
     }
 
-    .pricing-table thead th {
-        padding: 1.6rem 2rem;
+    .plan-card__price {
+        font-size: 4.2rem;
+    }
+
+    /* Comparação um pouco mais generosa em telas grandes (boxes de largura fixa) */
+    .plan-card__compare {
+        grid-template-columns: 18rem auto 18rem;
+        column-gap: 1.6rem;
+    }
+
+    .plan-card__cval {
+        min-height: 5rem;
+        font-size: 1.5rem;
+    }
+
+    .plan-card__cval--highlight {
+        font-size: 1.85rem;
+    }
+
+    .plan-card__cval--long {
         font-size: 1.25rem;
     }
 
-    .pricing-table tbody td {
-        padding: 1.6rem 2rem;
-        font-size: 1.5rem;
-    }
-
-    .pricing-table tbody td:first-child {
-        font-size: 1.5rem;
+    .plan-card__clabel {
+        font-size: 1.15rem;
     }
 }
 
@@ -624,5 +993,78 @@
         --h: 6rem;
         padding: 0 1.6rem;
         font-size: 1.2rem;
+    }
+
+    /* Card em coluna única — sem scroll horizontal */
+    .plan-card {
+        padding: 1.8rem;
+        gap: 2rem;
+    }
+
+    /* Topo empilhado (mobile) — restaura os agrupamentos flex (base = display:contents) */
+    .plan-card__topbar {
+        gap: 2rem;
+    }
+
+    .plan-card__pricing {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.6rem;
+        width: 100%;
+    }
+
+    .plan-card__hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        text-align: center;
+    }
+
+    .plan-card__meta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.6rem;
+    }
+
+    .plan-card__header {
+        justify-content: center;
+    }
+
+    .plan-card__price {
+        font-size: 4rem;
+    }
+
+    /* CTA volta a full-width no mobile */
+    .z7-btnx.z7-btnx--card {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    /* Mobile mostra os dois painéis; a comparação de 3 colunas fica só no desktop */
+    .plan-card__compare {
+        display: none;
+    }
+
+    .plan-card__panels {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    /* Ordem natural no mobile: preço/CTA no topo (como hoje) */
+    .plan-card__topbar,
+    .plan-card__comparison {
+        order: 0;
+    }
+
+    /* Seta conectora aponta pra baixo quando os painéis empilham */
+    .plan-card__flow-arrow {
+        transform: rotate(90deg);
     }
 }
