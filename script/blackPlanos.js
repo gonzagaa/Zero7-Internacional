@@ -1,7 +1,10 @@
 /* /script/blackPlanos.js — V2 (dois modos: com_ativacao | sem_ativacao) */
 
 (function () {
-  const DATA_URL = "./script/planos.json";
+  // Resolve relativo ao proprio script, para funcionar em paginas de subpastas (ex: /v2)
+  const DATA_URL = (document.currentScript && document.currentScript.src)
+    ? new URL("./planos.json", document.currentScript.src).href
+    : "./script/planos.json";
   const DEFAULT_MODE = "com_ativacao";
   const VALID_MODES = ["com_ativacao", "sem_ativacao"];
 

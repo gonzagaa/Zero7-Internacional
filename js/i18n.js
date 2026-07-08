@@ -6,6 +6,21 @@
   const STORAGE_KEY = 'zero7-lang';
   const QUERY_KEY = 'lang';
 
+  // Base = raiz do site (pasta acima de /js), para funcionar em paginas de subpastas (ex: /v2)
+  const ROOT_BASE = (function () {
+    try {
+      return document.currentScript && document.currentScript.src
+        ? new URL('..', document.currentScript.src)
+        : null;
+    } catch (_) { return null; }
+  })();
+
+  function fromRoot(path) {
+    try {
+      return ROOT_BASE ? new URL(path, ROOT_BASE).href : path;
+    } catch (_) { return path; }
+  }
+
   let currentLang = null;
   let dict = {};
   const cache = {};
@@ -46,7 +61,7 @@
       dict = cache[lang];
       return dict;
     }
-    const basePath = (typeof window !== 'undefined' && window.I18N_LANG_PATH) || './lang/';
+    const basePath = (typeof window !== 'undefined' && window.I18N_LANG_PATH) || fromRoot('./lang/');
     const resp = await fetch(basePath + lang + '.json?v=' + Date.now(), { cache: 'no-cache' });
     if (!resp.ok) throw new Error('Failed to load lang ' + lang + ' (' + resp.status + ')');
     const data = await resp.json();
@@ -114,7 +129,7 @@
         const img = btn.querySelector('img.flag');
         const label = btn.querySelector('.label');
         if (img && meta.flag) {
-          img.setAttribute('src', meta.flag);
+          img.setAttribute('src', fromRoot(meta.flag));
           if (meta.name) img.setAttribute('alt', meta.name);
         }
         if (label && meta.label) {

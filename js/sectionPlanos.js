@@ -1,6 +1,9 @@
 (() => {
   const SECTION_SELECTOR = '#plan';
-  const JSON_PATH = './data/planos.json';
+  // Resolve relativo ao proprio script, para funcionar em paginas de subpastas (ex: /v2)
+  const JSON_PATH = (document.currentScript && document.currentScript.src)
+    ? new URL('../data/planos.json', document.currentScript.src).href
+    : './data/planos.json';
 
   // Tópicos do card — cada linha lê os DOIS valores (.desafio e .incubadora).
   // Desafio e Conta Remunerada exibem exatamente os mesmos 8 tópicos, na mesma ordem.

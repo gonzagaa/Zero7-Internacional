@@ -1,0 +1,23 @@
+.v2 #home {
+
+}
+
+@media (min-width: 1080px) {
+    .v2 header#home .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .v2 header#home img.desktop {
+        display: none;
+    }
+
+    .v2 header#home .text {
+        align-items: start;
+        text-align: left;
+    }
+
+    .v2 header#home h1 {
+        font-size: 5rem;
+    }
+}
