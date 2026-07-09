@@ -126,7 +126,7 @@ body.v2 {
     }
 
     .v2 header#home img.desktop {
-        display: none;
+        /* display: none; */
     }
 
     .v2 header#home .text {
