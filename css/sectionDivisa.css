@@ -230,6 +230,10 @@
     overflow: initial;
   }
 
+  .v2 section#divisa {
+    margin-top: -5%;
+  }
+
   section#divisa img.bg {
     border-radius: 10rem;
   }
@@ -252,6 +256,11 @@
   section#divisa .cards .borderCard.um,
   section#divisa .cards .borderCard.tres {
     transform: translateY(-30%);
+  }
+
+  .v2 section#divisa .cards .borderCard.um,
+  .v2 section#divisa .cards .borderCard.tres {
+    transform: translateY(-15%);
   }
 
   section#divisa .cards .borderCard {

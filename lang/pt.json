@@ -27,6 +27,13 @@
     "cta": "Iniciar desafio",
     "cta_aria": "Começar agora mesmo"
   },
+  "hero_v2": {
+    "titulo_inicio": "Transforme seu conhecimento",
+    "titulo_destaque": "em grandes lucros",
+    "item1": { "html": "<strong>100%</strong> dos lucros" },
+    "item2": { "html": "<strong>Sem mínimo de dias</strong> na incubadora <small>(conta financiada)</small>" },
+    "item3": { "html": "Payout em <strong>PIX</strong> para brasileiros" }
+  },
   "divisa": {
     "desde": "Desde",
     "jornada": "nossa jornada começou",

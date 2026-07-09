@@ -27,6 +27,13 @@
     "cta": "Start the challenge",
     "cta_aria": "Get started now"
   },
+  "hero_v2": {
+    "titulo_inicio": "Turn your knowledge",
+    "titulo_destaque": "into big profits",
+    "item1": { "html": "<strong>100%</strong> of the profits" },
+    "item2": { "html": "<strong>No minimum trading days</strong> in the incubator <small>(funded account)</small>" },
+    "item3": { "html": "Payout via <strong>PIX</strong> for Brazilians" }
+  },
   "divisa": {
     "desde": "Since",
     "jornada": "our journey began",

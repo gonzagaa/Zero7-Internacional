@@ -27,6 +27,13 @@
     "cta": "Iniciar el desafío",
     "cta_aria": "Comenzar ahora"
   },
+  "hero_v2": {
+    "titulo_inicio": "Transforma tu conocimiento",
+    "titulo_destaque": "en grandes ganancias",
+    "item1": { "html": "<strong>100%</strong> de las ganancias" },
+    "item2": { "html": "<strong>Sin mínimo de días</strong> en la incubadora <small>(cuenta financiada)</small>" },
+    "item3": { "html": "Pago vía <strong>PIX</strong> para brasileños" }
+  },
   "divisa": {
     "desde": "Desde",
     "jornada": "comenzó nuestro recorrido",

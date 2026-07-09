@@ -33,7 +33,7 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="../css/index.css?v=20260707-12">
+  <link rel="stylesheet" href="../css/index.css?v=20260709-1">
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -334,11 +334,36 @@
       <div class="content">
         <div data-aos="fade-up" class="text">
           <h1>
-            <span data-i18n="hero.titulo_inicio">Seu ecossistema de trading:</span>
-            <span data-i18n="hero.titulo_destaque">Acessível, seguro, lucrativo</span>
+            <span data-i18n="hero_v2.titulo_inicio">Transforme seu conhecimento</span>
+            <span data-i18n="hero_v2.titulo_destaque">em grandes lucros</span>
           </h1>
 
-          <p data-i18n="hero.descricao">Uma mesa proprietária para desenvolver sua carreira como trader de qualquer lugar do mundo, operando em grande volume e lucrando em uma das profissões mais rentáveis do mundo.</p>
+          <ul class="hero-benefits">
+            <li>
+              <span class="hero-benefits__check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="hero-benefits__text" data-i18n="hero_v2.item1.html"><strong>100%</strong> dos lucros</span>
+            </li>
+            <li>
+              <span class="hero-benefits__check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="hero-benefits__text" data-i18n="hero_v2.item2.html"><strong>Sem mínimo de dias</strong> na incubadora <small>(conta financiada)</small></span>
+            </li>
+            <li>
+              <span class="hero-benefits__check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12.5L10 17.5L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="hero-benefits__text" data-i18n="hero_v2.item3.html">Payout em <strong>PIX</strong> para brasileiros</span>
+            </li>
+          </ul>
 
            <a class="z7-btnx" href="#plan" role="button" data-i18n-attr="aria-label:hero.cta_aria">
             <span class="z7-btnx__bg" aria-hidden="true"></span>
@@ -360,11 +385,11 @@
 
     </div>
 
-    <!-- <div class="custom-shape-divider-bottom-1736960517">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z" class="shape-fill"></path>
-        </svg>
-      </div> -->
+    <div class="custom-shape-divider-bottom-1783599325">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z" class="shape-fill"></path>
+    </svg>
+</div>
   </header>
 
   <section id="divisa">
@@ -372,21 +397,21 @@
     <div class="wrapper">
       <div class="content">
         <div class="cards">
-          <div data-aos="fade-up-left" data-aos-duration="6000" class="borderCard um">
+          <div data-aos-duration="6000" class="borderCard um">
             <div class="card">
               <h3><span data-i18n="divisa.desde">Desde</span> <span id="ano">0</span></h3>
               <p data-i18n="divisa.jornada">nossa jornada começou</p>
             </div>
           </div>
 
-          <div data-aos="fade-down" data-aos-duration="6000" class="borderCard dois">
+          <div data-aos-duration="6000" class="borderCard dois">
             <div class="card">
               <h3><span id="traders">0</span> <span data-i18n="divisa.mil">mil</span></h3>
               <p data-i18n="divisa.traders">traders na comunidade</p>
             </div>
           </div>
 
-          <div data-aos="fade-up-right" data-aos-duration="6000" class="borderCard tres">
+          <div data-aos-duration="6000" class="borderCard tres">
             <div class="card">
               <h3><span id="pagamentos">0</span> <span data-i18n="divisa.milhoes">milhões</span></h3>
               <p data-i18n="divisa.pagamentos">em pagamentos realizados</p>
