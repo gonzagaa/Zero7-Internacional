@@ -180,6 +180,15 @@ nav {
     font-family: var(--tts);
     font-weight: 500;
   }
+
+  /* mobile: sem fundo o botão fica com texto preto sobre o overlay escuro
+     do menu (invisível) — o gradient só era aplicado no desktop */
+  @media (max-width: 1079px) {
+    body nav#navigation .menu .buttons button#navButton {
+      background: var(--gradient);
+      color: #000000;
+    }
+  }
   
   @media (min-width: 1080px) {
     /* reset =================== */

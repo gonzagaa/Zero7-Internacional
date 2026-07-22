@@ -209,14 +209,6 @@ body.v2:not(.menu-expanded) nav#navigation:not(.scroll) .close-menu path {
     stroke: #0a0a0a;
 }
 
-/* botão "Área do Trader" no menu mobile: sem isso ele fica com texto preto
-   sobre fundo transparente no overlay escuro (invisível) */
-@media (max-width: 1079px) {
-    body.v2 nav#navigation .menu .buttons button#navButton {
-        background: var(--gradient);
-        color: #000000;
-    }
-}
 
 @media (min-width: 1080px) {
     /* links do menu escuros */
