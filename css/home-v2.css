@@ -21,6 +21,10 @@ body.v2 {
     background: linear-gradient(to bottom, #fff, #ededed);
 }
 
+.v2 #home .image img.mobile {
+    mask-image: none;
+}
+
 /* Título escuro para contraste com o fundo claro
    (redeclara o clip/animação pois o shorthand `background` reseta tudo) */
 .v2 #home h1 {
@@ -111,6 +115,8 @@ body.v2 {
 .v2 header#home a {
     margin-top: 3rem;
 }
+
+
 
 /* --------------------------------------------------------------------------
    Desktop
@@ -299,4 +305,47 @@ body.v2:not(.menu-expanded) nav#navigation:not(.scroll) .close-menu path {
 
 .custom-shape-divider-bottom-1783599325 .shape-fill {
     fill: #000000;
+}
+
+/* Fecha o vão branco entre a curva da hero e os cards: a section #divisa
+   não tem fundo próprio (na v1 o body preto aparecia por trás dela) */
+.v2 #divisa {
+    background: var(--bg-black);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------------------- */
+@media (max-width: 1079px) {
+    /* hero solta dos 90vh: cresce conforme o conteúdo (pode passar de 100vh) */
+    .v2 #home {
+        height: auto;
+        max-height: none;
+        min-height: 100vh;
+        padding-bottom: 6rem; /* folga pro conteúdo não encostar na curva */
+    }
+
+    /* texto todo mais pra baixo, dando respiro pra imagem no topo */
+    .v2 #home .text {
+        margin-top: 115%;
+    }
+
+    /* caixinhas preenchendo 100% da largura */
+    .v2 #home .hero-benefits {
+        width: 100%;
+    }
+
+    .v2 #home .hero-benefits li {
+        width: 100%;
+    }
+
+    /* curva mais baixa (menos acentuada) */
+    .custom-shape-divider-bottom-1783599325 svg {
+        height: 48px;
+    }
+
+    /* caixas "Desde 2023" etc. um pouco mais pra baixo */
+    .v2 #divisa .cards {
+        margin-top: 3rem;
+    }
 }
