@@ -1,0 +1,467 @@
+/* =========================
+   SUPORTE CARDS — INTERNACIONAL
+   3 cards: Discord | Banner | Comunidade CTA
+   Identidade: dark mono (preto/prata) + accent verde nos CTAs
+========================= */
+
+#suporte-cards {
+  position: relative;
+  overflow: hidden;
+  padding-block: 4rem 2rem;
+
+  /* isola paint da seção — não repinta o resto do site */
+  contain: layout paint style;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 60rem;
+
+  /* palette mono — levemente acima do bg do site (#040404) pra criar contraste */
+  --sc-bg1: #121212;
+  --sc-bg2: #0a0a0a;
+  --sc-radius-outer: 1.8rem;
+  --sc-radius-inner: 1.55rem;
+  --sc-border: 2px;
+
+  /* accent verde (igual botão z7-btnx) */
+  --sc-green-deep: #0b5d3b;
+  --sc-green-mid: #10a36a;
+  --sc-green-sky: #34d399;
+}
+
+#suporte-cards .wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+#suporte-cards .content {
+  display: grid;
+  grid-template-rows: auto;
+  gap: 2rem;
+}
+
+/* =========================
+   BORDER (moldura metálica com energia girando)
+========================= */
+#suporte-cards .border {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  border-radius: var(--sc-radius-outer);
+  padding: var(--sc-border);
+  isolation: isolate;
+
+  /* base metal mono */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0)),
+    linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.08), rgba(0,0,0,.4));
+
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.65),
+    0 2px 0 rgba(255,255,255,.06) inset;
+}
+
+/* glow estático por trás (sem blur — barato) */
+#suporte-cards .border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at var(--hot-x, 30%) var(--hot-y, 25%),
+      rgba(255,255,255,.14) 0%,
+      rgba(255,255,255,.06) 30%,
+      rgba(0,0,0,0) 65%);
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* energia girando na borda — rotação via transform (GPU) */
+#suporte-cards .border::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 1;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,.85) 10%,
+      rgba(255,255,255,.5) 14%,
+      rgba(180,180,180,.55) 20%,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0) 100%);
+  opacity: .45;
+  pointer-events: none;
+
+  transform-origin: center center;
+  transform: scale(1.03) translateZ(0);
+  will-change: transform;
+  animation: scBorderSpinGPU 5s linear infinite;
+}
+
+/* variação por card (offset do glow) */
+#suporte-cards .content .border:nth-child(1) { --hot-x: 22%; --hot-y: 30%; }
+#suporte-cards .content .border:nth-child(2) { --hot-x: 50%; --hot-y: 18%; }
+#suporte-cards .content .border:nth-child(3) { --hot-x: 78%; --hot-y: 32%; }
+
+/* =========================
+   CARDS 1 e 2 — BORDA ESTÁTICA (estilo nacional adaptado à identidade prata)
+========================= */
+#suporte-cards .content .border:nth-child(2n+1) {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(255, 255, 255, 0.18) 18%,
+      rgba(255, 255, 255, 0.06) 48%,
+      rgba(255, 255, 255, 0.02) 68%,
+      rgba(0, 0, 0, 0.18) 100%
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+#suporte-cards .content .border:nth-child(2n+1)::before {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.14), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.06), transparent 32%);
+  opacity: 1;
+  filter: none;
+  inset: 0;
+}
+
+/* remove a energia animada dos cards 1 e 2 → linha interna sutil e estática */
+#suporte-cards .content .border:nth-child(2n+1)::after {
+  animation: none;
+  transform: none;
+  will-change: auto;
+  inset: 1px;
+  border-radius: calc(var(--sc-radius-outer) - 1px);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  opacity: 1;
+  filter: none;
+}
+
+#suporte-cards .content .border:nth-child(2n+1):hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 22px 50px rgba(0, 0, 0, 0.34);
+}
+
+/* =========================
+   BOXES INTERNOS (card content)
+========================= */
+#suporte-cards .whatsapp,
+#suporte-cards .ajuda,
+#suporte-cards .image {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  border-radius: var(--sc-radius-inner);
+  overflow: hidden;
+
+  /* fundo simplificado: 1 radial + 1 linear (era 5 camadas) */
+  background:
+    radial-gradient(120% 80% at 50% 0%,
+      rgba(255,255,255,.06) 0%,
+      rgba(255,255,255,0) 60%),
+    linear-gradient(135deg, var(--sc-bg1), var(--sc-bg2));
+
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.55),
+    0 1px 0 rgba(255,255,255,.06) inset;
+}
+
+/* vinheta sutil (estática, sem animação) */
+#suporte-cards .whatsapp::after,
+#suporte-cards .ajuda::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(0,0,0,0) 45%,
+      rgba(0,0,0,.4) 100%);
+  opacity: .8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* =========================
+   CARD 1: Discord (mono metálico)
+========================= */
+#suporte-cards .whatsapp {
+  min-height: 22rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 2.4rem;
+  text-align: center;
+}
+
+#suporte-cards .whatsapp > * {
+  position: relative;
+  z-index: 2;
+}
+
+#suporte-cards .whatsapp .sc-icon {
+  display: block;
+  width: 6.4rem;
+  height: 6.4rem;
+  margin-inline: auto;
+  object-fit: cover;
+  border-radius: 1.4rem;
+  border: 1px solid rgba(255,255,255,.10);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 10px 28px rgba(0,0,0,.55);
+}
+
+#suporte-cards .whatsapp p {
+  font-family: var(--ncs);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #eaeaea;
+  margin: 0;
+
+  background: linear-gradient(110deg, #ffffff 0%, #e5e5e5 40%, #b8b8b8 70%, #8a8a8a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================
+   CARD 2: Banner
+========================= */
+#suporte-cards .image {
+  min-height: 22rem;
+  overflow: hidden;
+}
+
+#suporte-cards .image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.30));
+  pointer-events: none;
+  z-index: 1;
+}
+
+#suporte-cards .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+  transition: transform .6s ease;
+}
+
+#suporte-cards .border:hover .image img {
+  transform: scale(1.04);
+}
+
+/* =========================
+   CARD 3: CTA Comunidade
+========================= */
+#suporte-cards .ajuda {
+  min-height: 22rem;
+  padding: 2.4rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#suporte-cards .ajuda > * {
+  position: relative;
+  z-index: 2;
+}
+
+#suporte-cards .ajuda h3 {
+  color: #ffffff;
+  font-family: 'Neue Plak Regular', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0 0 1rem 0;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+#suporte-cards .ajuda h3 span {
+  font-family: 'Neue Plak Bold', sans-serif;
+  font-weight: 700;
+
+  background: linear-gradient(
+    120deg,
+    #ffffff 0%,
+    #b8b8b8 25%,
+    #ffffff 50%,
+    #bababa 75%,
+    #ffffff 100%
+  );
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: scTextGradientMove 5s ease-in-out infinite;
+}
+
+@keyframes scTextGradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#suporte-cards .ajuda p {
+  font-size: 1.45rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(220,220,220,.75);
+  margin: 0;
+}
+
+#suporte-cards .ajuda p span {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+#suporte-cards .ajuda a {
+  text-decoration: none;
+  margin-top: 2rem;
+  align-self: flex-start;
+}
+
+#suporte-cards .ajuda a button {
+  position: relative;
+  border: 1px solid rgba(255,255,255,.10);
+  padding: 1.2rem 2.6rem;
+  border-radius: 1.2rem 0 1.2rem 0;
+
+  font-family: var(--ncs);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #ffffff;
+
+  background:
+    radial-gradient(140% 180% at 30% 30%,
+      rgba(255,255,255,.20) 0%,
+      rgba(255,255,255,0) 55%),
+    linear-gradient(90deg,
+      #063b26 0%,
+      var(--sc-green-deep) 32%,
+      var(--sc-green-mid) 68%,
+      var(--sc-green-sky) 100%);
+
+  box-shadow:
+    0 0 3.5rem rgba(11, 93, 59, 0.34),
+    0 0 3.6rem rgba(52, 211, 153, 0.24),
+    0 0 0 .3rem rgba(52, 211, 153, 0.10);
+
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform .35s ease, filter .35s ease, box-shadow .45s ease;
+}
+
+#suporte-cards .ajuda a button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    rgba(255,255,255,0) 40%,
+    rgba(255,255,255,.22) 50%,
+    rgba(255,255,255,0) 60%);
+  transform: translateX(-100%);
+  transition: transform .6s ease;
+  pointer-events: none;
+}
+
+#suporte-cards .ajuda a button:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.15) contrast(1.05);
+  box-shadow:
+    0 12px 30px rgba(11, 93, 59, 0.42),
+    0 6px 20px rgba(52, 211, 153, 0.30),
+    0 0 0 .35rem rgba(52, 211, 153, 0.18);
+}
+
+#suporte-cards .ajuda a button:hover::after {
+  transform: translateX(100%);
+}
+
+/* =========================
+   ANIMAÇÕES
+========================= */
+@keyframes scBorderSpinGPU {
+  from { transform: scale(1.035) rotate(0deg) translateZ(0); }
+  to   { transform: scale(1.035) rotate(360deg) translateZ(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #suporte-cards .border::after,
+  #suporte-cards .ajuda h3 span {
+    animation: none !important;
+  }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1080px) {
+  #suporte-cards {
+    padding-block: 6rem 4rem;
+  }
+
+  #suporte-cards .content {
+    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-rows: 1fr;
+    align-items: stretch;
+    gap: 3rem;
+  }
+
+  #suporte-cards .whatsapp,
+  #suporte-cards .ajuda,
+  #suporte-cards .image {
+    min-height: 25rem;
+  }
+
+  #suporte-cards .whatsapp {
+    padding-inline: 4rem;
+  }
+
+  #suporte-cards .whatsapp p {
+    font-size: 1.5rem;
+  }
+
+  #suporte-cards .ajuda h3 {
+    font-size: 3rem;
+  }
+
+  #suporte-cards .image img {
+    aspect-ratio: 16 / 7;
+    height: 100%;
+  }
+
+  /* isola cada card em sua própria layer */
+  #suporte-cards .border {
+    contain: layout paint;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+}

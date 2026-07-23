@@ -42,6 +42,12 @@
     "milhoes": "million",
     "pagamentos": "in payouts processed"
   },
+  "suporteCards": {
+    "whatsapp": "Official Zero7 community on Discord",
+    "titulo": { "html": "Join our <span>community</span>" },
+    "descricao": { "html": "Join our server and <span>chat with other Zero7 traders</span>." },
+    "cta": "Access Discord"
+  },
   "topicos": {
     "titulo_inicio": "How does",
     "titulo_destaque": "Zero7",
