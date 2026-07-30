@@ -16,13 +16,16 @@
   },
   "tarja": {
     "texto": {
-      "html": "Opera en el mercado internacional con hasta <span class=\"tarja-destaque\"><b>70</b><span class=\"suf\"><span>%</span><span>OFF</span></span></span>"
+      "html": "<span class=\"tarja-topo__intro\">Opera en el mercado internacional con</span> <span class=\"tarja-destaque\">80% OFF</span>"
+    },
+    "cupom": {
+      "html": "Usa el cupón: <b>ZERO7</b>"
     },
     "botao": "Ver Oferta"
   },
   "hero": {
     "titulo_inicio": "Financiamos traders con cuentas de hasta",
-    "titulo_destaque": "$250.000,00",
+    "titulo_destaque": "$250.000",
     "descricao": "Una mesa propietaria para desarrollar tu carrera como trader desde cualquier lugar del mundo, operando con gran volumen y obteniendo ganancias en una de las profesiones más rentables del mundo.",
     "cta": "Iniciar el desafío",
     "cta_aria": "Comenzar ahora"

@@ -570,6 +570,40 @@
     will-change: opacity, transform;
 }
 
+/* Linha do preço (de + por) — empilhada por padrão (mobile: de acima do por) */
+.plan-card__price-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Cupom dentro do card, abaixo do preço — ticket verde tracejado */
+.plan-card__cupom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    align-self: center;
+    margin-top: 0.4rem;
+    padding: 0.4rem 1.1rem;
+    border: 1px dashed rgba(52, 211, 153, 0.5);
+    border-radius: 0.7rem;
+    background: rgba(52, 211, 153, 0.08);
+    color: #cfe9dd;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.plan-card__cupom b {
+    color: var(--pc-green-tint);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
 .plan-card__mode {
     color: #d0d0d0;
     font-size: 1.4rem;
@@ -910,13 +944,18 @@
         justify-self: start;
         margin-top: 2rem;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 1rem;
+    }
+
+    /* Linha do preço lado a lado no desktop (de à esquerda, $por à direita) */
+    .plan-card__price-row {
+        flex-direction: row;
         gap: 1.4rem;
     }
 
-    /* Preço invertido: [de riscado / pill] à esquerda, $por à direita */
     .plan-card__hero .plan-card__price {
         order: 2;
     }
@@ -944,7 +983,7 @@
         grid-column: 2;
         justify-self: end;
         --h: 5.6rem;
-        width: 24rem;
+        width: 28rem;
         max-width: none;
         margin-top: 2rem;
     }
@@ -1015,6 +1054,21 @@
 }
 
 /* ============================================================
+   Desktop ≥ 1700px — botões dos 3 modos um pouco maiores
+   ============================================================ */
+@media (min-width: 1700px) {
+    .z7-btnx.z7-btnx--toggle {
+        --h: 6rem;
+        padding: 0 2.6rem;
+    }
+
+    .z7-btnx.z7-btnx--toggle,
+    .z7-btnx.z7-btnx--toggle .z7-btnx__label {
+        font-size: 1.5rem;
+    }
+}
+
+/* ============================================================
    Mobile ≤ 768px — mode-toggle ocupa linha cheia, lado a lado
    ============================================================ */
 @media (max-width: 768px) {
@@ -1068,7 +1122,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.9rem;
         text-align: center;
     }
 

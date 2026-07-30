@@ -16,13 +16,16 @@
   },
   "tarja": {
     "texto": {
-      "html": "Opere no mercado internacional com até <span class=\"tarja-destaque\"><b>70</b><span class=\"suf\"><span>%</span><span>OFF</span></span></span>"
+      "html": "<span class=\"tarja-topo__intro\">Opere no mercado internacional com</span> <span class=\"tarja-destaque\">80% OFF</span>"
+    },
+    "cupom": {
+      "html": "Use o cupom: <b>ZERO7</b>"
     },
     "botao": "Ver Oferta"
   },
   "hero": {
     "titulo_inicio": "Financiamos Traders com contas de até",
-    "titulo_destaque": "$ 250.000,00",
+    "titulo_destaque": "$ 250.000",
     "descricao": "Uma mesa proprietária para desenvolver sua carreira como trader de qualquer lugar do mundo, operando em grande volume e lucrando em uma das profissões mais rentáveis do mundo.",
     "cta": "Iniciar desafio",
     "cta_aria": "Começar agora mesmo"

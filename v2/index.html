@@ -33,7 +33,7 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="../css/index.css?v=20260730-5">
+  <link rel="stylesheet" href="../css/index.css?v=20260730-7">
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -247,9 +247,10 @@
   <aside class="tarja-topo" role="region" aria-label="Promoção em destaque">
     <div class="tarja-topo__wrapper">
       <p class="tarja-topo__copy" data-i18n="tarja.texto.html">
-        Opere no mercado internacional com até
-        <span class="tarja-destaque"><b>70</b><span class="suf"><span>%</span><span>OFF</span></span></span>
+        <span class="tarja-topo__intro">Opere no mercado internacional com</span>
+        <span class="tarja-destaque">80% OFF</span>
       </p>
+      <span class="tarja-topo__cupom" data-i18n="tarja.cupom.html">Use o cupom: <b>ZERO7</b></span>
       <a class="tarja-topo__btn" href="#plan">
         <span data-i18n="tarja.botao">Ver Oferta</span>
         <span class="arrow" aria-hidden="true">
@@ -273,6 +274,7 @@
         <ul>
           <li data-aos="fade-right"><a onclick="closeMenu()" href="#home" data-i18n="header.menu.home">Home</a></li>
           <li data-aos="fade-right"><a onclick="closeMenu()" href="#plan" data-i18n="header.menu.planos">Planos</a></li>
+          <li data-aos="fade-right"><a onclick="closeMenu()" target="_blank" rel="noopener noreferrer" href="https://discord.gg/DAhGESTQcX">Discord</a></li>
 
           <!-- LANG DROPDOWN -->
           <li class="lang-li">
@@ -859,10 +861,13 @@
             <div class="plan-card__pricing">
               <!-- Sub-coluna 1: preço (protagonista) -->
               <div class="plan-card__hero">
-                <div class="plan-card__price-line">
-                  <span class="plan-card__price-from" aria-label="Preço original">$69,00</span>
+                <div class="plan-card__price-row">
+                  <div class="plan-card__price-line">
+                    <span class="plan-card__price-from" aria-label="Preço original">$69,00</span>
+                  </div>
+                  <span class="plan-card__price">$19,00</span>
                 </div>
-                <span class="plan-card__price">$19,00</span>
+                <span class="plan-card__cupom" data-i18n="tarja.cupom.html">Use o cupom: <b>ZERO7</b></span>
               </div>
 
               <!-- Sub-coluna 2: meta (apoio) -->
