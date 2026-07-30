@@ -223,15 +223,19 @@
       display: none;
     }
   
-    header#home::before {
+    /* Brilho verde sutil, baixo no banner (só na raiz — v2 não recebe) */
+    body:not(.v2) header#home::before {
       content: "";
       position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to right, #000504, #00000000 65%);
+      left: 50%;
+      bottom: 4%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 40%;
+      background: radial-gradient(ellipse at 50% 100%, rgba(3, 206, 149, 0.16), transparent 68%);
       z-index: 1;
-
-      display: none;
+      filter: blur(28px);
+      pointer-events: none;
     }
   
     header#home .image img.mobile {
@@ -266,7 +270,7 @@
       position: relative;
       z-index: 2;
 
-      margin-top: -8%;
+      margin-top: -11%;
     }
 
     header#home .content img.logo {

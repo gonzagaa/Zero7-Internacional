@@ -505,8 +505,7 @@
     color: #fff;
     font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     white-space: nowrap;
     font-feature-settings: "tnum" 1;
     font-variant-numeric: tabular-nums;
@@ -848,6 +847,12 @@
         margin-bottom: 0;
     }
 
+    /* Fonte um pouco maior nos 3 botões de modo (só desktop) */
+    .z7-btnx.z7-btnx--toggle,
+    .z7-btnx.z7-btnx--toggle .z7-btnx__label {
+        font-size: 1.2rem;
+    }
+
     /* Card vira grid: cabeçalho (linha 1) → comparação (linha 2) → preço | CTA (linha 3).
        Largura = conteúdo (comparação) + padding — sem vãos pretos. */
     .plan-card {
@@ -888,7 +893,7 @@
     .plan-card__meta .plan-card__badge {
         font-size: 1.5rem;
         padding: 0.6rem 2.2rem;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.01em;
     }
 
     .plan-card__meta .plan-card__mode {
@@ -1013,11 +1018,19 @@
    Mobile ≤ 768px — mode-toggle ocupa linha cheia, lado a lado
    ============================================================ */
 @media (max-width: 768px) {
+    /* 3 opções de modo empilhadas (uma por linha) no mobile.
+       Remove o "chrome" de pílula do container (fundo/borda/raio/sombra):
+       empilhado ele virava um blob escuro arredondado atrás dos botões. */
     .mode-toggle {
         width: 100%;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
     }
 
     .mode-toggle__item {

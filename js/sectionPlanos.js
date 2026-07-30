@@ -6,17 +6,25 @@
     : './data/planos.json';
 
   // Tópicos do card — cada linha lê os DOIS valores (.desafio e .incubadora).
-  // Desafio e Conta Remunerada exibem exatamente os mesmos 8 tópicos, na mesma ordem.
+  // Desafio e Conta Remunerada exibem exatamente os mesmos tópicos, na mesma ordem.
   const LINHAS = [
-    { key: 'contratos',    i18nKey: 'plan.linha_contratos',      fonte: 'capital' },
-    { key: 'minimoDias',   i18nKey: 'plan.linha_minimo_dias',    fonte: 'fixa' },
-    { key: 'maximoDias',   i18nKey: 'plan.linha_maximo_dias',    fonte: 'fixa' },
-    { key: 'metaLucro',    i18nKey: 'plan.linha_meta_lucro',     fonte: 'capital' },
-    { key: 'drawdown',     i18nKey: 'plan.linha_drawdown',       fonte: 'fixa' },
-    { key: 'perdaTotal',   i18nKey: 'plan.linha_perda_total',    fonte: 'capital' },
-    { key: 'taxaAtivacao', i18nKey: 'plan.linha_taxa_ativacao',  fonte: 'capital' },
-    { key: 'recompensa',   i18nKey: 'plan.linha_recompensa',     fonte: 'fixa' },
+    { key: 'contratos',         i18nKey: 'plan.linha_contratos',           fonte: 'capital' },
+    { key: 'minimoDias',        i18nKey: 'plan.linha_minimo_dias',         fonte: 'fixa' },
+    { key: 'maximoDias',        i18nKey: 'plan.linha_maximo_dias',         fonte: 'fixa' },
+    { key: 'metaLucro',         i18nKey: 'plan.linha_meta_lucro',          fonte: 'capital' },
+    { key: 'drawdown',          i18nKey: 'plan.linha_drawdown',            fonte: 'fixa' },
+    { key: 'perdaTotal',        i18nKey: 'plan.linha_perda_total',         fonte: 'capital' },
+    { key: 'taxaAtivacao',      i18nKey: 'plan.linha_taxa_ativacao',       fonte: 'capital' },
+    { key: 'regraConsistencia', i18nKey: 'plan.linha_regra_consistencia',  fonte: 'fixa' },
+    { key: 'recompensa',        i18nKey: 'plan.linha_recompensa',          fonte: 'fixa' },
   ];
+
+  // Modos de compra → chaves de preço/checkout no JSON
+  const MODO_PRECO    = { com_ativacao: 'comAtivacao',   sem_ativacao: 'semAtivacao',   funding_pass: 'fundingPass' };
+  const MODO_PRECO_DE = { com_ativacao: 'comAtivacaoDe', sem_ativacao: 'semAtivacaoDe', funding_pass: 'fundingPassDe' };
+  const MODO_LABEL    = { com_ativacao: 'plan.modo_label_com', sem_ativacao: 'plan.modo_label_sem', funding_pass: 'plan.modo_label_funding' };
+  // Modos em que a taxa de ativação NÃO se aplica (vira "—")
+  const MODOS_SEM_TAXA = new Set(['sem_ativacao', 'funding_pass']);
 
   // Valores de placeholder no JSON que nunca devem aparecer crus
   const PLACEHOLDERS = new Set(['---', '—', '']);
@@ -67,29 +75,37 @@
   }
 
   function modoLabelTexto() {
-    return state.modo === 'com_ativacao'
-      ? tr('plan.modo_label_com')
-      : tr('plan.modo_label_sem');
+    return tr(MODO_LABEL[state.modo] || 'plan.modo_label_com');
   }
 
   function precoTexto() {
     const { precos } = state.dados.capitais[state.capital];
-    return state.modo === 'com_ativacao' ? precos.comAtivacao : precos.semAtivacao;
+    return precos[MODO_PRECO[state.modo]] || precos.comAtivacao;
   }
 
   function precoOriginalTexto() {
     const { precos } = state.dados.capitais[state.capital];
-    return state.modo === 'com_ativacao' ? precos.comAtivacaoDe : precos.semAtivacaoDe;
+    return precos[MODO_PRECO_DE[state.modo]] || '';
+  }
+
+  // Nome do plano (fixo — vem do rótulo do toggle, sem as tags) + capital → "Funding Pass 25k"
+  function modoNome() {
+    const map = {
+      com_ativacao: 'plan.modo_com.html',
+      sem_ativacao: 'plan.modo_sem.html',
+      funding_pass: 'plan.modo_funding.html',
+    };
+    return String(tr(map[state.modo] || 'plan.modo_com.html')).replace(/<[^>]*>/g, '').trim();
   }
 
   function badgeTexto() {
-    return tr('plan.badge').replace('{capital}', state.capital);
+    return `${modoNome()} ${state.capital}`;
   }
 
   function checkoutHref() {
     const capital = state.dados?.capitais?.[state.capital];
     if (!capital?.checkout) return null;
-    return state.modo === 'com_ativacao' ? capital.checkout.comAtivacao : capital.checkout.semAtivacao;
+    return capital.checkout[MODO_PRECO[state.modo]] || capital.checkout.comAtivacao;
   }
 
   /* ============================================================
@@ -208,19 +224,24 @@
     let valor = pick(cel[coluna]);
     let highlight = false;
     let sublabel = '';
+    const ehPlaceholder = PLACEHOLDERS.has(String(valor).trim());
 
     if (coluna === 'desafio') {
-      // Modo "sem taxa de ativação": a taxa do Desafio vira "—"
-      if (key === 'taxaAtivacao' && state.modo === 'sem_ativacao') valor = '—';
+      // Taxa de ativação não se aplica em "sem taxa" nem no Funding Pass
+      if (key === 'taxaAtivacao' && MODOS_SEM_TAXA.has(state.modo)) {
+        valor = '—';
+      } else if (ehPlaceholder) {
+        valor = '—';   // ex.: Regra de consistência no Desafio
+      }
     } else {
       // Coluna Incubadora — nunca mostrar "---" cru
-      if (key === 'maximoDias' && PLACEHOLDERS.has(String(valor).trim())) {
+      if (key === 'maximoDias' && ehPlaceholder) {
         valor = tr('plan.valor_sem_limite');          // "Sem limite de dias"
         highlight = true;
-      } else if (key === 'taxaAtivacao' && PLACEHOLDERS.has(String(valor).trim())) {
-        valor = '—';                                   // conta remunerada não tem taxa
       } else if (key === 'recompensa') {
         highlight = true;                              // 90% em destaque verde (só o número)
+      } else if (ehPlaceholder) {
+        valor = '—';   // ex.: Meta de lucro / Taxa de ativação na Incubadora
       }
     }
 
@@ -403,18 +424,6 @@
     else refs.cardBadge.textContent = texto;
   }
 
-  function renderDiscount() {
-    if (!refs.cardDiscount) return;
-    const pct = descontoPct();
-    if (pct == null) {
-      refs.cardDiscount.hidden = true;
-      refs.cardDiscount.textContent = '';
-      return;
-    }
-    refs.cardDiscount.hidden = false;
-    refs.cardDiscount.textContent = tr('plan.card_desconto').replace('{pct}', pct);
-  }
-
   function renderCheckoutHref() {
     if (!refs.cardCta) return;
     const href = checkoutHref();
@@ -427,7 +436,6 @@
     renderPrecoOriginal({ animar });
     renderLabel({ animar });
     renderBadge({ animar });
-    renderDiscount();
     renderCheckoutHref();
   }
 
@@ -507,7 +515,6 @@
     refs.comparison = $('.plan-card__comparison', secao);
     refs.compareGrid = $('.plan-card__compare', secao);
     refs.cardBadge = $('.plan-card__badge', secao);
-    refs.cardDiscount = $('.plan-card__discount', secao);
     refs.cardPriceLine = $('.plan-card__price-line', secao);
     refs.cardPriceFrom = $('.plan-card__price-from', secao);
     refs.cardPrice = $('.plan-card__price', secao);
