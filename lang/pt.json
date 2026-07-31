@@ -34,7 +34,7 @@
     "titulo_inicio": "Transforme seu conhecimento",
     "titulo_destaque": "em grandes lucros",
     "item1": { "html": "<strong>100%</strong> dos lucros" },
-    "item2": { "html": "<strong>Sem mínimo de dias</strong> na incubadora <small>(conta financiada)</small>" },
+    "item2": { "html": "<strong>5 dias mínimos de lucro</strong> na conta <strong>FUNDING</strong>" },
     "item3": { "html": "Payout em <strong>PIX</strong> para brasileiros" }
   },
   "divisa": {
@@ -55,7 +55,7 @@
     "titulo_inicio": "Como funciona a",
     "titulo_destaque": "Zero7",
     "titulo_fim": "?",
-    "card_titulo_desafio": "DESAFIO",
+    "card_titulo_desafio": "CHALLENGE",
     "card_titulo_incubadora": "FUNDING",
     "card_titulo_trader": "TRADER ZERO7",
     "card_desafio": "Etapa para aplicar sua técnica de operações e alcançar a meta estipulada no plano contratado. Todos os planos contam com um gerenciamento de risco específico, e os traders que alcançam a meta respeitando o nosso GR, alcançam altos voos no universo do trading, já que ele foi validado para que os traders cheguem mais longe. Todos os planos contam com 60 dias corridos para chegar até a meta. Após completar esta etapa, os traders passam para a fase de incubadora.",
@@ -83,7 +83,7 @@
       "html": "TRANSFORME SUAS HABILIDADES EM <span>GRANDES PAGAMENTOS</span>"
     },
     "descricao": {
-      "html": "A Zero7 desenvolveu um <span>modelo totalmente único</span> para se operar. Aqui, traders podem ter acesso a grandes contas, com muitos lotes, mas pagando até <span>20 vezes menos</span> do que o valor que teriam que disponibilizar em suas contas pessoais. Depois de aprovados na avaliação - com 60 dias para finalizar -, os traders iniciam sua jornada na mesa através da Incubadora, onde podem operar em ambiente simulado mas sendo recompensados com até <span>90% dos lucros</span> que fizerem, <span>sem risco nenhum ao seu próprio capital</span>. Depois, podem progredir para a conta real e avançarem com um plano de carreira desenhado para terem <span>cada vez mais lucros</span>. A Zero7 conta ainda com inúmeros benefícios, como <span>Aprovação Permanente</span>, <span>treinamentos</span> e <span>cursos completos disponíveis na Área do Trader</span>."
+      "html": "A Zero7 desenvolveu um <span>modelo totalmente único</span> para se operar. Aqui, traders podem ter acesso a grandes contas, com muitos lotes, mas pagando até <span>50 vezes menos</span> do que o valor que teriam que disponibilizar em suas contas pessoais. Depois de aprovados na challenge, os traders iniciam sua jornada na mesa através da conta Funding, onde podem operar em ambiente simulado mas sendo recompensados com até <span>90% dos lucros</span> que fizerem, <span>sem risco nenhum ao seu próprio capital</span>. Depois, podem progredir para ser Trader Zero7 e avançarem em sua carreira para terem <span>cada vez mais lucros</span>. A Zero7 conta ainda com inúmeros benefícios, como <span>treinamentos</span> e <span>cursos completos disponíveis na Área do Trader</span>."
     },
     "cta": "Contrate um plano agora",
     "cta_aria": "Começar agora mesmo"
@@ -119,7 +119,7 @@
     "linha_taxa_ativacao": "Taxa de ativação",
     "linha_regra_consistencia": "Regra de consistência",
     "linha_recompensa": "Recompensa",
-    "card_desafio_titulo": "O desafio",
+    "card_desafio_titulo": "Challenge",
     "card_incubadora_titulo": "Funding",
     "card_desconto": "-{pct}%",
     "valor_sem_limite": "Sem limite de dias"

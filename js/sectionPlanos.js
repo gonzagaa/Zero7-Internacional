@@ -245,7 +245,10 @@
       }
     }
 
-    return { valor, highlight, sublabel, currency: valorMonetario(valor) };
+    // No modo Funding Pass, a fase de challenge é pulada — todos os itens ficam riscados
+    const strike = coluna === 'desafio' && state.modo === 'funding_pass';
+
+    return { valor, highlight, sublabel, strike, currency: valorMonetario(valor) };
   }
 
   // ---- Mobile: dois painéis, cada um com seus próprios rótulos ----
@@ -255,10 +258,12 @@
 
     LINHAS.forEach(({ key, i18nKey, fonte }, i) => {
       const cel = obterCelula(key, fonte);
-      const { valor, highlight, sublabel, currency } = valorCelula(key, cel, coluna);
+      const { valor, highlight, sublabel, strike, currency } = valorCelula(key, cel, coluna);
 
       const li = document.createElement('li');
-      li.className = 'plan-card__item' + (highlight ? ' plan-card__item--highlight' : '');
+      li.className = 'plan-card__item'
+        + (highlight ? ' plan-card__item--highlight' : '')
+        + (strike ? ' plan-card__item--strike' : '');
       li.style.setProperty('--row-index', i);
 
       const labelEl = document.createElement('span');
@@ -296,7 +301,8 @@
     el.className = `plan-card__cval plan-card__cval--${side}`
       + (data.highlight ? ' plan-card__cval--highlight' : '')
       + (data.currency ? ' plan-card__cval--currency' : '')
-      + (longo ? ' plan-card__cval--long' : '');
+      + (longo ? ' plan-card__cval--long' : '')
+      + (data.strike ? ' plan-card__cval--strike' : '');
     el.textContent = data.valor;
     return el;
   }

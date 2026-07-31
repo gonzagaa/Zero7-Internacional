@@ -733,6 +733,15 @@
     letter-spacing: -0.01em;
 }
 
+/* Modo Funding Pass: coluna Challenge inteira riscada (fase pulada) */
+.plan-card__cval--strike {
+    color: #6a6a6a;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+    opacity: 0.75;
+}
+
 /* ============================================================
    Painéis (mobile only) — escondidos no desktop
    ============================================================ */
@@ -833,6 +842,16 @@
 .plan-card__item--highlight .plan-card__item-value {
     color: var(--pc-green-tint);
     font-weight: 700;
+}
+
+/* Modo Funding Pass: item mobile da Challenge riscado (fase pulada) */
+.plan-card__item--strike .plan-card__item-label,
+.plan-card__item--strike .plan-card__item-value {
+    color: #6a6a6a;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+    opacity: 0.75;
 }
 
 /* Conector entre painéis */
