@@ -29,6 +29,50 @@
   // Valores de placeholder no JSON que nunca devem aparecer crus
   const PLACEHOLDERS = new Set(['---', '—', '']);
 
+  /* ============================================================
+     Afiliação 4selet — cupom por URL propagado ao checkout
+     - Chega em: ?coupon_code=XXX (também aceita coupon/cupom/cupon)
+     - Persiste em sessionStorage (dura enquanto a aba está aberta)
+     - Sai no checkout com nome traduzido por idioma:
+         pt → ?cupom=  |  en → ?coupon=  |  es → ?cupon=
+     ============================================================ */
+  const COUPON_STORAGE_KEY = 'z7_affiliate_coupon';
+  const COUPON_URL_KEYS = ['coupon_code', 'coupon', 'cupom', 'cupon'];
+  const COUPON_PARAM_BY_LANG = { pt: 'cupom', en: 'coupon', es: 'cupon' };
+
+  function captureAffiliateCoupon() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      for (const key of COUPON_URL_KEYS) {
+        const raw = params.get(key);
+        const value = raw && raw.trim();
+        if (value) {
+          sessionStorage.setItem(COUPON_STORAGE_KEY, value);
+          return value;
+        }
+      }
+      return sessionStorage.getItem(COUPON_STORAGE_KEY) || null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function getAffiliateCoupon() {
+    try { return sessionStorage.getItem(COUPON_STORAGE_KEY); }
+    catch (_) { return null; }
+  }
+
+  function couponParamName() {
+    return COUPON_PARAM_BY_LANG[getCurrentLang()] || 'coupon';
+  }
+
+  function appendCoupon(href) {
+    const coupon = getAffiliateCoupon();
+    if (!coupon || !href) return href;
+    const sep = href.includes('?') ? '&' : '?';
+    return `${href}${sep}${encodeURIComponent(couponParamName())}=${encodeURIComponent(coupon)}`;
+  }
+
   function getCurrentLang() {
     return (window.i18n && window.i18n.getLang && window.i18n.getLang()) || 'pt';
   }
@@ -105,7 +149,8 @@
   function checkoutHref() {
     const capital = state.dados?.capitais?.[state.capital];
     if (!capital?.checkout) return null;
-    return capital.checkout[MODO_PRECO[state.modo]] || capital.checkout.comAtivacao;
+    const base = capital.checkout[MODO_PRECO[state.modo]] || capital.checkout.comAtivacao;
+    return appendCoupon(base);
   }
 
   /* ============================================================
@@ -562,6 +607,8 @@
     if (mq.addEventListener) {
       mq.addEventListener('change', (e) => { prefersReducedMotion = e.matches; });
     }
+
+    captureAffiliateCoupon();
 
     sincronizarEstadoComDOM();
     definirAriaInicial();
