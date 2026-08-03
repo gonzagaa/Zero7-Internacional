@@ -5,10 +5,25 @@
     "name": "Português",
     "flag": "./assets/br.avif"
   },
+  "afiliados": {
+    "badge_name": "Prop firm",
+    "badge_year": "Desde 2023",
+    "hero_h1": { "html": "Ganhe em dólar sendo um <span class=\"hero__h1-em\">afiliado Zero7</span>" },
+    "hero_lead": { "html": "Indicou, ganhou: um novo negócio simples e com <strong class=\"zero\">ZERO</strong> risco pra você!" },
+    "cta": "QUERO SER AFILIADO ZERO7",
+    "london_h2": "Quer ir para Londres junto com a Zero7?",
+    "london_intro": { "html": "Os três melhores afiliados entre os dias <time class=\"date\" datetime=\"2026-08-01\">01/08/2026</time> a <time class=\"date\" datetime=\"2026-08-31\">31/08/2026</time> ganharão uma viagem para Londres para participarem da The London Prop Trading Expo que acontecerá nos dias 23 e 24 de outubro de 2026 (<a class=\"london__link\" href=\"https://proptradingexpo.com/\" target=\"_blank\" rel=\"noopener\">https://proptradingexpo.com/</a>)" },
+    "london_req_lead": "Para estar elegível a campanha, o afiliado precisa:",
+    "london_crit1": "Estar devidamente cadastrado",
+    "london_crit2": "Vender no mínimo 50 contas com o seu link",
+    "london_crit3": "Ter passaporte regularizado",
+    "london_close": "Sua grande oportunidade de crescer como Trader, conhecer negócios de sucesso e fazer muito networking."
+  },
   "header": {
     "menu": {
       "home": "Home",
-      "planos": "Planos"
+      "planos": "Planos",
+      "afiliado": "Seja um afiliado"
     },
     "botao_trader": "Área do Trader",
     "abrir_menu": "Abrir menu",
