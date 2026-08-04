@@ -73,6 +73,19 @@
     return `${href}${sep}${encodeURIComponent(couponParamName())}=${encodeURIComponent(coupon)}`;
   }
 
+  // Parâmetros de campanha (UTMs, fbclid, sck...) — ver js/utmForward.js.
+  // Roda depois do cupom e nunca sobrescreve parâmetro já presente no link.
+  function appendTracking(href) {
+    if (!href) return href;
+    try {
+      return (window.Z7Tracking && window.Z7Tracking.decorate)
+        ? window.Z7Tracking.decorate(href)
+        : href;
+    } catch (_) {
+      return href;
+    }
+  }
+
   function getCurrentLang() {
     return (window.i18n && window.i18n.getLang && window.i18n.getLang()) || 'pt';
   }
@@ -150,7 +163,7 @@
     const capital = state.dados?.capitais?.[state.capital];
     if (!capital?.checkout) return null;
     const base = capital.checkout[MODO_PRECO[state.modo]] || capital.checkout.comAtivacao;
-    return appendCoupon(base);
+    return appendTracking(appendCoupon(base));
   }
 
   /* ============================================================
