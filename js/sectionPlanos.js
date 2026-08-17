@@ -494,12 +494,37 @@
     if (href) refs.cardCta.setAttribute('href', href);
   }
 
+  /* ===== PROMO RESTART (17–20/08) — cupom exibido por modo. =========
+     Reverter após a promo: apagar PROMO_CUPOM + renderCupom, tirar a
+     chamada em renderTudo e a ref refs.cardCupom (e devolver o
+     data-i18n="tarja.cupom.html" ao <span class="plan-card__cupom">). */
+  const PROMO_CUPOM = {
+    com_ativacao: 'RESTART07',
+    sem_ativacao: 'RESTART07',
+    funding_pass: 'ZERO7',
+  };
+  const PROMO_MODOS = new Set(['com_ativacao', 'sem_ativacao']); // modos na promo Restart
+  function renderCupom() {
+    if (!refs.cardCupom) return;
+    const code = PROMO_CUPOM[state.modo] || 'ZERO7';
+    const base = String(tr('tarja.cupom.html'));           // "Use o cupom: <b>ZERO7</b>"
+    const prefixo = base.replace(/<b>[\s\S]*?<\/b>/i, '').trim() || 'Use o cupom:';
+    refs.cardCupom.innerHTML = `${prefixo} <b>${code}</b>`;
+  }
+  function renderPromo() {
+    // Selo RESTART aparece só nos modos da promo (some no Funding Pass)
+    if (refs.cardPromo) refs.cardPromo.hidden = !PROMO_MODOS.has(state.modo);
+  }
+  /* ===== fim PROMO RESTART ========================================== */
+
   function renderTudo({ animar = true } = {}) {
     renderCard({ animar });
     renderPreco({ animar });
     renderPrecoOriginal({ animar });
     renderLabel({ animar });
     renderBadge({ animar });
+    renderCupom();
+    renderPromo();
     renderCheckoutHref();
   }
 
@@ -583,6 +608,8 @@
     refs.cardPriceFrom = $('.plan-card__price-from', secao);
     refs.cardPrice = $('.plan-card__price', secao);
     refs.cardMode = $('.plan-card__mode', secao);
+    refs.cardCupom = $('.plan-card__cupom', secao); // PROMO RESTART — cupom por modo
+    refs.cardPromo = $('.plan-card__promo', secao); // PROMO RESTART — selo
     refs.cardCta = $('.plan-card__cta', secao);
     refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
     refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);
