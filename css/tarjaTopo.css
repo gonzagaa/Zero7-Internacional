@@ -4,10 +4,12 @@
    ===================================================================== */
 
 .tarja-topo {
-  --tarja-c1: #22ba7d;
-  --tarja-c2: #16bd7a;
-  --tarja-c3: #0a7d54;
-  --tarja-c4: #06402a;
+  /* Promo RESTART — paleta âmbar (era verde). Reverter: valores antigos
+     c1 #22ba7d · c2 #16bd7a · c3 #0a7d54 · c4 #06402a */
+  --tarja-c1: #ffb422;
+  --tarja-c2: #f6971d;
+  --tarja-c3: #cf6f18;
+  --tarja-c4: #6e3606;
   --tarja-text: #ffffff;
 
   position: fixed;
@@ -25,7 +27,7 @@
 
   background:
     radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.14), transparent 26%),
-    radial-gradient(circle at 85% 12%, rgba(92, 255, 180, 0.28), transparent 32%),
+    radial-gradient(circle at 85% 12%, rgba(255, 210, 130, 0.30), transparent 32%),
     linear-gradient(100deg,
       var(--tarja-c1) 0%,
       var(--tarja-c2) 40%,
@@ -126,7 +128,7 @@ body.tarja-ativa .tarja-topo {
 
   border-radius: 999px;
   background: #ffffff;
-  color: #086b45;
+  color: #8a4a00; /* promo âmbar (era #086b45) */
 
   font-size: 1.55rem;
   font-weight: 900;
@@ -220,10 +222,10 @@ body.tarja-ativa .tarja-topo {
   place-items: center;
 
   border-radius: 50%;
-  background: linear-gradient(135deg, #25e99b 0%, #11b976 58%, #078452 100%);
+  background: linear-gradient(135deg, #ffd24d 0%, #ff9e2c 58%, #d9741a 100%);
 
   box-shadow:
-    0 0.6rem 1.5rem rgba(3, 101, 64, 0.32),
+    0 0.6rem 1.5rem rgba(150, 78, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
@@ -274,8 +276,8 @@ body.tarja-ativa nav#navigation {
   .tarja-topo {
     background:
       radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.16), transparent 28%),
-      radial-gradient(circle at 92% 8%, rgba(104, 255, 190, 0.26), transparent 32%),
-      linear-gradient(110deg, #20a06d 0%, #16c77f 46%, #098a59 100%);
+      radial-gradient(circle at 92% 8%, rgba(255, 210, 130, 0.28), transparent 32%),
+      linear-gradient(110deg, #f6a11d 0%, #ffb422 46%, #cf6f18 100%);
   }
 
   .tarja-topo__wrapper {
@@ -336,7 +338,7 @@ body.tarja-ativa nav#navigation {
     height: 3.6rem;
     background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03)),
-      linear-gradient(135deg, #26e99b 0%, #11b976 58%, #078452 100%);
+      linear-gradient(135deg, #ffd24d 0%, #ff9e2c 58%, #d9741a 100%);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow:
       0 0.7rem 1.7rem rgba(0, 0, 0, 0.24),
