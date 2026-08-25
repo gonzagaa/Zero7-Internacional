@@ -1,0 +1,216 @@
+/* ==========================================================================
+   CERT — página /cert (Certificate verified by Zero7)
+   Carregado só pela /cert, depois do index.css.
+   ========================================================================== */
+
+.cert-page {
+  background: var(--bg-black);
+}
+
+/* --------------------------------------------------------------------------
+   Hero do certificado
+   -------------------------------------------------------------------------- */
+.cert-hero {
+  position: relative;
+  min-height: 92vh;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--bg-black);
+}
+
+/* brilho radial central */
+.cert-hero__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90rem, 120vw);
+  aspect-ratio: 1;
+  pointer-events: none;
+
+  background: radial-gradient(
+    circle,
+    rgba(3, 206, 149, 0.14) 0%,
+    rgba(3, 206, 149, 0.05) 30%,
+    transparent 60%
+  );
+  filter: blur(10px);
+
+  animation: certGlowPulse 6s ease-in-out infinite;
+}
+
+/* grade sutil ao fundo */
+.cert-hero__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 5.6rem 5.6rem;
+
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 75%);
+}
+
+.cert-hero__content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.2rem;
+
+  padding: calc(var(--nav-height) + 6rem) 2.4rem 6rem;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Selo verificado
+   -------------------------------------------------------------------------- */
+.cert-hero__seal {
+  position: relative;
+  width: 11rem;
+  height: 11rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-hero__seal-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(3, 206, 149, 0.35);
+
+  animation: certRingPulse 3.2s ease-out infinite;
+}
+
+.cert-hero__seal-ring--outer {
+  animation-delay: 1.6s;
+}
+
+.cert-hero__seal-badge {
+  width: 8.6rem;
+  height: 8.6rem;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #03ce95;
+
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(145deg, #0d1f1a 0%, #071410 60%, #040a08 100%);
+
+  border: 1px solid rgba(3, 206, 149, 0.35);
+  box-shadow:
+    0 0 4rem rgba(3, 206, 149, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.cert-hero__seal-badge svg {
+  width: 4.6rem;
+  height: 4.6rem;
+  filter: drop-shadow(0 0 1.2rem rgba(3, 206, 149, 0.55));
+}
+
+/* --------------------------------------------------------------------------
+   Título
+   -------------------------------------------------------------------------- */
+.cert-hero h1 {
+  max-width: 20ch;
+
+  font-family: 'Neue Plak Light', var(--tts), sans-serif;
+  font-size: clamp(3.4rem, 8vw, 7.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: #f8fffd;
+
+  /* brilho prateado animado, mesmo efeito da home
+     (keyframes textGradientMove vêm do home.css) */
+  background: linear-gradient(
+    120deg,
+    #ffffff 0%,
+    #b8b8b8 25%,
+    #ffffff 50%,
+    #bababa 75%,
+    #ffffff 100%
+  );
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: textGradientMove 5s ease-in-out infinite;
+}
+
+/* "Zero7" em destaque verde */
+.cert-hero h1 span {
+  background: linear-gradient(120deg, #7dffd9 0%, #03ce95 50%, #0a9e77 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  filter: drop-shadow(0 0 2.2rem rgba(3, 206, 149, 0.35));
+}
+
+/* --------------------------------------------------------------------------
+   Animações
+   -------------------------------------------------------------------------- */
+@keyframes certGlowPulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+@keyframes certRingPulse {
+  0% {
+    transform: scale(0.82);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Ajustes
+   -------------------------------------------------------------------------- */
+@media (max-width: 1079px) {
+  .cert-hero {
+    min-height: 88vh;
+  }
+
+  .cert-hero__seal {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .cert-hero__seal-badge {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .cert-hero__seal-badge svg {
+    width: 3.8rem;
+    height: 3.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cert-hero__glow,
+  .cert-hero__seal-ring,
+  .cert-hero h1 {
+    animation: none;
+  }
+}

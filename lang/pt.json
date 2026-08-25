@@ -52,6 +52,9 @@
     "item2": { "html": "<strong>5 dias mínimos de lucro</strong> na conta <strong>FUNDING</strong>" },
     "item3": { "html": "Payout em <strong>PIX</strong> para brasileiros" }
   },
+  "cert": {
+    "titulo": { "html": "Certificado verificado pela <span>Zero7</span>" }
+  },
   "divisa": {
     "desde": "Desde",
     "jornada": "nossa jornada começou",

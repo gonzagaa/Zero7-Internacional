@@ -52,6 +52,9 @@
     "item2": { "html": "<strong>5 minimum profit days</strong> in the <strong>FUNDING</strong> account" },
     "item3": { "html": "Payout via <strong>PIX</strong> for Brazilians" }
   },
+  "cert": {
+    "titulo": { "html": "Certificate verified by <span>Zero7</span>" }
+  },
   "divisa": {
     "desde": "Since",
     "jornada": "our journey began",

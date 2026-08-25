@@ -52,6 +52,9 @@
     "item2": { "html": "<strong>5 días mínimos de ganancia</strong> en la cuenta <strong>FUNDING</strong>" },
     "item3": { "html": "Pago vía <strong>PIX</strong> para brasileños" }
   },
+  "cert": {
+    "titulo": { "html": "Certificado verificado por <span>Zero7</span>" }
+  },
   "divisa": {
     "desde": "Desde",
     "jornada": "comenzó nuestro recorrido",
