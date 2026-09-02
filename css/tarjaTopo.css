@@ -1,16 +1,13 @@
 /* =====================================================================
-   TARJA TOPO — barra promocional (redesign limpo)
+   TARJA TOPO — barra promocional (redesign moderno)
+   Copy única com cupom + OFF em destaque. Bar inteira clicável (#plan).
    Mecânica (show/hide, --tarja-h, offset da nav) inalterada.
    ===================================================================== */
 
 .tarja-topo {
-  /* Promo RESTART — paleta âmbar (era verde). Reverter: valores antigos
-     c1 #22ba7d · c2 #16bd7a · c3 #0a7d54 · c4 #06402a */
-  --tarja-c1: #ffb422;
-  --tarja-c2: #f6971d;
-  --tarja-c3: #cf6f18;
-  --tarja-c4: #6e3606;
-  --tarja-text: #ffffff;
+  --tarja-accent: #25e99b;
+  --tarja-accent-2: #10b981;
+  --tarja-text: #eafff6;
 
   position: fixed;
   top: 0;
@@ -25,20 +22,15 @@
   overflow: hidden;
   isolation: isolate;
 
+  /* base esmeralda profunda + brilhos difusos = look premium */
   background:
-    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.14), transparent 26%),
-    radial-gradient(circle at 85% 12%, rgba(255, 210, 130, 0.30), transparent 32%),
-    linear-gradient(100deg,
-      var(--tarja-c1) 0%,
-      var(--tarja-c2) 40%,
-      var(--tarja-c3) 74%,
-      var(--tarja-c4) 100%
-    );
+    radial-gradient(55% 130% at 10% 50%, rgba(37, 233, 155, 0.26), transparent 60%),
+    radial-gradient(46% 140% at 90% 22%, rgba(16, 185, 129, 0.20), transparent 60%),
+    linear-gradient(100deg, #06301f 0%, #052013 55%, #041a10 100%);
 
   box-shadow:
-    0 1rem 2.8rem rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    0 1rem 2.6rem rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(37, 233, 155, 0.22);
 
   transform: translateY(-100%);
   opacity: 0;
@@ -51,19 +43,36 @@
     visibility 0s linear 420ms;
 }
 
-/* textura diagonal sutil */
+/* fio de luz no topo */
+.tarja-topo::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--tarja-accent), transparent);
+  opacity: 0.7;
+}
+
+/* brilho sutil que percorre a barra */
 .tarja-topo::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: repeating-linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.055) 0 1px,
-    transparent 1px 2.4rem
-  );
-  opacity: 0.6;
+  background: linear-gradient(105deg,
+    transparent 34%,
+    rgba(255, 255, 255, 0.07) 48%,
+    transparent 62%);
+  transform: translateX(-40%);
+  animation: tarjaSheen 6.5s ease-in-out infinite;
+}
+
+@keyframes tarjaSheen {
+  0%, 18%   { transform: translateX(-45%); }
+  60%, 100% { transform: translateX(145%); }
 }
 
 /* ativa via JS */
@@ -80,8 +89,14 @@ body.tarja-ativa .tarja-topo {
 }
 
 /* =====================================================================
-   WRAPPER
+   BAR (link) + WRAPPER
    ===================================================================== */
+
+.tarja-topo__btn {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
 
 .tarja-topo__wrapper {
   position: relative;
@@ -96,147 +111,96 @@ body.tarja-ativa .tarja-topo {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.9rem 1.8rem;
+  gap: 0.7rem 1.2rem;
 }
 
 /* =====================================================================
-   COPY + DESTAQUE
+   COPY — frase única com destaques
    ===================================================================== */
 
 .tarja-topo__copy {
   margin: 0;
+
   display: inline-flex;
   align-items: center;
-  gap: 0.9rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
 
   color: var(--tarja-text);
-  text-transform: uppercase;
 
-  font-size: 1.45rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.04em;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.005em;
 
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* "80% OFF" — pill branco de destaque */
-.tarja-destaque {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4rem 1.15rem;
-
-  border-radius: 999px;
-  background: #ffffff;
-  color: #8a4a00; /* promo âmbar (era #086b45) */
-
-  font-size: 1.55rem;
-  font-weight: 900;
-  letter-spacing: 0.01em;
-
-  box-shadow:
-    0 0.5rem 1.6rem rgba(0, 0, 0, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-}
-
-/* =====================================================================
-   CUPOM — ticket tracejado
-   ===================================================================== */
-
-.tarja-topo__cupom {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1.2rem;
-
-  border: 1.5px dashed rgba(255, 255, 255, 0.55);
-  border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.08);
-
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-
-.tarja-topo__cupom b {
-  font-weight: 900;
-  font-size: 1.35rem;
-  letter-spacing: 0.14em;
+.tarja-topo__copy b {
+  font-weight: 800;
   color: #ffffff;
 }
 
-/* =====================================================================
-   BOTÃO
-   ===================================================================== */
-
-.tarja-topo__btn {
-  position: relative;
+/* cupom — chip verde sólido */
+.tarja-topo__code {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex: none;
 
-  min-height: 4.4rem;
-  padding: 0.55rem 0.6rem 0.55rem 1.9rem;
+  padding: 0.34rem 1.05rem;
+  border-radius: 0.85rem;
 
-  border-radius: 999px;
-  background: #ffffff;
-  color: #050806;
+  background: linear-gradient(135deg, var(--tarja-accent), var(--tarja-accent-2));
+  color: #04180f;
 
-  text-decoration: none;
+  font-weight: 900;
+  letter-spacing: 0.12em;
   white-space: nowrap;
 
-  font-size: 1.24rem;
+  box-shadow:
+    0 0.45rem 1.5rem rgba(37, 233, 155, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* 80% OFF — texto de destaque neon */
+.tarja-topo__off {
   font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-
-  box-shadow:
-    0 0.8rem 2.2rem rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-
-  transition:
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 240ms ease,
-    filter 240ms ease;
+  color: var(--tarja-accent);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  text-shadow: 0 0 1.6rem rgba(37, 233, 155, 0.5);
 }
 
-.tarja-topo__btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.03);
-  box-shadow:
-    0 1.2rem 2.8rem rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-}
+/* =====================================================================
+   SETA (afordância de clique — sem texto)
+   ===================================================================== */
 
-.tarja-topo__btn .arrow {
-  width: 3.3rem;
-  height: 3.3rem;
+.tarja-topo__arrow {
   flex: none;
+  width: 3rem;
+  height: 3rem;
 
   display: grid;
   place-items: center;
 
   border-radius: 50%;
-  background: linear-gradient(135deg, #ffd24d 0%, #ff9e2c 58%, #d9741a 100%);
+  color: var(--tarja-accent);
+  background: rgba(37, 233, 155, 0.12);
+  border: 1px solid rgba(37, 233, 155, 0.38);
 
-  box-shadow:
-    0 0.6rem 1.5rem rgba(150, 78, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 240ms ease;
 }
 
-.tarja-topo__btn .arrow svg {
-  width: 1.4rem;
-  height: 1.4rem;
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+.tarja-topo__arrow svg {
+  width: 1.35rem;
+  height: 1.35rem;
 }
 
-.tarja-topo__btn:hover .arrow svg {
-  transform: translateX(2px);
+.tarja-topo__btn:hover .tarja-topo__arrow {
+  transform: translateX(3px);
+  background: rgba(37, 233, 155, 0.2);
 }
 
 /* =====================================================================
@@ -269,112 +233,41 @@ body.tarja-ativa nav#navigation {
 }
 
 /* =====================================================================
-   TABLET / MOBILE (≤1080px) — versão compacta
+   TABLET / MOBILE (≤1080px) — compacta, copy pode quebrar em 2 linhas
    ===================================================================== */
 
 @media (max-width: 1080px) {
-  .tarja-topo {
-    background:
-      radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.16), transparent 28%),
-      radial-gradient(circle at 92% 8%, rgba(255, 210, 130, 0.28), transparent 32%),
-      linear-gradient(110deg, #f6a11d 0%, #ffb422 46%, #cf6f18 100%);
-  }
-
   .tarja-topo__wrapper {
     min-height: 5rem;
     padding: 0.7rem 1.4rem;
-    flex-wrap: nowrap;
-    gap: 0.9rem;
-  }
-
-  /* esconde o texto descritivo longo; fica pill + cupom + seta */
-  .tarja-topo__intro {
-    display: none;
+    gap: 0.5rem 0.9rem;
   }
 
   .tarja-topo__copy {
-    gap: 0;
-    flex: none;
-  }
-
-  .tarja-destaque {
-    font-size: 1.4rem;
-    padding: 0.35rem 1rem;
-  }
-
-  .tarja-topo__cupom {
-    font-size: 1.05rem;
-    padding: 0.42rem 0.95rem;
+    font-size: 1.16rem;
     gap: 0.45rem;
   }
 
-  .tarja-topo__cupom b {
-    font-size: 1.15rem;
-    letter-spacing: 0.1em;
+  .tarja-topo__code {
+    padding: 0.28rem 0.85rem;
+    letter-spacing: 0.08em;
   }
 
-  /* botão compacto: só a seta */
-  .tarja-topo__btn {
-    padding: 0;
-    min-height: auto;
-    background: transparent;
-    box-shadow: none;
-    gap: 0;
-    font-size: 0;
-  }
-
-  .tarja-topo__btn > span[data-i18n] {
+  /* seta some no mobile — a barra inteira continua clicável */
+  .tarja-topo__arrow {
     display: none;
-  }
-
-  .tarja-topo__btn:hover {
-    transform: none;
-    box-shadow: none;
-    filter: none;
-  }
-
-  .tarja-topo__btn .arrow {
-    width: 3.6rem;
-    height: 3.6rem;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03)),
-      linear-gradient(135deg, #ffd24d 0%, #ff9e2c 58%, #d9741a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow:
-      0 0.7rem 1.7rem rgba(0, 0, 0, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  }
-
-  .tarja-topo__btn .arrow svg {
-    width: 1.55rem;
-    height: 1.55rem;
   }
 }
 
-@media (max-width: 430px) {
-  .tarja-topo__wrapper {
-    padding-inline: 1.1rem;
-    gap: 0.65rem;
+@media (max-width: 600px) {
+  .tarja-topo__copy {
+    font-size: 1.02rem;
   }
+}
 
-  .tarja-destaque {
-    font-size: 1.25rem;
-    padding: 0.3rem 0.85rem;
-  }
-
-  .tarja-topo__cupom {
-    font-size: 0.92rem;
-    padding: 0.35rem 0.75rem;
-    gap: 0.35rem;
-  }
-
-  .tarja-topo__cupom b {
-    font-size: 1rem;
-  }
-
-  .tarja-topo__btn .arrow {
-    width: 3.3rem;
-    height: 3.3rem;
+@media (max-width: 380px) {
+  .tarja-topo__copy {
+    font-size: 0.94rem;
   }
 }
 
@@ -384,10 +277,11 @@ body.tarja-ativa nav#navigation {
 
 @media (prefers-reduced-motion: reduce) {
   .tarja-topo,
-  .tarja-topo__btn,
-  .tarja-topo__btn .arrow svg,
+  .tarja-topo::before,
+  .tarja-topo__arrow,
   body.tarja-ativa,
   body.tarja-ativa nav#navigation {
     transition: none !important;
+    animation: none !important;
   }
 }

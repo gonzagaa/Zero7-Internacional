@@ -31,10 +31,10 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"tarja-topo__intro\">Trade the international market with</span> <span class=\"tarja-destaque\">80% OFF</span>"
+      "html": "Unlock your payout with <b>5 days</b> and <b>50% of the cushion</b>. Use CODE: <span class=\"tarja-topo__code\">FREEDOM07</span> and get <span class=\"tarja-topo__off\">80% OFF</span>"
     },
     "cupom": {
-      "html": "Use code: <b>ZERO7</b>"
+      "html": "Use code: <b>FREEDOM07</b>"
     },
     "botao": "See Offer"
   },

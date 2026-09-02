@@ -31,10 +31,10 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"tarja-topo__intro\">Opere no mercado internacional com</span> <span class=\"tarja-destaque\">80% OFF</span>"
+      "html": "Destrave seu payout com <b>5 dias</b> e <b>50% do colchão</b>. Use o CUPOM: <span class=\"tarja-topo__code\">FREEDOM07</span> e tenha <span class=\"tarja-topo__off\">80% OFF</span>"
     },
     "cupom": {
-      "html": "Use o cupom: <b>ZERO7</b>"
+      "html": "Use o cupom: <b>FREEDOM07</b>"
     },
     "botao": "Ver Oferta"
   },

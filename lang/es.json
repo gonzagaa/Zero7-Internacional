@@ -31,10 +31,10 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"tarja-topo__intro\">Opera en el mercado internacional con</span> <span class=\"tarja-destaque\">80% OFF</span>"
+      "html": "Desbloquea tu payout con <b>5 días</b> y <b>50% del colchón</b>. Usa el CUPÓN: <span class=\"tarja-topo__code\">FREEDOM07</span> y obtén <span class=\"tarja-topo__off\">80% OFF</span>"
     },
     "cupom": {
-      "html": "Usa el cupón: <b>ZERO7</b>"
+      "html": "Usa el cupón: <b>FREEDOM07</b>"
     },
     "botao": "Ver Oferta"
   },
