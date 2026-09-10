@@ -1,0 +1,10 @@
+{
+  "name": "zero7-internacional-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Meta Conversions API endpoint (server-side) para Zero7 Internacional. Sem dependencias externas.",
+  "engines": {
+    "node": "20.x"
+  }
+}
