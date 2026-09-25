@@ -1,0 +1,99 @@
+/* =====================================================================
+   TARJA TIMER — faixa fina de contagem regressiva, empilhada NO TOPO da
+   tarja-topo existente. Fica dentro do <aside class="tarja-topo">,
+   antes do <a class="tarja-topo__btn">, para que a altura total continue
+   sendo medida por js/tarjaTopo.js (getBoundingClientRect da .tarja-topo)
+   e o offset da nav já cobre as duas faixas juntas.
+   ===================================================================== */
+
+.tarja-timer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+
+  padding: 0.55rem 1.2rem;
+  min-height: 2.8rem;
+
+  background: #ffffff;
+  color: #2a1503; /* marrom escuro para casar com a tarja âmbar abaixo */
+
+  font-family: var(--tts), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.tarja-timer__label {
+  opacity: 0.85;
+}
+
+.tarja-timer__clock {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.5rem;
+  background: #111111;
+  color: #ffffff;
+
+  font-weight: 800;
+  letter-spacing: 0.12em;
+
+  /* Impede o layout de "pular" enquanto os dígitos mudam */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  min-width: 8ch;
+  justify-content: center;
+}
+
+/* Telas grandes — pouco maior para acompanhar a tarja principal */
+@media (min-width: 1600px) {
+  .tarja-timer {
+    font-size: 1.35rem;
+    min-height: 3rem;
+    padding-block: 0.65rem;
+  }
+  .tarja-timer__clock {
+    padding: 0.4rem 0.85rem;
+  }
+}
+
+/* Tablet / mobile — compacto, sem sumir */
+@media (max-width: 1080px) {
+  .tarja-timer {
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    padding: 0.45rem 0.9rem;
+    min-height: 2.4rem;
+    gap: 0.6rem;
+  }
+  .tarja-timer__clock {
+    font-size: 1.05rem;
+    padding: 0.25rem 0.55rem;
+    letter-spacing: 0.08em;
+    min-width: 7.5ch;
+  }
+}
+
+@media (max-width: 430px) {
+  .tarja-timer {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .tarja-timer__clock {
+    font-size: 1rem;
+    padding: 0.22rem 0.5rem;
+    min-width: 7ch;
+  }
+}

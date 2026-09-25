@@ -36,7 +36,8 @@
     "cupom": {
       "html": "Use code: <b>ZERO7</b>"
     },
-    "botao": "See Offer"
+    "botao": "See Offer",
+    "timer_label": "This offer ends in:"
   },
   "hero": {
     "titulo_inicio": "We fund traders with accounts up to",

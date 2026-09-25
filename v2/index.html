@@ -33,7 +33,7 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="../css/index.css?v=20260910-r9">
+  <link rel="stylesheet" href="../css/index.css?v=20260925-1">
 
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -235,13 +235,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <link rel="sitemap" type="application/xml" href="../sitemap.xml">
 
-  <script src="../js/i18n.js?v=20260910-r9" defer></script>
+  <script src="../js/i18n.js?v=20260925-1" defer></script>
 </head>
 
 <body id="body" class="smooth-scroll-wrapper v2">
 
   <!-- TARJA PROMO TOPO (banner com expiração — ver js/tarjaTopo.js) -->
   <aside class="tarja-topo" role="region" aria-label="Promoção em destaque">
+    <!-- Faixa de contagem regressiva (reseta a cada 24h — ver js/tarjaTimer.js) -->
+    <div class="tarja-timer" role="status" aria-live="off">
+      <span class="tarja-timer__label" data-i18n="tarja.timer_label">Essa oferta se encerra em:</span>
+      <span class="tarja-timer__clock">23:59:59</span>
+    </div>
     <div class="tarja-topo__wrapper">
       <p class="tarja-topo__copy" data-i18n="tarja.texto.html">
         <span class="tarja-topo__intro">Opere no mercado internacional com</span>
@@ -1301,12 +1306,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script src="../script/global.js?v=20260910-r9"></script>
-  <script src="../script/depoimentosModal.js?v=20260910-r9"></script>
-  <script src="../script/sectionBa.js?v=20260910-r9"></script>
-  <script src="../script/sectionFaq.js?v=20260910-r9" defer></script>
-  <script src="../js/utmForward.js?v=20260910-r9"></script>
-  <script src="../js/sectionPlanos.js?v=20260910-r9" defer></script>
-  <script src="../js/tarjaTopo.js?v=20260910-r9"></script>
+  <script src="../script/global.js?v=20260925-1"></script>
+  <script src="../script/depoimentosModal.js?v=20260925-1"></script>
+  <script src="../script/sectionBa.js?v=20260925-1"></script>
+  <script src="../script/sectionFaq.js?v=20260925-1" defer></script>
+  <script src="../js/utmForward.js?v=20260925-1"></script>
+  <script src="../js/sectionPlanos.js?v=20260925-1" defer></script>
+  <script src="../js/tarjaTopo.js?v=20260925-1"></script>
+  <script src="../js/tarjaTimer.js?v=20260925-1"></script>
 </body>
 </html>

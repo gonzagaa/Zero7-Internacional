@@ -36,7 +36,8 @@
     "cupom": {
       "html": "Usa el cupón: <b>ZERO7</b>"
     },
-    "botao": "Ver Oferta"
+    "botao": "Ver Oferta",
+    "timer_label": "Esta oferta finaliza en:"
   },
   "hero": {
     "titulo_inicio": "Financiamos traders con cuentas de hasta",
