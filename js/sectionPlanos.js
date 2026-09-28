@@ -335,8 +335,19 @@
       }
     }
 
-    // No modo Funding Pass, a fase de challenge é pulada — todos os itens ficam riscados
-    const strike = coluna === 'desafio' && state.modo === 'funding_pass';
+    // Estratégias de "riscado":
+    // - Funding Pass: a fase Challenge inteira aparece riscada (a fase é
+    //   pulada).
+    // - Liberty: NÃO cobra taxa de ativação, então a linha "Taxa de
+    //   ativação" vem com o valor do Challenge riscado (efeito "isenção").
+    //   O valor cru continua sendo mostrado (ex.: $89,00) para reforçar
+    //   quanto o usuário estaria pagando.
+    let strike = false;
+    if (coluna === 'desafio' && state.modo === 'funding_pass') {
+      strike = true;
+    } else if (state.modo === 'liberty' && key === 'taxaAtivacao' && coluna === 'desafio') {
+      strike = true;
+    }
 
     return { valor, highlight, sublabel, strike, currency: valorMonetario(valor) };
   }
