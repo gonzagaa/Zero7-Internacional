@@ -118,7 +118,7 @@
     "tooltip_com": "Tras alcanzar la meta, deberás pagar una tarifa de activación y pasar a Funding.",
     "tooltip_sem": "Alcanza la meta y avanza directo a Funding, sin pagar tarifas adicionales.",
     "tooltip_funding": "Empiezas directamente en la fase funding y recibes según tu rendimiento.",
-    "tooltip_liberty": "Supera el Challenge de forma normal y, en la fase Funding, ten drawdown EOD y una regla de consistencia más flexible (30%). Disponible en 25k, 50k y 100k.",
+    "tooltip_liberty": "Drawdown del tipo EOD en todas las fases. Opera con más tranquilidad y un drawdown más flexible.",
     "tabela_condicao": "Condición",
     "tabela_desafio": "Desafío",
     "tabela_incubadora": "Incubadora",
