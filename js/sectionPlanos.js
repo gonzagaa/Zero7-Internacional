@@ -24,7 +24,7 @@
   const MODO_PRECO_DE = { com_ativacao: 'comAtivacaoDe', sem_ativacao: 'semAtivacaoDe', funding_pass: 'fundingPassDe', liberty: 'libertyDe' };
   const MODO_LABEL    = { com_ativacao: 'plan.modo_label_com', sem_ativacao: 'plan.modo_label_sem', funding_pass: 'plan.modo_label_funding', liberty: 'plan.modo_label_liberty' };
   // Modos em que a taxa de ativação NÃO se aplica (vira "—")
-  const MODOS_SEM_TAXA = new Set(['sem_ativacao', 'funding_pass']);
+  const MODOS_SEM_TAXA = new Set(['sem_ativacao', 'funding_pass', 'liberty']);
   // Capitais disponíveis por modo. Omissão = todos os capitais servem.
   const CAPITAIS_POR_MODO = {
     liberty: ['25k', '50k', '100k'],
@@ -335,19 +335,8 @@
       }
     }
 
-    // Estratégias de "riscado":
-    // - Funding Pass: a fase Challenge inteira aparece riscada (a fase é
-    //   pulada).
-    // - Liberty: NÃO cobra taxa de ativação, então a linha "Taxa de
-    //   ativação" vem com o valor do Challenge riscado (efeito "isenção").
-    //   O valor cru continua sendo mostrado (ex.: $89,00) para reforçar
-    //   quanto o usuário estaria pagando.
-    let strike = false;
-    if (coluna === 'desafio' && state.modo === 'funding_pass') {
-      strike = true;
-    } else if (state.modo === 'liberty' && key === 'taxaAtivacao' && coluna === 'desafio') {
-      strike = true;
-    }
+    // No modo Funding Pass, a fase de challenge é pulada — todos os itens ficam riscados
+    const strike = coluna === 'desafio' && state.modo === 'funding_pass';
 
     return { valor, highlight, sublabel, strike, currency: valorMonetario(valor) };
   }
