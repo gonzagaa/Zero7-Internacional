@@ -31,7 +31,7 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"tarja-topo__intro\">Trade the international market with</span> <span class=\"tarja-destaque\">80% OFF</span>"
+      "html": "<span class=\"tarja-topo__intro\">Trade the international market with</span> <span class=\"tarja-destaque\">87% OFF</span>"
     },
     "cupom": {
       "html": "Use code: <b>ZERO7</b>"
@@ -114,9 +114,11 @@
     "modo_com": { "html": "<strong>Activation</strong> challenge" },
     "modo_sem": { "html": "<strong>Challenge</strong>" },
     "modo_funding": { "html": "<strong>Funding</strong> Pass" },
+    "modo_liberty": { "html": "<strong>Liberty</strong>" },
     "tooltip_com": "After reaching the target, you pay an activation fee and move on to Funding.",
     "tooltip_sem": "Reach the target and move straight to Funding, with no additional fees.",
     "tooltip_funding": "You start straight in the funding phase and get paid based on your performance.",
+    "tooltip_liberty": "Clear the Challenge as usual and enjoy an EOD drawdown plus a more flexible 30% consistency rule during Funding. Available for 25k, 50k and 100k.",
     "tabela_condicao": "Condition",
     "tabela_desafio": "Challenge",
     "tabela_incubadora": "Incubator",
@@ -129,6 +131,7 @@
     "modo_label_com": "Challenge with activation fee",
     "modo_label_sem": "Challenge with no activation fee",
     "modo_label_funding": "Direct access to the funding phase",
+    "modo_label_liberty": "Funding with EOD drawdown and 30% consistency rule",
     "linha_contratos": "Contracts",
     "linha_minimo_dias": "Minimum days",
     "linha_maximo_dias": "Maximum days",

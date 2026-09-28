@@ -160,6 +160,14 @@
     color: #fff;
 }
 
+/* Capitais bloqueados no modo atual (ex.: 150k / 250k quando Liberty está ativo) */
+.seg__option:disabled,
+.seg__option.is-disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .seg__highlight {
     font-weight: 700;
 }

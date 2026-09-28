@@ -26,6 +26,12 @@
       "incubadora": "90%"
     }
   },
+  "condicoesFixasPorModo": {
+    "liberty": {
+      "drawdown":          { "incubadora": "EOD" },
+      "regraConsistencia": { "incubadora": "30%" }
+    }
+  },
   "capitais": {
     "25k": {
       "contratos": {
@@ -45,17 +51,20 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$19,00",
-        "semAtivacao": "$66,50",
-        "fundingPass": "$147,00",
+        "comAtivacao": "$12,50",
+        "semAtivacao": "$43,00",
+        "fundingPass": "$95,50",
+        "liberty":     "$63,00",
         "comAtivacaoDe": "$95,00",
         "semAtivacaoDe": "$332,50",
-        "fundingPassDe": "$735,00"
+        "fundingPassDe": "$735,00",
+        "libertyDe":     "$485,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/d89445",
         "semAtivacao": "https://app.zero7trading.com/checkout/cf9875",
-        "fundingPass": "https://app.zero7trading.com/checkout/a18483"
+        "fundingPass": "https://app.zero7trading.com/checkout/a18483",
+        "liberty":     "https://app.zero7trading.com/checkout/331785"
       }
     },
     "50k": {
@@ -76,17 +85,20 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$29,00",
-        "semAtivacao": "$97,50",
-        "fundingPass": "$247,00",
+        "comAtivacao": "$19,00",
+        "semAtivacao": "$63,50",
+        "fundingPass": "$160,50",
+        "liberty":     "$121,50",
         "comAtivacaoDe": "$145,00",
         "semAtivacaoDe": "$487,50",
-        "fundingPassDe": "$1.235,00"
+        "fundingPassDe": "$1.235,00",
+        "libertyDe":     "$935,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/3b4f89",
         "semAtivacao": "https://app.zero7trading.com/checkout/650761",
-        "fundingPass": "https://app.zero7trading.com/checkout/29ed80"
+        "fundingPass": "https://app.zero7trading.com/checkout/29ed80",
+        "liberty":     "https://app.zero7trading.com/checkout/ccad7f"
       }
     },
     "100k": {
@@ -107,17 +119,20 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$39,00",
-        "semAtivacao": "$136,50",
-        "fundingPass": "$397,00",
+        "comAtivacao": "$25,50",
+        "semAtivacao": "$88,50",
+        "fundingPass": "$258,00",
+        "liberty":     "$160,50",
         "comAtivacaoDe": "$195,00",
         "semAtivacaoDe": "$682,50",
-        "fundingPassDe": "$1.985,00"
+        "fundingPassDe": "$1.985,00",
+        "libertyDe":     "$1.235,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/c0e0dc",
         "semAtivacao": "https://app.zero7trading.com/checkout/54834c",
-        "fundingPass": "https://app.zero7trading.com/checkout/a233b3"
+        "fundingPass": "https://app.zero7trading.com/checkout/a233b3",
+        "liberty":     "https://app.zero7trading.com/checkout/bc4072"
       }
     },
     "150k": {
@@ -138,9 +153,9 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$49,00",
-        "semAtivacao": "$171,50",
-        "fundingPass": "$497,00",
+        "comAtivacao": "$32,00",
+        "semAtivacao": "$111,50",
+        "fundingPass": "$323,00",
         "comAtivacaoDe": "$245,00",
         "semAtivacaoDe": "$857,50",
         "fundingPassDe": "$2.485,00"
@@ -169,9 +184,9 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$59,00",
-        "semAtivacao": "$206,50",
-        "fundingPass": "$647,00",
+        "comAtivacao": "$28,50",
+        "semAtivacao": "$98,50",
+        "fundingPass": "$287,00",
         "comAtivacaoDe": "$219,00",
         "semAtivacaoDe": "$759,00",
         "fundingPassDe": "$2.209,00"

@@ -20,11 +20,15 @@
   ];
 
   // Modos de compra → chaves de preço/checkout no JSON
-  const MODO_PRECO    = { com_ativacao: 'comAtivacao',   sem_ativacao: 'semAtivacao',   funding_pass: 'fundingPass' };
-  const MODO_PRECO_DE = { com_ativacao: 'comAtivacaoDe', sem_ativacao: 'semAtivacaoDe', funding_pass: 'fundingPassDe' };
-  const MODO_LABEL    = { com_ativacao: 'plan.modo_label_com', sem_ativacao: 'plan.modo_label_sem', funding_pass: 'plan.modo_label_funding' };
+  const MODO_PRECO    = { com_ativacao: 'comAtivacao',   sem_ativacao: 'semAtivacao',   funding_pass: 'fundingPass',   liberty: 'liberty' };
+  const MODO_PRECO_DE = { com_ativacao: 'comAtivacaoDe', sem_ativacao: 'semAtivacaoDe', funding_pass: 'fundingPassDe', liberty: 'libertyDe' };
+  const MODO_LABEL    = { com_ativacao: 'plan.modo_label_com', sem_ativacao: 'plan.modo_label_sem', funding_pass: 'plan.modo_label_funding', liberty: 'plan.modo_label_liberty' };
   // Modos em que a taxa de ativação NÃO se aplica (vira "—")
   const MODOS_SEM_TAXA = new Set(['sem_ativacao', 'funding_pass']);
+  // Capitais disponíveis por modo. Omissão = todos os capitais servem.
+  const CAPITAIS_POR_MODO = {
+    liberty: ['25k', '50k', '100k'],
+  };
 
   // Valores de placeholder no JSON que nunca devem aparecer crus
   const PLACEHOLDERS = new Set(['---', '—', '']);
@@ -127,8 +131,28 @@
   }
 
   function obterCelula(key, fonte) {
-    if (fonte === 'fixa') return state.dados.condicoesFixas[key];
+    if (fonte === 'fixa') {
+      const base = state.dados.condicoesFixas[key];
+      // Override por modo (ex.: Liberty muda drawdown/regra de consistência
+      // apenas na coluna incubadora). Merge superficial: só substitui as
+      // colunas listadas no override.
+      const bloco = state.dados.condicoesFixasPorModo
+        && state.dados.condicoesFixasPorModo[state.modo];
+      const override = bloco && bloco[key];
+      return override ? Object.assign({}, base, override) : base;
+    }
     return state.dados.capitais[state.capital][key];
+  }
+
+  // Retorna a lista de capitais aceitos para o modo atual, ou null quando
+  // todos servem (modo sem restrição).
+  function capitaisPermitidos(modo) {
+    return CAPITAIS_POR_MODO[modo] || null;
+  }
+
+  function capitalCompativelComModo(modo, capital) {
+    const permitidos = capitaisPermitidos(modo);
+    return !permitidos || permitidos.includes(capital);
   }
 
   function modoLabelTexto() {
@@ -531,9 +555,44 @@
     });
   }
 
+  /* ============================================================
+     Restrições de capital por modo (usado pelo Liberty)
+     - Desabilita botões de capital não disponíveis para o modo atual
+     - Se o capital selecionado não é compatível, força troca para o
+       primeiro capital permitido e reposiciona o blob
+     ============================================================ */
+  function aplicarRestricaoCapitais() {
+    if (!refs.botoesCapital || !refs.botoesCapital.length) return;
+
+    // 1) marca cada botão como habilitado/desabilitado conforme o modo
+    refs.botoesCapital.forEach((btn) => {
+      const capital = btn.dataset.capital;
+      const permitido = capitalCompativelComModo(state.modo, capital);
+      btn.disabled = !permitido;
+      btn.classList.toggle('is-disabled', !permitido);
+      if (!permitido) btn.setAttribute('aria-disabled', 'true');
+      else btn.removeAttribute('aria-disabled');
+    });
+
+    // 2) se o capital atual ficou fora, migra para o primeiro permitido
+    if (!capitalCompativelComModo(state.modo, state.capital)) {
+      const permitidos = capitaisPermitidos(state.modo) || [];
+      const novoCap = permitidos[0];
+      if (novoCap) {
+        state.capital = novoCap;
+        // sincroniza classe/aria/tabindex nos botões
+        const alvo = refs.botoesCapital.find((b) => b.dataset.capital === novoCap);
+        if (alvo) atualizarSelecionado(refs.botoesCapital, alvo, 'selecionado');
+        // reposiciona o blob depois que o layout confirmou o novo botão ativo
+        requestAnimationFrame(() => posicionarBlob(refs.segCapital));
+      }
+    }
+  }
+
   function bindEventos() {
     bindSeg(refs.segMode, refs.botoesModo, 'mode', (modo) => {
       state.modo = modo;
+      aplicarRestricaoCapitais();
       renderTudo({ animar: true });
     }, 'is-active');
 
@@ -636,6 +695,10 @@
     if (!state.dados.capitais[state.capital]) {
       state.capital = Object.keys(state.dados.capitais)[0];
     }
+
+    // Garante que os botões de capital refletem as restrições do modo
+    // inicial antes do primeiro render (evita flicker no Liberty).
+    aplicarRestricaoCapitais();
 
     renderTudo({ animar: false });
 

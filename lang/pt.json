@@ -31,7 +31,7 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"tarja-topo__intro\">Opere no mercado internacional com</span> <span class=\"tarja-destaque\">80% OFF</span>"
+      "html": "<span class=\"tarja-topo__intro\">Opere no mercado internacional com</span> <span class=\"tarja-destaque\">87% OFF</span>"
     },
     "cupom": {
       "html": "Use o cupom: <b>ZERO7</b>"
@@ -114,9 +114,11 @@
     "modo_com": { "html": "<strong>Activation</strong> challenge" },
     "modo_sem": { "html": "<strong>Challenge</strong>" },
     "modo_funding": { "html": "<strong>Funding</strong> Pass" },
+    "modo_liberty": { "html": "<strong>Liberty</strong>" },
     "tooltip_com": "Após atingir a meta, você deverá pagar uma taxa de ativação e avançar para Funding.",
     "tooltip_sem": "Alcance a meta e avance direto para Funding, sem pagar nenhuma taxa adicional.",
     "tooltip_funding": "Você começa direto na fase funding e recebe conforme sua performance.",
+    "tooltip_liberty": "Passe pelo Challenge normalmente e na fase Funding tenha drawdown EOD e regra de consistência mais flexível (30%). Disponível em 25k, 50k e 100k.",
     "tabela_condicao": "Condição",
     "tabela_desafio": "Desafio",
     "tabela_incubadora": "Incubadora",
@@ -129,6 +131,7 @@
     "modo_label_com": "Desafio com taxa de ativação",
     "modo_label_sem": "Desafio sem taxa de ativação",
     "modo_label_funding": "Acesso direto à fase funding",
+    "modo_label_liberty": "Funding com drawdown EOD e regra 30%",
     "linha_contratos": "Contratos",
     "linha_minimo_dias": "Mínimo de dias",
     "linha_maximo_dias": "Máximo de dias",
