@@ -131,7 +131,7 @@
     "modo_label_com": "Challenge with activation fee",
     "modo_label_sem": "Challenge with no activation fee",
     "modo_label_funding": "Direct access to the funding phase",
-    "modo_label_liberty": "Funding with EOD drawdown and 30% consistency rule",
+    "modo_label_liberty": "EOD drawdown across all phases",
     "linha_contratos": "Contracts",
     "linha_minimo_dias": "Minimum days",
     "linha_maximo_dias": "Maximum days",

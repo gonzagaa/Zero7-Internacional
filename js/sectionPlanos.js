@@ -175,6 +175,7 @@
       com_ativacao: 'plan.modo_com.html',
       sem_ativacao: 'plan.modo_sem.html',
       funding_pass: 'plan.modo_funding.html',
+      liberty:      'plan.modo_liberty.html',
     };
     return String(tr(map[state.modo] || 'plan.modo_com.html')).replace(/<[^>]*>/g, '').trim();
   }

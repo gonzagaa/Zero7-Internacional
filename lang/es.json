@@ -131,7 +131,7 @@
     "modo_label_com": "Desafío con tarifa de activación",
     "modo_label_sem": "Desafío sin tarifa de activación",
     "modo_label_funding": "Acceso directo a la fase funding",
-    "modo_label_liberty": "Funding con drawdown EOD y regla del 30%",
+    "modo_label_liberty": "Drawdown tipo EOD en todas las fases",
     "linha_contratos": "Contratos",
     "linha_minimo_dias": "Días mínimos",
     "linha_maximo_dias": "Días máximos",
