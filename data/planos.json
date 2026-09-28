@@ -26,10 +26,11 @@
       "incubadora": "90%"
     }
   },
-  "condicoesFixasPorModo": {
+  "overridesPorModo": {
     "liberty": {
       "drawdown":          { "incubadora": "EOD" },
-      "regraConsistencia": { "incubadora": "30%" }
+      "regraConsistencia": { "incubadora": "30%" },
+      "perdaTotal":        { "incubadora": "$1.497,00" }
     }
   },
   "capitais": {
@@ -51,10 +52,10 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$12,50",
-        "semAtivacao": "$43,00",
-        "fundingPass": "$95,50",
-        "liberty":     "$63,00",
+        "comAtivacao": "$12,35",
+        "semAtivacao": "$43,23",
+        "fundingPass": "$95,55",
+        "liberty":     "$63,05",
         "comAtivacaoDe": "$95,00",
         "semAtivacaoDe": "$332,50",
         "fundingPassDe": "$735,00",
@@ -85,10 +86,10 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$19,00",
-        "semAtivacao": "$63,50",
-        "fundingPass": "$160,50",
-        "liberty":     "$121,50",
+        "comAtivacao": "$18,85",
+        "semAtivacao": "$63,38",
+        "fundingPass": "$160,55",
+        "liberty":     "$121,55",
         "comAtivacaoDe": "$145,00",
         "semAtivacaoDe": "$487,50",
         "fundingPassDe": "$1.235,00",
@@ -119,10 +120,10 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$25,50",
-        "semAtivacao": "$88,50",
-        "fundingPass": "$258,00",
-        "liberty":     "$160,50",
+        "comAtivacao": "$25,35",
+        "semAtivacao": "$88,73",
+        "fundingPass": "$258,05",
+        "liberty":     "$160,55",
         "comAtivacaoDe": "$195,00",
         "semAtivacaoDe": "$682,50",
         "fundingPassDe": "$1.985,00",
@@ -153,9 +154,9 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$32,00",
-        "semAtivacao": "$111,50",
-        "fundingPass": "$323,00",
+        "comAtivacao": "$31,85",
+        "semAtivacao": "$111,48",
+        "fundingPass": "$323,05",
         "comAtivacaoDe": "$245,00",
         "semAtivacaoDe": "$857,50",
         "fundingPassDe": "$2.485,00"
@@ -184,12 +185,12 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$28,50",
-        "semAtivacao": "$98,50",
-        "fundingPass": "$287,00",
-        "comAtivacaoDe": "$219,00",
-        "semAtivacaoDe": "$759,00",
-        "fundingPassDe": "$2.209,00"
+        "comAtivacao": "$38,35",
+        "semAtivacao": "$134,29",
+        "fundingPass": "$420,81",
+        "comAtivacaoDe": "$295,00",
+        "semAtivacaoDe": "$1.033,00",
+        "fundingPassDe": "$3.237,00"
       },
       "checkout": {
         "comAtivacao": "https://app.zero7trading.com/checkout/cece3b",

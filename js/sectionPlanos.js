@@ -131,17 +131,24 @@
   }
 
   function obterCelula(key, fonte) {
-    if (fonte === 'fixa') {
-      const base = state.dados.condicoesFixas[key];
-      // Override por modo (ex.: Liberty muda drawdown/regra de consistência
-      // apenas na coluna incubadora). Merge superficial: só substitui as
-      // colunas listadas no override.
-      const bloco = state.dados.condicoesFixasPorModo
-        && state.dados.condicoesFixasPorModo[state.modo];
-      const override = bloco && bloco[key];
-      return override ? Object.assign({}, base, override) : base;
-    }
-    return state.dados.capitais[state.capital][key];
+    // Fonte da célula: condicoesFixas (compartilhada) ou capitais[capital].
+    const base = fonte === 'fixa'
+      ? state.dados.condicoesFixas[key]
+      : state.dados.capitais[state.capital][key];
+
+    // Override por modo — aplica-se a QUALQUER célula, independente da
+    // fonte. Ex.: Liberty muda drawdown/regra na incubadora (célula fixa)
+    // E também limita perdaTotal.incubadora a $1.497 (célula por capital).
+    // Merge superficial: só substitui as colunas listadas no override.
+    // Nome antigo `condicoesFixasPorModo` é aceito como fallback pra não
+    // quebrar caso o JSON esteja em transição.
+    const overridesMap = state.dados.overridesPorModo
+      || state.dados.condicoesFixasPorModo
+      || null;
+    const blocoMode = overridesMap && overridesMap[state.modo];
+    const override = blocoMode && blocoMode[key];
+
+    return override ? Object.assign({}, base, override) : base;
   }
 
   // Retorna a lista de capitais aceitos para o modo atual, ou null quando
