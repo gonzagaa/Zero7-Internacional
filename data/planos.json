@@ -29,8 +29,7 @@
   "overridesPorModo": {
     "liberty": {
       "drawdown":          { "incubadora": "EOD" },
-      "regraConsistencia": { "incubadora": "30%" },
-      "perdaTotal":        { "incubadora": "$1.497,00" }
+      "regraConsistencia": { "incubadora": "30%" }
     }
   },
   "capitais": {
