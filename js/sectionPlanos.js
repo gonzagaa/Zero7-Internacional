@@ -531,7 +531,7 @@
     com_ativacao: 'RESTART07',
     sem_ativacao: 'RESTART07',
     liberty:      'RESTART07',
-    funding_pass: 'RESTART07',
+    funding_pass: 'ZERO7',
   };
   function renderCupom() {
     if (!refs.cardCupom) return;
@@ -544,6 +544,12 @@
     refs.cardCupom.innerHTML = `${prefixo} <b>${code}</b>`;
   }
 
+  // Selo "RESTART" ao lado do nome do plano — só nos produtos da promo
+  const PROMO_MODOS = new Set(['com_ativacao', 'sem_ativacao', 'liberty']);
+  function renderPromo() {
+    if (refs.cardPromo) refs.cardPromo.hidden = !PROMO_MODOS.has(state.modo);
+  }
+
   function renderTudo({ animar = true } = {}) {
     renderCard({ animar });
     renderPreco({ animar });
@@ -551,6 +557,7 @@
     renderLabel({ animar });
     renderBadge({ animar });
     renderCupom();
+    renderPromo();
     renderCheckoutHref();
   }
 
@@ -670,6 +677,7 @@
     refs.cardPrice = $('.plan-card__price', secao);
     refs.cardMode = $('.plan-card__mode', secao);
     refs.cardCupom = $('.plan-card__cupom', secao);
+    refs.cardPromo = $('.plan-card__promo', secao);
     refs.cardCta = $('.plan-card__cta', secao);
     refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
     refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);
