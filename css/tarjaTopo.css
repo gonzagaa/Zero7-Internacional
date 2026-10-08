@@ -1,420 +1,582 @@
 /* =====================================================================
-   TARJA TOPO — barra promocional (redesign limpo)
-   Mecânica (show/hide, --tarja-h, offset da nav) inalterada.
+   TARJA PROMOCIONAL — duas linhas (urgência + oferta). Componente único
+   de /home e /home/v2 (HTML idêntico nas duas: tools/check-tarja.mjs).
+
+   - Medidas em px de propósito: v1 e v2 usam escalas de rem diferentes.
+   - Altura reservada SÓ por CSS, desde o primeiro frame (sem JS):
+     .ztarja-espaco ocupa --altura-tarja no fluxo e a nav desce junto.
+   - Campanha expirada: o script inline do bloco remove a tarja e o
+     espaço antes do primeiro paint -> nada reservado, nada pula.
+   - O JS (defer) só cuida do timer e do copiar; não mexe em layout.
    ===================================================================== */
 
-.tarja-topo {
-  /* Promo RESTART — paleta âmbar (era verde). Reverter: valores antigos
-     c1 #22ba7d · c2 #16bd7a · c3 #0a7d54 · c4 #06402a */
-  --tarja-c1: #ffb422;
-  --tarja-c2: #f6971d;
-  --tarja-c3: #cf6f18;
-  --tarja-c4: #6e3606;
-  --tarja-text: #ffffff;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 102;
-
-  width: 100%;
-  color: var(--tarja-text);
-  font-family: var(--tts), sans-serif;
-
-  overflow: hidden;
-  isolation: isolate;
-
-  background:
-    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.14), transparent 26%),
-    radial-gradient(circle at 85% 12%, rgba(255, 210, 130, 0.30), transparent 32%),
-    linear-gradient(100deg,
-      var(--tarja-c1) 0%,
-      var(--tarja-c2) 40%,
-      var(--tarja-c3) 74%,
-      var(--tarja-c4) 100%
-    );
-
-  box-shadow:
-    0 1rem 2.8rem rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-
-  transition:
-    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 320ms ease,
-    visibility 0s linear 420ms;
+:root {
+  --tz-l1: 32px;                                   /* linha 1: urgência */
+  --tz-l2: 64px;                                   /* linha 2: oferta   */
+  --altura-tarja: calc(var(--tz-l1) + var(--tz-l2));
 }
 
-/* textura diagonal sutil */
-.tarja-topo::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.055) 0 1px,
-    transparent 1px 2.4rem
-  );
-  opacity: 0.6;
-}
-
-/* ativa via JS */
-body.tarja-ativa .tarja-topo {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
-
-  transition:
-    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 320ms ease,
-    visibility 0s linear 0s;
-}
-
-/* =====================================================================
-   WRAPPER
-   ===================================================================== */
-
-.tarja-topo__wrapper {
-  position: relative;
-  z-index: 1;
-
-  width: min(100%, 1320px);
-  min-height: 7rem;
-  margin: 0 auto;
-  padding: 1.15rem 2.4rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.9rem 1.8rem;
-}
-
-/* =====================================================================
-   COPY + DESTAQUE
-   ===================================================================== */
-
-.tarja-topo__copy {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.9rem;
-
-  color: var(--tarja-text);
-  text-transform: uppercase;
-
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.04em;
-
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
-}
-
-/* "87% OFF" — pill branco de destaque */
-.tarja-destaque {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1.5rem;
-
-  border-radius: 999px;
-  background: #ffffff;
-  color: #8a4a00; /* promo âmbar (era #086b45) */
-
-  font-size: 2.1rem;
-  font-weight: 900;
-  letter-spacing: 0.01em;
-
-  box-shadow:
-    0 0.5rem 1.6rem rgba(0, 0, 0, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-}
-
-/* =====================================================================
-   CUPOM — ticket tracejado
-   ===================================================================== */
-
-.tarja-topo__cupom {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1.2rem;
-
-  border: 1.5px dashed rgba(255, 255, 255, 0.55);
-  border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.08);
-
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-
-.tarja-topo__cupom b {
-  font-weight: 900;
-  font-size: 1.35rem;
-  letter-spacing: 0.14em;
-  color: #ffffff;
-}
-
-/* =====================================================================
-   BOTÃO
-   ===================================================================== */
-
-.tarja-topo__btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex: none;
-
-  min-height: 5.2rem;
-  padding: 0.7rem 0.7rem 0.7rem 2.2rem;
-
-  border-radius: 999px;
-  background: #ffffff;
-  color: #050806;
-
-  text-decoration: none;
-  white-space: nowrap;
-
-  font-size: 1.7rem;
-  font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-
-  box-shadow:
-    0 0.8rem 2.2rem rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-
-  transition:
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 240ms ease,
-    filter 240ms ease;
-}
-
-.tarja-topo__btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.03);
-  box-shadow:
-    0 1.2rem 2.8rem rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
-}
-
-.tarja-topo__btn .arrow {
-  width: 4rem;
-  height: 4rem;
-  flex: none;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffd24d 0%, #ff9e2c 58%, #d9741a 100%);
-
-  box-shadow:
-    0 0.6rem 1.5rem rgba(150, 78, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
-}
-
-.tarja-topo__btn .arrow svg {
-  width: 1.7rem;
-  height: 1.7rem;
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.tarja-topo__btn:hover .arrow svg {
-  transform: translateX(2px);
-}
-
-/* Telas grandes (≥1600px) — mais impacto, igual à tarja nova */
-@media (min-width: 1600px) {
-  .tarja-topo__wrapper {
-    min-height: 7.8rem;
-    padding: 1.35rem 2.4rem;
-  }
-  .tarja-topo__copy {
-    font-size: 2.3rem;
-  }
-  .tarja-destaque {
-    font-size: 2.4rem;
-    padding: 0.55rem 1.7rem;
-  }
-  .tarja-topo__btn {
-    font-size: 1.9rem;
-    min-height: 5.8rem;
-  }
-  .tarja-topo__btn .arrow {
-    width: 4.4rem;
-    height: 4.4rem;
-  }
-  .tarja-topo__btn .arrow svg {
-    width: 1.9rem;
-    height: 1.9rem;
+@media (max-width: 767.98px) {
+  :root {
+    --tz-l1: 28px;
+    --tz-l2: 96px;
   }
 }
 
-/* =====================================================================
-   BODY / NAV (offset — inalterado)
-   ===================================================================== */
-
-body.tarja-ativa {
-  padding-top: var(--tarja-h, 0px);
-  transition: padding-top 420ms cubic-bezier(0.22, 1, 0.36, 1);
+/* espaço reservado no fluxo (equivale ao padding-top do body) */
+.ztarja-espaco {
+  height: var(--altura-tarja);
 }
 
-body.tarja-ativa nav#navigation {
-  top: var(--tarja-h, 0px);
-  transition:
-    top 420ms cubic-bezier(0.22, 1, 0.36, 1),
-    left 300ms ease-in-out,
-    width 300ms ease-in-out,
-    border-radius 300ms ease-in-out,
-    background-color 300ms ease-in-out,
-    backdrop-filter 300ms ease-in-out;
+/* nav fixa desce para baixo da tarja (só quando a tarja existe) */
+.ztarja ~ nav#navigation {
+  top: var(--altura-tarja);
 }
 
 @media (min-width: 1080px) {
-  body.tarja-ativa nav#navigation {
-    top: var(--tarja-h, 0px);
+  .ztarja ~ nav#navigation {
     left: 0;
     width: 100%;
     border-radius: 0;
   }
 }
 
+/* ---------------------------------------------------------------------
+   Raiz
+   --------------------------------------------------------------------- */
+
+.ztarja {
+  --tz-ink:        rgba(255, 255, 255, 0.9);
+  --tz-ink-soft:   rgba(255, 255, 255, 0.8);
+  --tz-amber:      #ffd24d;                        /* timer + código */
+  --tz-amber-a:    #ffd24d;                        /* selo: início   */
+  --tz-amber-b:    #ff9e2c;                        /* selo: fim      */
+  --tz-mint:       #34d399;
+  --tz-hair:       rgba(52, 211, 153, 0.3);
+  --tz-urg-bg:     #050d0a;
+  --tz-cta-bg:     #f4fff9;
+  --tz-cta-ink:    #052a1f;
+  --tz-brand-a:    #10a36a;
+  --tz-brand-b:    #0b5d3b;
+  --tz-glow:       rgba(255, 190, 70, 0.17);       /* brilho atrás do selo */
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 102;
+  height: var(--altura-tarja);
+
+  font-family: var(--tts), system-ui, sans-serif;
+  color: var(--tz-ink);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ztarja,
+.ztarja *,
+.ztarja *::before,
+.ztarja *::after {
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------------------
+   LINHA 1 — urgência
+   --------------------------------------------------------------------- */
+
+.ztarja__urg {
+  height: var(--tz-l1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+
+  background: var(--tz-urg-bg);
+  white-space: nowrap;
+}
+
+.ztarja__dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--tz-amber);
+}
+
+.ztarja__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--tz-amber);
+  animation: ztarjaPulse 2s ease-out infinite;
+}
+
+@keyframes ztarjaPulse {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  80%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.ztarja__urg-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tz-ink-soft);
+}
+
+/* Timer: só tipografia, mesma fonte do rótulo. */
+.ztarja__timer {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--tts), sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tz-amber);
+}
+
+/* Célula com a largura do dígito mais largo da TT Fors 700 (0,663em,
+   medido): todo dígito ocupa o mesmo espaço -> o timer nunca muda de
+   largura. (Sem "tnum": nessa família ele troca o 0 por Ø.) */
+.ztarja__d {
+  display: inline-block;
+  width: 0.68em;
+  text-align: center;
+}
+
+.ztarja__c {
+  display: inline-block;
+  width: 0.56em;
+  text-align: center;
+  opacity: 0.45;
+}
+
+/* ---------------------------------------------------------------------
+   LINHA 2 — a oferta
+   --------------------------------------------------------------------- */
+
+.ztarja__offer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: var(--tz-l2);
+
+  /* esmeralda profundo; o âmbar entra só como acento atrás do selo e do CTA */
+  background: linear-gradient(100deg, #031d14 0%, #08452f 48%, #062f21 100%);
+
+  /* fio de 1px no topo (separa da linha 1) e na base */
+  box-shadow:
+    inset 0 1px 0 var(--tz-hair),
+    inset 0 -1px 0 var(--tz-hair);
+}
+
+/* ruído muito sutil, para não ficar com cara de gradiente chapado */
+.ztarja__offer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  opacity: 0.04;
+}
+
+/* sheen diagonal, lento e discreto (~6s) */
+.ztarja__offer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -30%;
+  width: 30%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 100%);
+  animation: ztarjaSheen 6s ease-in-out infinite;
+}
+
+@keyframes ztarjaSheen {
+  0%, 58%   { transform: translateX(0); }
+  92%, 100% { transform: translateX(450%); }
+}
+
+.ztarja__inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: min(100%, 1320px);
+  margin: 0 auto;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  white-space: nowrap;
+}
+
+/* copy + 80% OFF formam uma frase só */
+.ztarja__lead {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+}
+
+.ztarja__copy {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tz-ink);
+}
+
+/* 80% OFF — o maior elemento; é o que o olho acha primeiro */
+.ztarja__badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 7px 15px 6px;
+
+  border-radius: 12px 0 12px 0;                    /* cantos da marca */
+  background: linear-gradient(135deg, var(--tz-amber-a) 0%, var(--tz-amber-b) 100%);
+  color: #2a1503;
+
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.01em;
+
+  box-shadow: 0 0 22px rgba(255, 178, 52, 0.32);  /* glow da própria cor */
+}
+
+/* brilho âmbar atrás do selo */
+.ztarja__badge::before {
+  content: "";
+  position: absolute;
+  inset: -26px -46px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--tz-glow), transparent);
+}
+
+/* ---------------------------------------------------------------------
+   Cupom — ticket. O ticket inteiro é o botão.
+   --------------------------------------------------------------------- */
+
+.ztarja__cupom {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 10px 0 10px 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--tz-ink-soft);
+
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.ztarja__cupom:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ztarja__cupom:focus-visible,
+.ztarja__cta:focus-visible {
+  outline: 2px solid var(--tz-mint);
+  outline-offset: 3px;
+}
+
+/* "USE O CUPOM:" + <b>RESTART07</b> (vem do i18n como um trecho só) */
+.ztarja__cupom-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 0 12px 0 14px;
+
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ztarja__cupom-main b {
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--tz-amber);
+  /* zero cortado só no código: evita digitarem "RESTARTO7" com a letra O */
+  font-variant-numeric: slashed-zero tabular-nums;
+  font-feature-settings: "zero" 1, "tnum" 1;
+}
+
+/* canhoto do ticket: ícone <-> "Copiado!" no MESMO lugar, sem reflow */
+.ztarja__stub {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  padding: 0 12px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.18);
+}
+
+.ztarja__stub > * {
+  grid-area: 1 / 1;
+  transition: opacity 140ms ease;
+}
+
+.ztarja__stub-ic {
+  width: 15px;
+  height: 15px;
+  color: var(--tz-ink-soft);
+}
+
+.ztarja__stub-ok {
+  opacity: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6ff0b8;
+}
+
+.ztarja__cupom.is-copied .ztarja__stub-ic { opacity: 0; }
+.ztarja__cupom.is-copied .ztarja__stub-ok { opacity: 1; }
+
+.ztarja__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------
+   CTA — variante CLARA dos botões do site (forma do z7-btnx--barra)
+   --------------------------------------------------------------------- */
+
+.ztarja__cta {
+  --h: 44px;
+  --in: 5px;
+  --capw: 38px;
+  --r: calc(var(--h) / 3);
+  --cr: calc((var(--h) - var(--in) * 2) / 2);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  height: var(--h);
+  padding-left: 18px;
+  padding-right: calc(var(--capw) + var(--in) + 12px);
+
+  border-radius: var(--r) 0 var(--r) 0;
+  background: var(--tz-cta-bg);
+  color: var(--tz-cta-ink);
+  text-decoration: none;
+
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+
+  transition: background-color 180ms ease;
+}
+
+.ztarja__cta:hover {
+  background: #ffffff;
+}
+
+/* âmbar ancorado ATRÁS do CTA: acompanha o botão em qualquer largura
+   (nunca vira mancha solta na borda da tarja) */
+.ztarja__cta::before {
+  content: "";
+  position: absolute;
+  inset: -22px -40px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(closest-side,
+    rgba(255, 166, 48, 0.28) 0%,
+    rgba(255, 166, 48, 0.1) 55%,
+    transparent 100%);
+}
+
+.ztarja__cta-cap {
+  position: absolute;
+  top: var(--in);
+  right: var(--in);
+  width: var(--capw);
+  height: calc(100% - var(--in) * 2);
+  display: grid;
+  place-items: center;
+
+  border-radius: var(--cr) 0 var(--cr) var(--cr);  /* cap da marca */
+  background: linear-gradient(135deg, var(--tz-brand-a) 0%, var(--tz-brand-b) 100%);
+  color: #ffffff;
+}
+
+.ztarja__cta-cap svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ztarja__cta:hover .ztarja__cta-cap svg {
+  transform: translateX(3px);
+}
+
 /* =====================================================================
-   TABLET / MOBILE (≤1080px) — versão compacta
+   TELAS GRANDES (≥1600px)
    ===================================================================== */
 
-@media (max-width: 1080px) {
-  .tarja-topo {
-    background:
-      radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.16), transparent 28%),
-      radial-gradient(circle at 92% 8%, rgba(255, 210, 130, 0.28), transparent 32%),
-      linear-gradient(110deg, #f6a11d 0%, #ffb422 46%, #cf6f18 100%);
-  }
-
-  .tarja-topo__wrapper {
-    min-height: 5rem;
-    padding: 0.7rem 1.4rem;
-    flex-wrap: nowrap;
-    gap: 0.9rem;
-  }
-
-  /* esconde o texto descritivo longo; fica pill + cupom + seta */
-  .tarja-topo__intro {
-    display: none;
-  }
-
-  .tarja-topo__copy {
-    gap: 0;
-    flex: none;
-  }
-
-  .tarja-destaque {
-    font-size: 1.4rem;
-    padding: 0.35rem 1rem;
-  }
-
-  .tarja-topo__cupom {
-    font-size: 1.05rem;
-    padding: 0.42rem 0.95rem;
-    gap: 0.45rem;
-  }
-
-  .tarja-topo__cupom b {
-    font-size: 1.15rem;
-    letter-spacing: 0.1em;
-  }
-
-  /* botão compacto: só a seta */
-  .tarja-topo__btn {
-    padding: 0;
-    min-height: auto;
-    background: transparent;
-    box-shadow: none;
-    gap: 0;
-    font-size: 0;
-  }
-
-  .tarja-topo__btn > span[data-i18n] {
-    display: none;
-  }
-
-  .tarja-topo__btn:hover {
-    transform: none;
-    box-shadow: none;
-    filter: none;
-  }
-
-  .tarja-topo__btn .arrow {
-    width: 3.6rem;
-    height: 3.6rem;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.03)),
-      linear-gradient(135deg, #ffd24d 0%, #ff9e2c 58%, #d9741a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow:
-      0 0.7rem 1.7rem rgba(0, 0, 0, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  }
-
-  .tarja-topo__btn .arrow svg {
-    width: 1.55rem;
-    height: 1.55rem;
-  }
-}
-
-@media (max-width: 430px) {
-  .tarja-topo__wrapper {
-    padding-inline: 1.1rem;
-    gap: 0.65rem;
-  }
-
-  .tarja-destaque {
-    font-size: 1.25rem;
-    padding: 0.3rem 0.85rem;
-  }
-
-  .tarja-topo__cupom {
-    font-size: 0.92rem;
-    padding: 0.35rem 0.75rem;
-    gap: 0.35rem;
-  }
-
-  .tarja-topo__cupom b {
-    font-size: 1rem;
-  }
-
-  .tarja-topo__btn .arrow {
-    width: 3.3rem;
-    height: 3.3rem;
-  }
+@media (min-width: 1600px) {
+  .ztarja__inner        { gap: 32px; }
+  .ztarja__copy         { font-size: 15px; }
+  .ztarja__badge        { font-size: 22px; padding: 8px 17px 7px; }
+  .ztarja__cupom-main b { font-size: 15px; }
+  .ztarja__cta          { font-size: 14px; }
 }
 
 /* =====================================================================
-   MOTION REDUZIDO
+   TABLET (768–1079) — uma linha só; a copy sai primeiro se não couber.
+   A escala de tablet vai até 1139px: com a de desktop a linha precisa de
+   ~1101px e estouraria entre 1080 e 1100 (medido).
+   ===================================================================== */
+
+@media (max-width: 1139.98px) {
+  .ztarja__inner        { gap: 20px; padding: 0 20px; }
+  .ztarja__lead         { gap: 12px; }
+  .ztarja__copy         { font-size: 12.5px; letter-spacing: 0.03em; }
+  .ztarja__badge        { font-size: 18px; padding: 6px 13px 5px; }
+  .ztarja__cupom-main b { font-size: 13px; }
+  .ztarja__cta          { font-size: 12px; padding-left: 16px; }
+}
+
+/* com a copy a linha precisa de ~1001px: abaixo de 1024 ela sai de cena.
+   80% OFF, cupom e CTA nunca saem. */
+@media (max-width: 1023.98px) {
+  .ztarja__copy { display: none; }
+}
+
+/* =====================================================================
+   CELULAR (< 768) — linha 2 em dois andares (máx. 96px)
+   ===================================================================== */
+
+@media (max-width: 767.98px) {
+  .ztarja__urg       { gap: 7px; }
+  .ztarja__urg-label { font-size: 10px; letter-spacing: 0.07em; }
+  .ztarja__timer     { font-size: 12px; }
+
+  .ztarja__inner {
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 6px 8px;
+    padding: 0 12px;
+    white-space: normal;
+  }
+
+  /* andar A: copy + 80% OFF lado a lado */
+  .ztarja__lead {
+    flex: 1 0 100%;
+    justify-content: center;
+    gap: 10px;
+    min-height: 30px;
+  }
+
+  .ztarja__copy {
+    display: block;
+    max-width: 22ch;
+    font-size: 10.5px;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-align: right;
+  }
+
+  .ztarja__badge { font-size: 16px; padding: 6px 11px 5px; }
+  .ztarja__badge::before { inset: -18px -30px; }
+
+  /* andar B: cupom + CTA, exatamente 50% cada, alvo de toque >= 44px */
+  .ztarja__cupom,
+  .ztarja__cta {
+    flex: 0 0 calc((100% - 8px) / 2);
+    min-width: 0;
+    height: 44px;
+  }
+
+  .ztarja__cupom { justify-content: space-between; }
+
+  .ztarja__cupom-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 0 4px 0 9px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+
+  .ztarja__cupom-main b { font-size: 12px; letter-spacing: 0.03em; }
+
+  .ztarja__stub { padding: 0 9px; }
+  .ztarja__stub-ic { width: 14px; height: 14px; }
+
+  /* no celular o ticket tem largura fixa (50%): o "Copiado!" cobre o ticket
+     inteiro — sem reflow e sem depender do tamanho da palavra em cada idioma */
+  .ztarja__stub-ok {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: inherit;
+    background: #0a3d2c;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .ztarja__cta {
+    --capw: 32px;
+    justify-content: center;
+    padding-left: 8px;
+    padding-right: calc(var(--capw) + var(--in) + 5px);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+  }
+
+  .ztarja__cta::before { inset: -14px -18px; }
+}
+
+/* =====================================================================
+   MOVIMENTO REDUZIDO — sem pulso, sem sheen, sem transição
    ===================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .tarja-topo,
-  .tarja-topo__btn,
-  .tarja-topo__btn .arrow svg,
-  body.tarja-ativa,
-  body.tarja-ativa nav#navigation {
+  .ztarja *,
+  .ztarja *::before,
+  .ztarja *::after {
+    animation: none !important;
     transition: none !important;
   }
+  .ztarja__offer::after { display: none; }
 }

@@ -526,12 +526,31 @@
     if (href) refs.cardCta.setAttribute('href', href);
   }
 
+  // Cupom exibido no card — por modo (RESTART é promo dos produtos Restart)
+  const PLAN_CUPOM = {
+    com_ativacao: 'RESTART07',
+    sem_ativacao: 'RESTART07',
+    liberty:      'RESTART07',
+    funding_pass: 'RESTART07',
+  };
+  function renderCupom() {
+    if (!refs.cardCupom) return;
+    const code = PLAN_CUPOM[state.modo] || 'RESTART07';
+    const base = String(tr('tarja.cupom.html'));            // ex.: "Use o cupom: <b>RESTART07</b>"
+    // Extrai só o prefixo ("Use o cupom:"); se i18n ainda não resolveu, usa padrão
+    const prefixo = /<b>/i.test(base)
+      ? base.replace(/<b>[\s\S]*?<\/b>/i, '').trim()
+      : 'Use o cupom:';
+    refs.cardCupom.innerHTML = `${prefixo} <b>${code}</b>`;
+  }
+
   function renderTudo({ animar = true } = {}) {
     renderCard({ animar });
     renderPreco({ animar });
     renderPrecoOriginal({ animar });
     renderLabel({ animar });
     renderBadge({ animar });
+    renderCupom();
     renderCheckoutHref();
   }
 
@@ -650,6 +669,7 @@
     refs.cardPriceFrom = $('.plan-card__price-from', secao);
     refs.cardPrice = $('.plan-card__price', secao);
     refs.cardMode = $('.plan-card__mode', secao);
+    refs.cardCupom = $('.plan-card__cupom', secao);
     refs.cardCta = $('.plan-card__cta', secao);
     refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
     refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);

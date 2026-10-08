@@ -31,13 +31,17 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"tarja-topo__intro\">Trade the international market with</span> <span class=\"tarja-destaque\">87% OFF</span>"
+      "html": "<span class=\"ztarja__copy\">Trade the international market with</span> <span class=\"ztarja__badge\">80% OFF</span>"
     },
     "cupom": {
-      "html": "Use code: <b>ZERO7</b>"
+      "html": "Use code: <b>RESTART07</b>"
     },
     "botao": "See Offer",
-    "timer_label": "This offer ends in:"
+    "timer_label": "This offer ends in:",
+    "aria": "Featured promotion",
+    "cupom_aria": "Copy the coupon code RESTART07",
+    "timer_aria": "Time left: {h} h {m} min",
+    "copiado": "Copied!"
   },
   "hero": {
     "titulo_inicio": "We fund traders with accounts up to",

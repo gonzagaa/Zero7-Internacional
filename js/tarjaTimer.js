@@ -1,19 +1,25 @@
 /* =====================================================================
    TARJA TIMER — contagem regressiva rotativa até a meia-noite local.
 
-   Comportamento:
+   Comportamento (inalterado):
    - Ao chegar em 00:00:00 o timer reinicia automaticamente e passa a
      contar até a próxima meia-noite. Loop infinito.
-   - Só roda se o elemento .tarja-timer existir e a tarja-topo pai
-     estiver visível (js/tarjaTopo.js pode ter removido a tarja do DOM
-     se a data limite expirou).
+   - Só roda se o timer existir dentro de uma tarja ativa (o script inline
+     do bloco remove a tarja do DOM se a campanha já expirou).
    - Pausa o setInterval quando a aba fica oculta e retoma quando volta.
+
+   Apresentação:
+   - Cada dígito vai numa célula de largura fixa (.ztarja__d) -> o timer
+     nunca muda de largura.
+   - Os números são aria-hidden; o leitor de tela recebe um aria-label
+     com o tempo restante, atualizado a cada MINUTO (nunca por segundo).
+   - Carregado com defer; não mexe em layout.
    ===================================================================== */
 (function () {
   'use strict';
 
-  const CLOCK_SELECTOR = '.tarja-timer__clock';
-  const TARJA_SELECTOR = '.tarja-topo';
+  const TIMER_SELECTOR = '.ztarja__timer';
+  const TARJA_SELECTOR = '.ztarja';
 
   let tickInterval = null;
 
@@ -37,7 +43,25 @@
     return pad2(h) + ':' + pad2(m) + ':' + pad2(s);
   }
 
-  function atualizar(clockEl) {
+  function tr(key, fallback) {
+    try {
+      const v = window.i18n && window.i18n.t && window.i18n.t(key);
+      return v && v !== key ? v : fallback;
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  function rotuloAria(deltaMs) {
+    const min = Math.floor(deltaMs / 60000);
+    return tr('tarja.timer_aria', 'Tempo restante: {h} h e {m} min')
+      .replace('{h}', Math.floor(min / 60))
+      .replace('{m}', min % 60);
+  }
+
+  function atualizar(timerEl) {
+    if (!timerEl.isConnected) { parar(); return; }   // tarja retirada
+
     const agora = new Date();
     let alvo = proximaMeiaNoite(agora);
     let delta = alvo.getTime() - agora.getTime();
@@ -49,13 +73,25 @@
       delta = alvo.getTime() - agora.getTime();
     }
 
-    clockEl.textContent = formatar(delta);
+    // dígitos (HHMMSS) nas células — só troca o que mudou
+    const digitos = formatar(delta).replace(/:/g, '');
+    const celulas = timerEl.querySelectorAll('.ztarja__d');
+    for (let i = 0; i < celulas.length; i++) {
+      if (celulas[i].textContent !== digitos[i]) celulas[i].textContent = digitos[i];
+    }
+
+    // leitor de tela: por minuto
+    const minuto = Math.floor(delta / 60000);
+    if (timerEl._minuto !== minuto) {
+      timerEl._minuto = minuto;
+      timerEl.setAttribute('aria-label', rotuloAria(delta));
+    }
   }
 
-  function iniciarTick(clockEl) {
+  function iniciarTick(timerEl) {
     parar();
-    atualizar(clockEl);
-    tickInterval = setInterval(() => atualizar(clockEl), 1000);
+    atualizar(timerEl);
+    tickInterval = setInterval(() => atualizar(timerEl), 1000);
   }
 
   function parar() {
@@ -66,23 +102,25 @@
   }
 
   function init() {
-    const clockEl = document.querySelector(CLOCK_SELECTOR);
-    if (!clockEl) return;
+    const timerEl = document.querySelector(TIMER_SELECTOR);
+    if (!timerEl) return;
 
-    // Se a tarja-topo pai foi removida (ex.: deadline expirado em
-    // tarjaTopo.js), o timer não deve rodar sozinho.
-    const tarja = clockEl.closest(TARJA_SELECTOR);
+    const tarja = timerEl.closest(TARJA_SELECTOR);
     if (!tarja || !tarja.isConnected) return;
 
-    iniciarTick(clockEl);
+    iniciarTick(timerEl);
 
     // Economia de CPU: pausa quando a aba fica em segundo plano.
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        parar();
-      } else if (document.querySelector(CLOCK_SELECTOR)) {
-        iniciarTick(document.querySelector(CLOCK_SELECTOR));
-      }
+      const el = document.querySelector(TIMER_SELECTOR);
+      if (document.hidden || !el) parar();
+      else iniciarTick(el);
+    });
+
+    // Troca de idioma: refaz o rótulo do leitor de tela no idioma novo.
+    document.addEventListener('i18n:change', () => {
+      const el = document.querySelector(TIMER_SELECTOR);
+      if (el) { el._minuto = null; atualizar(el); }
     });
   }
 

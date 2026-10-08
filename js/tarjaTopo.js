@@ -1,131 +1,112 @@
 /* =====================================================================
-   TARJA TOPO — lógica de ativação, medição e expiração.
-   - Personalize a data/hora e o link no bloco TARJA_CONFIG abaixo.
-   - Personalize a copy nos arquivos lang/{pt,en,es}.json -> "tarja".
-   - Personalize as cores em css/tarjaTopo.css (CSS vars).
+   TARJA TOPO — comportamento. Carregado com defer; NÃO mexe em layout.
+
+   - Altura reservada: CSS (.ztarja-espaco + --altura-tarja), desde o
+     primeiro frame.
+   - Fim da campanha: atributo data-fim do <aside class="ztarja">, em hora
+     local. Se já expirou no carregamento, o script inline do próprio bloco
+     remove a tarja e o espaço ANTES do primeiro paint.
+   - Aqui ficam só: copiar o cupom e retirar a tarja se a campanha expirar
+     com a página aberta (tarja e espaço saem juntos, no mesmo frame).
+   - Copy: lang/{pt,en,es}.json -> "tarja". Visual: css/tarjaTopo.css.
    ===================================================================== */
 (function () {
   'use strict';
 
-  const TARJA_CONFIG = {
-    deadline: "2026-09-30T23:59:00", // data/hora local em que a tarja some
-    link: "#plan" // destino do botão (âncora da section#plan)
-  };
+  const SELECTOR = '.ztarja';
+  const COPIADO_MS = 1500;
 
-  const SELECTOR = '.tarja-topo';
-  const BODY_CLASS = 'tarja-ativa';
-  const CSS_VAR = '--tarja-h';
-
-  let expireTimer = null;
-  let resizeRaf = null;
-
-  function parseDeadline(value) {
-    if (!value) return null;
-    const d = new Date(value);
-    return isNaN(d.getTime()) ? null : d;
-  }
-
-  function setTarjaHeight(el) {
-    if (!el) return;
-    const h = Math.ceil(el.getBoundingClientRect().height);
-    document.documentElement.style.setProperty(CSS_VAR, h + 'px');
-  }
-
-  function clearTarjaHeight() {
-    document.documentElement.style.removeProperty(CSS_VAR);
-  }
-
-  function ativar(el) {
-    if (!el) return;
-
-    // aplica link do botão
-    const btn = el.querySelector('.tarja-topo__btn');
-    if (btn && TARJA_CONFIG.link) {
-      btn.setAttribute('href', TARJA_CONFIG.link);
+  function tr(key, fallback) {
+    try {
+      const v = window.i18n && window.i18n.t && window.i18n.t(key);
+      return v && v !== key ? v : fallback;
+    } catch (_) {
+      return fallback;
     }
-
-    // mede antes de ativar (mas com visibilidade pra medir corretamente)
-    el.style.visibility = 'visible';
-    setTarjaHeight(el);
-    el.style.visibility = ''; // volta ao default (CSS controla via classe)
-
-    document.body.classList.add(BODY_CLASS);
-
-    // remede após o próximo frame (fontes/i18n podem ter mudado a altura)
-    requestAnimationFrame(() => setTarjaHeight(el));
-
-    // remede de novo após i18n aplicar traduções (chega assíncrono)
-    setTimeout(() => setTarjaHeight(el), 400);
-    setTimeout(() => setTarjaHeight(el), 1200);
   }
 
-  function desativar(el) {
-    document.body.classList.remove(BODY_CLASS);
-    // espera transição de slide-up antes de limpar a altura
-    setTimeout(clearTarjaHeight, 500);
+  /* ---------------------------------------------------------------
+     Cupom: o ticket inteiro copia o código e mostra "Copiado!" por 1,5s
+     --------------------------------------------------------------- */
+  function copiaFallback(texto) {
+    const ta = document.createElement('textarea');
+    ta.value = texto;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (_) {}
+    document.body.removeChild(ta);
+    return ok;
   }
 
-  function agendarExpiracao(el, deadline) {
-    if (expireTimer) {
-      clearTimeout(expireTimer);
-      expireTimer = null;
+  function copiar(texto) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(texto).then(
+        () => true,
+        () => copiaFallback(texto)
+      );
     }
+    return Promise.resolve(copiaFallback(texto));
+  }
 
-    const agora = Date.now();
-    const fim = deadline.getTime();
-    const restante = fim - agora;
+  function bindCupom(tarja) {
+    const btn = tarja.querySelector('.ztarja__cupom');
+    if (!btn) return;
+    const sr = tarja.querySelector('.ztarja__sr');
 
+    btn.addEventListener('click', () => {
+      const codeEl = btn.querySelector('.ztarja__cupom-main b');
+      const code = codeEl ? codeEl.textContent.trim() : '';
+      if (!code) return;
+
+      copiar(code).then((ok) => {
+        if (!ok) return;
+        btn.classList.add('is-copied');
+        if (sr) sr.textContent = tr('tarja.copiado', 'Copiado!');
+        clearTimeout(btn._copiadoTimer);
+        btn._copiadoTimer = setTimeout(() => {
+          btn.classList.remove('is-copied');
+          if (sr) sr.textContent = '';
+        }, COPIADO_MS);
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------
+     Expiração com a página aberta: tarja e espaço reservado saem juntos.
+     (Se o usuário estiver rolado, o scroll anchoring do navegador mantém
+     o conteúdo visível parado.)
+     --------------------------------------------------------------- */
+  function retirar(tarja) {
+    const espaco = tarja.nextElementSibling;
+    requestAnimationFrame(() => {
+      tarja.remove();
+      if (espaco && espaco.classList.contains('ztarja-espaco')) espaco.remove();
+    });
+  }
+
+  function agendarExpiracao(tarja) {
+    const fim = Date.parse(tarja.getAttribute('data-fim') || '');
+    if (!fim) return;
+
+    const restante = fim - Date.now();
     if (restante <= 0) {
-      desativar(el);
+      retirar(tarja);
       return;
     }
 
-    // setTimeout máx ~24.8 dias; trabalha em chunks pra ser robusto
-    const MAX = 2 * 60 * 60 * 1000; // 2h
-    const proximoTick = Math.min(restante, MAX);
-
-    expireTimer = setTimeout(() => {
-      if (Date.now() >= fim) {
-        desativar(el);
-      } else {
-        agendarExpiracao(el, deadline);
-      }
-    }, proximoTick);
-  }
-
-  function bindResize(el) {
-    window.addEventListener('resize', () => {
-      if (!document.body.classList.contains(BODY_CLASS)) return;
-      if (resizeRaf) cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(() => setTarjaHeight(el));
-    });
-
-    // refletir mudanças de altura por troca de idioma / fontes
-    if ('ResizeObserver' in window) {
-      const ro = new ResizeObserver(() => {
-        if (document.body.classList.contains(BODY_CLASS)) setTarjaHeight(el);
-      });
-      ro.observe(el);
-    }
+    // setTimeout máx ~24.8 dias; trabalha em blocos de até 2h
+    const MAX = 2 * 60 * 60 * 1000;
+    setTimeout(() => agendarExpiracao(tarja), Math.min(restante, MAX));
   }
 
   function init() {
-    const el = document.querySelector(SELECTOR);
-    if (!el) return;
-
-    const deadline = parseDeadline(TARJA_CONFIG.deadline);
-
-    // sem deadline válido OU já expirou -> tarja some e nav volta ao padrão
-    if (!deadline || Date.now() >= deadline.getTime()) {
-      desativar(el);
-      // remove do DOM pra não interferir
-      if (el.parentNode) el.parentNode.removeChild(el);
-      return;
-    }
-
-    ativar(el);
-    bindResize(el);
-    agendarExpiracao(el, deadline);
+    const tarja = document.querySelector(SELECTOR);
+    if (!tarja) return;
+    bindCupom(tarja);
+    agendarExpiracao(tarja);
   }
 
   if (document.readyState === 'loading') {
