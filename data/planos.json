@@ -53,7 +53,7 @@
       "precos": {
         "comAtivacao": "$19,00",
         "semAtivacao": "$66,50",
-        "fundingPass": "$95,55",
+        "fundingPass": "$147,00",
         "liberty":     "$97,00",
         "comAtivacaoDe": "$95,00",
         "semAtivacaoDe": "$332,50",
@@ -87,7 +87,7 @@
       "precos": {
         "comAtivacao": "$29,00",
         "semAtivacao": "$97,50",
-        "fundingPass": "$160,55",
+        "fundingPass": "$247,00",
         "liberty":     "$187,00",
         "comAtivacaoDe": "$145,00",
         "semAtivacaoDe": "$487,50",
@@ -121,7 +121,7 @@
       "precos": {
         "comAtivacao": "$39,00",
         "semAtivacao": "$136,50",
-        "fundingPass": "$258,05",
+        "fundingPass": "$397,00",
         "liberty":     "$247,00",
         "comAtivacaoDe": "$195,00",
         "semAtivacaoDe": "$682,50",
@@ -155,7 +155,7 @@
       "precos": {
         "comAtivacao": "$49,00",
         "semAtivacao": "$171,50",
-        "fundingPass": "$323,05",
+        "fundingPass": "$497,00",
         "comAtivacaoDe": "$245,00",
         "semAtivacaoDe": "$857,50",
         "fundingPassDe": "$2.485,00"
@@ -186,7 +186,7 @@
       "precos": {
         "comAtivacao": "$59,00",
         "semAtivacao": "$206,60",
-        "fundingPass": "$420,81",
+        "fundingPass": "$647,40",
         "comAtivacaoDe": "$295,00",
         "semAtivacaoDe": "$1.033,00",
         "fundingPassDe": "$3.237,00"
