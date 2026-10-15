@@ -526,17 +526,19 @@
     if (href) refs.cardCta.setAttribute('href', href);
   }
 
-  // Cupom exibido no card — por modo (RESTART é promo dos produtos Restart)
+  // Cupom exibido no card — hoje é "ZERO7" para TODOS os modos.
+  // Mantenho o mapa por modo pra facilitar quando voltar a ter cupom
+  // diferente por produto.
   const PLAN_CUPOM = {
-    com_ativacao: 'RESTART07',
-    sem_ativacao: 'RESTART07',
-    liberty:      'RESTART07',
+    com_ativacao: 'ZERO7',
+    sem_ativacao: 'ZERO7',
     funding_pass: 'ZERO7',
+    liberty:      'ZERO7',
   };
   function renderCupom() {
     if (!refs.cardCupom) return;
-    const code = PLAN_CUPOM[state.modo] || 'RESTART07';
-    const base = String(tr('tarja.cupom.html'));            // ex.: "Use o cupom: <b>RESTART07</b>"
+    const code = PLAN_CUPOM[state.modo] || 'ZERO7';
+    const base = String(tr('tarja.cupom.html'));            // ex.: "Use o cupom: <b>ZERO7</b>"
     // Extrai só o prefixo ("Use o cupom:"); se i18n ainda não resolveu, usa padrão
     const prefixo = /<b>/i.test(base)
       ? base.replace(/<b>[\s\S]*?<\/b>/i, '').trim()
@@ -544,8 +546,10 @@
     refs.cardCupom.innerHTML = `${prefixo} <b>${code}</b>`;
   }
 
-  // Selo "RESTART" ao lado do nome do plano — só nos produtos da promo
-  const PROMO_MODOS = new Set(['com_ativacao', 'sem_ativacao', 'liberty']);
+  // Selo promocional ("50% de colchão") ao lado do nome do plano —
+  // aparece em TODOS os modos exceto Liberty (que já tem drawdown EOD
+  // nativo, então a promoção de colchão não se aplica).
+  const PROMO_MODOS = new Set(['com_ativacao', 'sem_ativacao', 'funding_pass']);
   function renderPromo() {
     if (refs.cardPromo) refs.cardPromo.hidden = !PROMO_MODOS.has(state.modo);
   }

@@ -31,15 +31,15 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"ztarja__copy\">Opere no mercado internacional com</span> <span class=\"ztarja__badge\">80% OFF</span>"
+      "html": "<span class=\"ztarja__copy\">Destrave seu saque na metade do tempo e com</span> <span class=\"ztarja__badge\">50% do colchão</span>"
     },
     "cupom": {
-      "html": "Use o cupom: <b>RESTART07</b>"
+      "html": "Use o cupom: <b>ZERO7</b>"
     },
     "botao": "Ver Oferta",
     "timer_label": "Essa oferta se encerra em:",
     "aria": "Promoção em destaque",
-    "cupom_aria": "Copiar o cupom RESTART07",
+    "cupom_aria": "Copiar o cupom ZERO7",
     "timer_aria": "Tempo restante: {h} h e {m} min",
     "copiado": "Copiado!"
   },
@@ -132,6 +132,7 @@
     "bar_cta": "Quero esse plano",
     "bar_cta_aria": "Quero esse plano",
     "badge": "Plano {capital}",
+    "promo_badge": "50% de colchão",
     "modo_label_com": "Desafio com taxa de ativação",
     "modo_label_sem": "Desafio sem taxa de ativação",
     "modo_label_funding": "Acesso direto à fase funding",

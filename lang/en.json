@@ -31,15 +31,15 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"ztarja__copy\">Trade the international market with</span> <span class=\"ztarja__badge\">80% OFF</span>"
+      "html": "<span class=\"ztarja__copy\">Unlock your payout in half the time with</span> <span class=\"ztarja__badge\">50% of the buffer</span>"
     },
     "cupom": {
-      "html": "Use code: <b>RESTART07</b>"
+      "html": "Use code: <b>ZERO7</b>"
     },
     "botao": "See Offer",
     "timer_label": "This offer ends in:",
     "aria": "Featured promotion",
-    "cupom_aria": "Copy the coupon code RESTART07",
+    "cupom_aria": "Copy the coupon code ZERO7",
     "timer_aria": "Time left: {h} h {m} min",
     "copiado": "Copied!"
   },
@@ -132,6 +132,7 @@
     "bar_cta": "Get this plan",
     "bar_cta_aria": "Get this plan",
     "badge": "{capital} Plan",
+    "promo_badge": "50% buffer",
     "modo_label_com": "Challenge with activation fee",
     "modo_label_sem": "Challenge with no activation fee",
     "modo_label_funding": "Direct access to the funding phase",

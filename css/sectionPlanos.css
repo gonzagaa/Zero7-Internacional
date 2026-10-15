@@ -1200,17 +1200,15 @@
     }
 }
 
-/* ===== PROMO RESTART — selo de destaque ao lado do nome do plano.
+/* ===== PROMO BADGE — selo de destaque ao lado do nome do plano.
    Aparece só nos produtos da promo (ver PROMO_MODOS em js/sectionPlanos.js).
-   Restaurado do commit 607ca5f (promo Restart de agosto). ===== */
+   Campanha atual: "50% de colchão" — paleta sky-blue casando com a tarja. ===== */
 .plan-card__promo {
-    /* Cor da promo — quente (âmbar), complementa o verde do site.
-       Trocar aqui muda o selo todo. Ex. coral: #ff8a5c/#ff5e62;
-       magenta: #ff6ec7/#c724b1. */
-    --promo-a: #ffd24d;
-    --promo-b: #ff9e2c;
-    --promo-ink: #2a1600;
-    --promo-glow: rgba(255, 168, 44, 0.6);
+    /* Cor da promo — sky-blue (nova identidade). Trocar aqui muda o selo todo. */
+    --promo-a: #7dd3fc;                 /* sky-300 */
+    --promo-b: #0ea5e9;                 /* sky-500 */
+    --promo-ink: #082438;               /* navy profundo */
+    --promo-glow: rgba(14, 165, 233, 0.6);
 
     display: inline-flex;
     align-items: center;
@@ -1243,8 +1241,8 @@
 }
 
 @keyframes promoRestartPulse {
-    0%, 100% { box-shadow: 0 0.6rem 2rem -0.4rem rgba(255, 168, 44, 0.4); }
-    50%      { box-shadow: 0 0.6rem 2.6rem -0.2rem rgba(255, 168, 44, 0.85); }
+    0%, 100% { box-shadow: 0 0.6rem 2rem -0.4rem rgba(14, 165, 233, 0.4); }
+    50%      { box-shadow: 0 0.6rem 2.6rem -0.2rem rgba(14, 165, 233, 0.85); }
 }
 
 @keyframes promoRestartDot {
