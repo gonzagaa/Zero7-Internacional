@@ -19,7 +19,7 @@
     },
     "regraConsistencia": {
       "desafio": "---",
-      "incubadora": "40%"
+      "incubadora": "30%"
     },
     "recompensa": {
       "desafio": { "pt": "Apenas desafio", "en": "Challenge only", "es": "Solo desafío" },
@@ -28,8 +28,7 @@
   },
   "overridesPorModo": {
     "liberty": {
-      "drawdown":          { "incubadora": "EOD" },
-      "regraConsistencia": { "incubadora": "30%" }
+      "drawdown":          { "incubadora": "EOD" }
     }
   },
   "capitais": {
