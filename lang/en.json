@@ -31,7 +31,7 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"ztarja__copy\">Unlock your payout in half the time with</span> <span class=\"ztarja__badge\">50% of the buffer</span>"
+      "html": "<span class=\"ztarja__copy\">Trade the international market with</span> <span class=\"ztarja__badge\">80% OFF</span>"
     },
     "cupom": {
       "html": "Use code: <b>ZERO7</b>"
@@ -132,7 +132,14 @@
     "bar_cta": "Get this plan",
     "bar_cta_aria": "Get this plan",
     "badge": "{capital} Plan",
-    "promo_badge": "50% buffer",
+    "promo_badge": "Activation −27%",
+    "valor_promo_aria": "Was {de}, now {por}",
+    "reset_eyebrow": "New",
+    "reset_titulo": "Funding account reset",
+    "reset_texto": "Already in the Funding phase? You can now reset your account.",
+    "reset_onde": "Sold only in the",
+    "reset_cta": "Trader Area",
+    "reset_cta_aria": "Buy the reset in the Trader Area (opens in a new tab)",
     "modo_label_com": "Challenge with activation fee",
     "modo_label_sem": "Challenge with no activation fee",
     "modo_label_funding": "Direct access to the funding phase",

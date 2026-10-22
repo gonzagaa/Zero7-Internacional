@@ -31,7 +31,7 @@
   },
   "tarja": {
     "texto": {
-      "html": "<span class=\"ztarja__copy\">Destrave seu saque na metade do tempo e com</span> <span class=\"ztarja__badge\">50% do colchão</span>"
+      "html": "<span class=\"ztarja__copy\">Opere no mercado internacional com</span> <span class=\"ztarja__badge\">80% OFF</span>"
     },
     "cupom": {
       "html": "Use o cupom: <b>ZERO7</b>"
@@ -132,7 +132,14 @@
     "bar_cta": "Quero esse plano",
     "bar_cta_aria": "Quero esse plano",
     "badge": "Plano {capital}",
-    "promo_badge": "50% de colchão",
+    "promo_badge": "Ativação −27%",
+    "valor_promo_aria": "De {de} por {por}",
+    "reset_eyebrow": "Novidade",
+    "reset_titulo": "Reset da conta Funding",
+    "reset_texto": "Já está na fase Funding? Agora você pode resetar sua conta.",
+    "reset_onde": "Compra exclusiva na",
+    "reset_cta": "Área do Trader",
+    "reset_cta_aria": "Comprar o reset na Área do Trader (abre em nova aba)",
     "modo_label_com": "Desafio com taxa de ativação",
     "modo_label_sem": "Desafio sem taxa de ativação",
     "modo_label_funding": "Acesso direto à fase funding",

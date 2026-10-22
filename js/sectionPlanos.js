@@ -338,7 +338,33 @@
     // No modo Funding Pass, a fase de challenge é pulada — todos os itens ficam riscados
     const strike = coluna === 'desafio' && state.modo === 'funding_pass';
 
-    return { valor, highlight, sublabel, strike, currency: valorMonetario(valor) };
+    // Valor promocional: se a célula tiver "<coluna>De" (ex.: taxaAtivacao.desafioDe),
+    // mostra o antigo riscado ao lado do novo. Não vale para "—" nem no modo riscado.
+    const deRaw = cel[coluna + 'De'];
+    const antes = (deRaw != null && !strike && valor !== '—' && !PLACEHOLDERS.has(String(valor).trim()))
+      ? pick(deRaw) : '';
+
+    return { valor, highlight, sublabel, strike, antes, currency: valorMonetario(valor) };
+  }
+
+  // Conteúdo "de/por" de uma célula promocional:
+  // <span .plan-card__promo-val><s>antigo</s><span>novo</span></span>
+  // (o invólucro alinha os dois pela linha de base; a caixa só o centraliza)
+  function preencherPromo(el, antes, valor) {
+    el.textContent = '';
+    const par = document.createElement('span');
+    par.className = 'plan-card__promo-val';
+    par.setAttribute('aria-hidden', 'true');
+    const de = document.createElement('s');
+    de.className = 'plan-card__antes';
+    de.textContent = antes;
+    const por = document.createElement('span');
+    por.className = 'plan-card__novo';
+    por.textContent = valor;
+    par.append(de, por);
+    el.append(par);
+    el.setAttribute('aria-label',
+      String(tr('plan.valor_promo_aria')).replace('{de}', antes).replace('{por}', valor));
   }
 
   // ---- Mobile: dois painéis, cada um com seus próprios rótulos ----
@@ -348,12 +374,13 @@
 
     LINHAS.forEach(({ key, i18nKey, fonte }, i) => {
       const cel = obterCelula(key, fonte);
-      const { valor, highlight, sublabel, strike, currency } = valorCelula(key, cel, coluna);
+      const { valor, highlight, sublabel, strike, antes, currency } = valorCelula(key, cel, coluna);
 
       const li = document.createElement('li');
       li.className = 'plan-card__item'
         + (highlight ? ' plan-card__item--highlight' : '')
-        + (strike ? ' plan-card__item--strike' : '');
+        + (strike ? ' plan-card__item--strike' : '')
+        + (antes ? ' plan-card__item--promo' : '');
       li.style.setProperty('--row-index', i);
 
       const labelEl = document.createElement('span');
@@ -362,7 +389,8 @@
 
       const valueEl = document.createElement('span');
       valueEl.className = 'plan-card__item-value' + (currency ? ' plan-card__item-value--currency' : '');
-      valueEl.append(valor);
+      if (antes) preencherPromo(valueEl, antes, valor);
+      else valueEl.append(valor);
       if (sublabel) {
         const sub = document.createElement('small');
         sub.className = 'plan-card__item-sub';
@@ -392,8 +420,10 @@
       + (data.highlight ? ' plan-card__cval--highlight' : '')
       + (data.currency ? ' plan-card__cval--currency' : '')
       + (longo ? ' plan-card__cval--long' : '')
-      + (data.strike ? ' plan-card__cval--strike' : '');
-    el.textContent = data.valor;
+      + (data.strike ? ' plan-card__cval--strike' : '')
+      + (data.antes ? ' plan-card__cval--promo' : '');
+    if (data.antes) preencherPromo(el, data.antes, data.valor);
+    else el.textContent = data.valor;
     return el;
   }
 
@@ -549,7 +579,7 @@
   // Selo promocional ("50% de colchão") ao lado do nome do plano —
   // aparece em TODOS os modos exceto Liberty (que já tem drawdown EOD
   // nativo, então a promoção de colchão não se aplica).
-  const PROMO_MODOS = new Set(['com_ativacao', 'sem_ativacao', 'funding_pass']);
+  const PROMO_MODOS = new Set(['com_ativacao']);   // selo "Ativação −27%": só Activation Challenge
   function renderPromo() {
     if (refs.cardPromo) refs.cardPromo.hidden = !PROMO_MODOS.has(state.modo);
   }

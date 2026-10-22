@@ -46,7 +46,8 @@
         "incubadora": "$1.497,00"
       },
       "taxaAtivacao": {
-        "desafio": "$89,00",
+        "desafio": "$64,97",
+        "desafioDe": "$89,00",
         "incubadora": "---"
       },
       "precos": {
@@ -60,9 +61,9 @@
         "libertyDe":     "$485,00"
       },
       "checkout": {
-        "comAtivacao": "https://app.zero7trading.com/checkout/6e73c2",
-        "semAtivacao": "https://app.zero7trading.com/checkout/d6063a",
-        "fundingPass": "https://app.zero7trading.com/checkout/126adf",
+        "comAtivacao": "https://app.zero7trading.com/checkout/e4f656",
+        "semAtivacao": "https://app.zero7trading.com/checkout/cf9875",
+        "fundingPass": "https://app.zero7trading.com/checkout/a18483",
         "liberty":     "https://app.zero7trading.com/checkout/331785"
       }
     },
@@ -80,7 +81,8 @@
         "incubadora": "$2.497,00"
       },
       "taxaAtivacao": {
-        "desafio": "$99,00",
+        "desafio": "$72,27",
+        "desafioDe": "$99,00",
         "incubadora": "---"
       },
       "precos": {
@@ -94,9 +96,9 @@
         "libertyDe":     "$935,00"
       },
       "checkout": {
-        "comAtivacao": "https://app.zero7trading.com/checkout/64439e",
-        "semAtivacao": "https://app.zero7trading.com/checkout/9e528e",
-        "fundingPass": "https://app.zero7trading.com/checkout/e55d0b",
+        "comAtivacao": "https://app.zero7trading.com/checkout/9bfe0f",
+        "semAtivacao": "https://app.zero7trading.com/checkout/650761",
+        "fundingPass": "https://app.zero7trading.com/checkout/29ed80",
         "liberty":     "https://app.zero7trading.com/checkout/ccad7f"
       }
     },
@@ -114,7 +116,8 @@
         "incubadora": "$2.997,00"
       },
       "taxaAtivacao": {
-        "desafio": "$109,00",
+        "desafio": "$79,57",
+        "desafioDe": "$109,00",
         "incubadora": "---"
       },
       "precos": {
@@ -128,9 +131,9 @@
         "libertyDe":     "$1.235,00"
       },
       "checkout": {
-        "comAtivacao": "https://app.zero7trading.com/checkout/85f523",
-        "semAtivacao": "https://app.zero7trading.com/checkout/f4020b",
-        "fundingPass": "https://app.zero7trading.com/checkout/2b3cef",
+        "comAtivacao": "https://app.zero7trading.com/checkout/9723cc",
+        "semAtivacao": "https://app.zero7trading.com/checkout/54834c",
+        "fundingPass": "https://app.zero7trading.com/checkout/a233b3",
         "liberty":     "https://app.zero7trading.com/checkout/bc4072"
       }
     },
@@ -148,7 +151,8 @@
         "incubadora": "$4.997,00"
       },
       "taxaAtivacao": {
-        "desafio": "$129,00",
+        "desafio": "$94,17",
+        "desafioDe": "$129,00",
         "incubadora": "---"
       },
       "precos": {
@@ -160,9 +164,9 @@
         "fundingPassDe": "$2.485,00"
       },
       "checkout": {
-        "comAtivacao": "https://app.zero7trading.com/checkout/b28b56",
-        "semAtivacao": "https://app.zero7trading.com/checkout/fd0c49",
-        "fundingPass": "https://app.zero7trading.com/checkout/7ad933"
+        "comAtivacao": "https://app.zero7trading.com/checkout/b49bb8",
+        "semAtivacao": "https://app.zero7trading.com/checkout/e1fb33",
+        "fundingPass": "https://app.zero7trading.com/checkout/fe0102"
       }
     },
     "250k": {
@@ -179,7 +183,8 @@
         "incubadora": "$6.497,00"
       },
       "taxaAtivacao": {
-        "desafio": "$149,00",
+        "desafio": "$108,77",
+        "desafioDe": "$149,00",
         "incubadora": "---"
       },
       "precos": {
@@ -191,9 +196,9 @@
         "fundingPassDe": "$3.237,00"
       },
       "checkout": {
-        "comAtivacao": "https://app.zero7trading.com/checkout/a75019",
-        "semAtivacao": "https://app.zero7trading.com/checkout/02b141",
-        "fundingPass": "https://app.zero7trading.com/checkout/2f9418"
+        "comAtivacao": "https://app.zero7trading.com/checkout/6cbb0c",
+        "semAtivacao": "https://app.zero7trading.com/checkout/f5cf5c",
+        "fundingPass": "https://app.zero7trading.com/checkout/20acd8"
       }
     }
   }

@@ -33,7 +33,7 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="../css/index.css?v=20261008-6">
+  <link rel="stylesheet" href="../css/index.css?v=20261022-3">
 
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -235,7 +235,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <link rel="sitemap" type="application/xml" href="../sitemap.xml">
 
-  <script src="../js/i18n.js?v=20261008-6" defer></script>
+  <script src="../js/i18n.js?v=20261022-3" defer></script>
 </head>
 
 <body id="body" class="smooth-scroll-wrapper v2">
@@ -253,7 +253,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
     <div class="ztarja__offer">
       <div class="ztarja__inner">
-        <p class="ztarja__lead" data-i18n="tarja.texto.html"><span class="ztarja__copy">Destrave seu saque na metade do tempo e com</span> <span class="ztarja__badge">50% do colchão</span></p>
+        <p class="ztarja__lead" data-i18n="tarja.texto.html"><span class="ztarja__copy">Opere no mercado internacional com</span> <span class="ztarja__badge">80% OFF</span></p>
         <button type="button" class="ztarja__cupom tarja-topo__cupom" aria-label="Copiar o cupom ZERO7" data-i18n-attr="aria-label:tarja.cupom_aria">
           <span class="ztarja__cupom-main" data-i18n="tarja.cupom.html">Use o cupom: <b>ZERO7</b></span>
           <span class="ztarja__stub" aria-hidden="true">
@@ -888,6 +888,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div>
         </header>
 
+        <!-- card + aviso do reset: mesma largura (ver .plan-stack em sectionPlanos.css) -->
+        <div class="plan-stack">
         <div class="plan-card" data-capital="25k" data-mode="com_ativacao" data-aos="fade-up">
 
           <!-- Topo: faixa de duas colunas (lede à esquerda, CTA à direita) -->
@@ -909,7 +911,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div class="plan-card__meta">
                 <div class="plan-card__header">
                   <span class="plan-card__badge">Plano 25k</span>
-                  <span class="plan-card__promo" data-i18n="plan.promo_badge">50% de colchão</span>
+                  <span class="plan-card__promo" data-i18n="plan.promo_badge">Ativação −27%</span>
                 </div>
                 <span class="plan-card__mode">Desafio com taxa de ativação</span>
               </div>
@@ -961,6 +963,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
 
           </div>
+        </div>
+
+          <!-- Aviso: reset da conta Funding — vendido só na Área do Trader, não pelo site.
+               Zona esquerda = o que é; zona direita = onde comprar. -->
+          <aside class="plan-reset" aria-labelledby="plan-reset-titulo">
+            <div class="plan-reset__info">
+              <span class="plan-reset__icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 4v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div class="plan-reset__texto">
+                <span class="plan-reset__eyebrow" data-i18n="plan.reset_eyebrow">Novidade</span>
+                <h3 class="plan-reset__titulo" id="plan-reset-titulo" data-i18n="plan.reset_titulo">Reset da conta Funding</h3>
+                <p class="plan-reset__desc" data-i18n="plan.reset_texto">Já está na fase Funding? Agora você pode resetar sua conta.</p>
+              </div>
+            </div>
+            <div class="plan-reset__acao">
+              <span class="plan-reset__onde" data-i18n="plan.reset_onde">Compra exclusiva na</span>
+              <a class="plan-reset__cta" href="https://app.zero7trading.com" target="_blank" rel="noopener" aria-label="Comprar o reset na Área do Trader (abre em nova aba)" data-i18n-attr="aria-label:plan.reset_cta_aria">
+                <span data-i18n="plan.reset_cta">Área do Trader</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </aside>
         </div>
 
       </div>
@@ -1335,13 +1360,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script src="../script/global.js?v=20261008-6"></script>
-  <script src="../script/depoimentosModal.js?v=20261008-6"></script>
-  <script src="../script/sectionBa.js?v=20261008-6"></script>
-  <script src="../script/sectionFaq.js?v=20261008-6" defer></script>
-  <script src="../js/utmForward.js?v=20261008-6"></script>
-  <script src="../js/sectionPlanos.js?v=20261008-6" defer></script>
-  <script src="../js/tarjaTopo.js?v=20261008-6" defer></script>
-  <script src="../js/tarjaTimer.js?v=20261008-6" defer></script>
+  <script src="../script/global.js?v=20261022-3"></script>
+  <script src="../script/depoimentosModal.js?v=20261022-3"></script>
+  <script src="../script/sectionBa.js?v=20261022-3"></script>
+  <script src="../script/sectionFaq.js?v=20261022-3" defer></script>
+  <script src="../js/utmForward.js?v=20261022-3"></script>
+  <script src="../js/sectionPlanos.js?v=20261022-3" defer></script>
+  <script src="../js/tarjaTopo.js?v=20261022-3" defer></script>
+  <script src="../js/tarjaTimer.js?v=20261022-3" defer></script>
 </body>
 </html>

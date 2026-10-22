@@ -1202,13 +1202,14 @@
 
 /* ===== PROMO BADGE — selo de destaque ao lado do nome do plano.
    Aparece só nos produtos da promo (ver PROMO_MODOS em js/sectionPlanos.js).
-   Campanha atual: "50% de colchão" — paleta sky-blue casando com a tarja. ===== */
+   Campanha atual: "Ativação −27%" (só Activation Challenge). Cores vêm da
+   paleta da campanha (css/tarjaTopo.css, bloco PALETA DA CAMPANHA). ===== */
 .plan-card__promo {
-    /* Cor da promo — sky-blue (nova identidade). Trocar aqui muda o selo todo. */
-    --promo-a: #7dd3fc;                 /* sky-300 */
-    --promo-b: #0ea5e9;                 /* sky-500 */
-    --promo-ink: #082438;               /* navy profundo */
-    --promo-glow: rgba(14, 165, 233, 0.6);
+    /* Cores = paleta da campanha (css/tarjaTopo.css, bloco PALETA DA CAMPANHA) */
+    --promo-a: var(--camp-badge-a);
+    --promo-b: var(--camp-badge-b);
+    --promo-ink: var(--camp-badge-ink);
+    --promo-glow: var(--camp-badge-shadow);
 
     display: inline-flex;
     align-items: center;
@@ -1241,8 +1242,8 @@
 }
 
 @keyframes promoRestartPulse {
-    0%, 100% { box-shadow: 0 0.6rem 2rem -0.4rem rgba(14, 165, 233, 0.4); }
-    50%      { box-shadow: 0 0.6rem 2.6rem -0.2rem rgba(14, 165, 233, 0.85); }
+    0%, 100% { box-shadow: 0 0.6rem 1.6rem -0.6rem var(--camp-badge-shadow); }
+    50%      { box-shadow: 0 0.6rem 2.6rem -0.2rem var(--camp-badge-shadow); }
 }
 
 @keyframes promoRestartDot {
@@ -1257,3 +1258,246 @@
     }
 }
 /* ===== fim PROMO RESTART ===== */
+
+/* =====================================================================
+   VALOR PROMOCIONAL NO CARD — "de/por" numa célula da comparação
+   (ex.: taxa de ativação reduzida). Dados: "<coluna>De" no planos.json.
+   Cores = paleta da campanha (mesma do selo e da tarja).
+   ===================================================================== */
+.plan-card__cval--promo {
+    border-color: var(--camp-line);
+    background:
+        linear-gradient(180deg, var(--camp-tint), transparent),
+        #0e0e0e;
+}
+
+.plan-card__antes {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #8f8f8f;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgba(255, 110, 110, 0.85);
+}
+
+.plan-card__novo {
+    color: var(--camp-accent);
+    font-weight: 800;
+}
+
+/* par de/por: alinhados entre si pela linha de base; a caixa (desktop)
+   ou a linha da lista (celular) centraliza o par verticalmente */
+.plan-card__promo-val {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    line-height: 1;
+}
+
+/* =====================================================================
+   AVISO — Reset da conta Funding (vendido só na Área do Trader)
+   Duas zonas: o QUE é (esquerda) e ONDE comprar (direita).
+   Cores da marca (verde), não da campanha: é produto, não promoção.
+   .plan-stack faz o aviso ter exatamente a largura do card de planos:
+   o card define a largura (fit-content no desktop) e o aviso, com
+   contain: inline-size, ocupa 100% dela sem alargar o conjunto.
+   ===================================================================== */
+.plan-stack {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-reset {
+    contain: inline-size;
+    width: 100%;
+    margin-top: 1.2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    overflow: hidden;
+    border-radius: 2rem;
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    background:
+        radial-gradient(60% 160% at 0% 0%, rgba(52, 211, 153, 0.12), transparent 65%),
+        #0a0a0a;
+    box-shadow: 0 2.4rem 5rem -2rem rgba(0, 0, 0, 0.55);
+    text-align: left;
+    color: #ececec;
+    transition: border-color 200ms ease;
+}
+
+.plan-reset:hover {
+    border-color: rgba(52, 211, 153, 0.38);
+}
+
+/* zona 1 — o que é */
+.plan-reset__info {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 1.8rem 2rem;
+}
+
+.plan-reset__icone {
+    flex: none;
+    width: 4.6rem;
+    height: 4.6rem;
+    display: grid;
+    place-items: center;
+    border-radius: 1.3rem 0 1.3rem 0;               /* cantos da marca */
+    color: #6ff0b8;
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.2), rgba(52, 211, 153, 0.05));
+    border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.plan-reset__icone svg {
+    width: 2.2rem;
+    height: 2.2rem;
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* o ícone "dá a volta" no hover — o próprio gesto de um reset */
+.plan-reset:hover .plan-reset__icone svg {
+    transform: rotate(-360deg);
+}
+
+.plan-reset__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #6ff0b8;
+}
+
+.plan-reset__eyebrow::before {
+    content: "";
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 0 0.3rem rgba(52, 211, 153, 0.18);
+}
+
+.plan-reset__titulo {
+    margin: 0 0 0.3rem;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.plan-reset__desc {
+    margin: 0;
+    font-size: 1.3rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* zona 2 — onde comprar ("Compra exclusiva na" + [Área do Trader ↗]) */
+.plan-reset__acao {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1.8rem 2rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.plan-reset__onde {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.58);
+}
+
+.plan-reset__cta {
+    --h: 4.2rem;
+    --r: calc(var(--h) / 3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    height: var(--h);
+    padding: 0 1.6rem;
+    border-radius: var(--r) 0 var(--r) 0;          /* forma dos botões do site */
+    background: rgba(52, 211, 153, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.45);
+    color: #a7f5d0;
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: var(--ncs), var(--tts), sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+/* seta ↗ = abre outro site (Área do Trader), em nova aba */
+.plan-reset__cta svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.plan-reset__cta:hover {
+    background: rgba(52, 211, 153, 0.2);
+    border-color: rgba(52, 211, 153, 0.8);
+    color: #ffffff;
+}
+
+.plan-reset__cta:hover svg {
+    transform: translate(2px, -2px);
+}
+
+.plan-reset__cta:focus-visible {
+    outline: 2px solid #34d399;
+    outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+    .plan-reset {
+        grid-template-columns: 1fr;
+    }
+
+    .plan-reset__info {
+        align-items: flex-start;
+        padding: 1.6rem;
+    }
+
+    /* legenda numa linha só + botão em largura total: lê "Compra exclusiva na / [Área do Trader ↗]" */
+    .plan-reset__acao {
+        align-items: stretch;
+        gap: 0.8rem;
+        padding: 1.4rem 1.6rem 1.6rem;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .plan-reset__cta {
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .plan-reset,
+    .plan-reset__cta,
+    .plan-reset__cta svg,
+    .plan-reset__icone svg {
+        transition: none;
+    }
+
+    .plan-reset:hover .plan-reset__icone svg {
+        transform: none;
+    }
+}

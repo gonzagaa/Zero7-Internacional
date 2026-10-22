@@ -23,6 +23,66 @@
   }
 }
 
+/* =====================================================================
+   PALETA DA CAMPANHA — vale para a tarja E para o card de planos
+   (selo promocional, valor "de/por" e borda da célula em promoção).
+   Trocar SÓ este bloco muda a campanha inteira.
+   Campanha atual: "80% OFF + taxa de ativação reduzida" (out/2026) —
+   paleta Floresta + latão.
+   ===================================================================== */
+:root {
+  --camp-urg-bg:#04120d;                  /* tarja, linha 1 */
+  --camp-bg-1:#0a2219;                  /* tarja, linha 2 (gradiente) */
+  --camp-bg-2:#163a2d;
+  --camp-bg-3:#0c281e;
+  --camp-hair:rgba(201, 164, 92, 0.3);/* fios 1px */
+  --camp-accent:#d9b97c;                  /* timer, código, valor promocional */
+  --camp-badge-a:#e6cc98;                  /* selos (80% OFF, Ativação −27%) */
+  --camp-badge-b:#b48a3f;
+  --camp-badge-ink:#231805;
+  --camp-badge-shadow:rgba(180, 138, 63, 0.34);
+  --camp-glow:rgba(201, 164, 92, 0.14);/* brilho atrás do selo */
+  --camp-halo:rgba(180, 138, 63, 0.22); /* brilho atrás do CTA */
+  --camp-halo-soft:rgba(180, 138, 63, 0.07);
+  --camp-focus:#d9b97c;                  /* contorno de foco */
+  --camp-cta-bg:#f5f2e8;                  /* CTA claro */
+  --camp-cta-hover:#ffffff;
+  --camp-cta-ink:#0a2219;
+  --camp-cap-a:#c8a258;                  /* cap da seta */
+  --camp-cap-b:#8a6a2c;
+  --camp-cap-ink:#0a2219;
+  --camp-ok:#9fe3c3;                  /* "Copiado!" */
+  --camp-ok-bg:#12362a;
+  --camp-line:rgba(201, 164, 92, 0.5); /* card: borda da célula em promoção */
+  --camp-tint:rgba(201, 164, 92, 0.08);/* card: fundo da célula em promoção */
+}
+
+/* a tarja lê a paleta da campanha */
+.ztarja {
+  --tz-urg-bg:       var(--camp-urg-bg);
+  --tz-bg-1:         var(--camp-bg-1);
+  --tz-bg-2:         var(--camp-bg-2);
+  --tz-bg-3:         var(--camp-bg-3);
+  --tz-hair:         var(--camp-hair);
+  --tz-accent:       var(--camp-accent);
+  --tz-badge-a:      var(--camp-badge-a);
+  --tz-badge-b:      var(--camp-badge-b);
+  --tz-badge-ink:    var(--camp-badge-ink);
+  --tz-badge-shadow: var(--camp-badge-shadow);
+  --tz-glow:         var(--camp-glow);
+  --tz-halo:         var(--camp-halo);
+  --tz-halo-soft:    var(--camp-halo-soft);
+  --tz-focus:        var(--camp-focus);
+  --tz-cta-bg:       var(--camp-cta-bg);
+  --tz-cta-hover:    var(--camp-cta-hover);
+  --tz-cta-ink:      var(--camp-cta-ink);
+  --tz-cap-a:        var(--camp-cap-a);
+  --tz-cap-b:        var(--camp-cap-b);
+  --tz-cap-ink:      var(--camp-cap-ink);
+  --tz-ok:           var(--camp-ok);
+  --tz-ok-bg:        var(--camp-ok-bg);
+}
+
 /* espaço reservado no fluxo (equivale ao padding-top do body) */
 .ztarja-espaco {
   height: var(--altura-tarja);
@@ -46,22 +106,9 @@
    --------------------------------------------------------------------- */
 
 .ztarja {
-  /* Paleta campanha "Destrave seu saque" — todos os tokens em sky/navy.
-     Nomes --tz-amber-*/--tz-mint/--tz-brand-* mantidos pra não quebrar
-     referências; os valores agora são azul-céu + navy profundo. */
+  /* neutros (não mudam por campanha) */
   --tz-ink:        rgba(255, 255, 255, 0.9);
   --tz-ink-soft:   rgba(255, 255, 255, 0.8);
-  --tz-amber:      #38bdf8;                        /* timer + código (sky-400) */
-  --tz-amber-a:    #7dd3fc;                        /* selo: início (sky-300) */
-  --tz-amber-b:    #0ea5e9;                        /* selo: fim    (sky-500) */
-  --tz-mint:       #38bdf8;                        /* outline de foco — sky */
-  --tz-hair:       rgba(56, 189, 248, 0.3);        /* fio divisor — sky translucido */
-  --tz-urg-bg:     #050d0a;
-  --tz-cta-bg:     #f0f9ff;                        /* CTA fundo — sky-50 */
-  --tz-cta-ink:    #082438;                        /* CTA tinta — navy profundo */
-  --tz-brand-a:    #38bdf8;                        /* cap do CTA (seta) — sky-400 */
-  --tz-brand-b:    #075985;                        /* cap do CTA (seta) — sky-800 */
-  --tz-glow:       rgba(56, 189, 248, 0.17);       /* brilho atrás do selo (sky) */
 
   position: fixed;
   top: 0;
@@ -105,7 +152,7 @@
   height: 6px;
   flex: none;
   border-radius: 50%;
-  background: var(--tz-amber);
+  background: var(--tz-accent);
 }
 
 .ztarja__dot::after {
@@ -113,7 +160,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: var(--tz-amber);
+  background: var(--tz-accent);
   animation: ztarjaPulse 2s ease-out infinite;
 }
 
@@ -139,7 +186,7 @@
   font-size: 13.5px;
   font-weight: 700;
   line-height: 1;
-  color: var(--tz-amber);
+  color: var(--tz-accent);
 }
 
 /* Célula com a largura do dígito mais largo da TT Fors 700 (0,663em,
@@ -168,8 +215,8 @@
   overflow: hidden;
   height: var(--tz-l2);
 
-  /* navy profundo; o sky-blue entra só como acento atrás do selo e do CTA */
-  background: linear-gradient(100deg, #02101e 0%, #0b2e4e 48%, #061a2d 100%);
+  /* fundo da campanha; o acento entra só atrás do selo e do CTA */
+  background: linear-gradient(100deg, var(--tz-bg-1) 0%, var(--tz-bg-2) 48%, var(--tz-bg-3) 100%);
 
   /* fio de 1px no topo (separa da linha 1) e na base */
   box-shadow:
@@ -230,7 +277,7 @@
 .ztarja__lead {
   display: inline-flex;
   align-items: center;
-  gap: 6px;                 /* badge virou texto corrido — ~word space */
+  gap: 14px;
   margin: 0;
 }
 
@@ -239,19 +286,38 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--tz-ink);
 }
 
-/* "50% DO COLCHÃO" — segue como continuação natural da copy
-   (sem pill, sem fundo, mesma cor). Peso ligeiramente maior pra ainda
-   funcionar como destaque sem quebrar o fluxo do texto. */
+/* 80% OFF — o maior elemento; é o que o olho acha primeiro */
 .ztarja__badge {
-  display: inline;
-  color: #ffffff;
-  font-size: 14px;                                 /* casa com .ztarja__copy */
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 7px 15px 6px;
+
+  border-radius: 12px 0 12px 0;                    /* cantos da marca */
+  background: linear-gradient(135deg, var(--tz-badge-a) 0%, var(--tz-badge-b) 100%);
+  color: var(--tz-badge-ink);
+
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.01em;
+
+  box-shadow: 0 0 22px var(--tz-badge-shadow);   /* glow da própria cor */
+}
+
+/* brilho do acento atrás do selo */
+.ztarja__badge::before {
+  content: "";
+  position: absolute;
+  inset: -26px -46px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--tz-glow), transparent);
 }
 
 /* ---------------------------------------------------------------------
@@ -285,11 +351,11 @@
 
 .ztarja__cupom:focus-visible,
 .ztarja__cta:focus-visible {
-  outline: 2px solid var(--tz-mint);
+  outline: 2px solid var(--tz-focus);
   outline-offset: 3px;
 }
 
-/* "USE O CUPOM:" + <b>ZERO7</b> (vem do i18n como um trecho só) */
+/* "USE O CUPOM:" + <b>RESTART07</b> (vem do i18n como um trecho só) */
 .ztarja__cupom-main {
   display: inline-flex;
   align-items: baseline;
@@ -308,8 +374,8 @@
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--tz-amber);
-  /* zero cortado só no código do cupom: evita digitarem "O" no lugar do "0" */
+  color: var(--tz-accent);
+  /* zero cortado só no código: evita digitarem "RESTARTO7" com a letra O */
   font-variant-numeric: slashed-zero tabular-nums;
   font-feature-settings: "zero" 1, "tnum" 1;
 }
@@ -340,7 +406,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #6ff0b8;
+  color: var(--tz-ok);
 }
 
 .ztarja__cupom.is-copied .ztarja__stub-ic { opacity: 0; }
@@ -391,10 +457,10 @@
 }
 
 .ztarja__cta:hover {
-  background: #ffffff;
+  background: var(--tz-cta-hover);
 }
 
-/* glow sky ancorado ATRÁS do CTA: acompanha o botão em qualquer largura
+/* acento ancorado ATRÁS do CTA: acompanha o botão em qualquer largura
    (nunca vira mancha solta na borda da tarja) */
 .ztarja__cta::before {
   content: "";
@@ -403,8 +469,8 @@
   z-index: -1;
   pointer-events: none;
   background: radial-gradient(closest-side,
-    rgba(56, 189, 248, 0.28) 0%,
-    rgba(56, 189, 248, 0.1) 55%,
+    var(--tz-halo) 0%,
+    var(--tz-halo-soft) 55%,
     transparent 100%);
 }
 
@@ -418,8 +484,8 @@
   place-items: center;
 
   border-radius: var(--cr) 0 var(--cr) var(--cr);  /* cap da marca */
-  background: linear-gradient(135deg, var(--tz-brand-a) 0%, var(--tz-brand-b) 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--tz-cap-a) 0%, var(--tz-cap-b) 100%);
+  color: var(--tz-cap-ink);
 }
 
 .ztarja__cta-cap svg {
@@ -439,7 +505,7 @@
 @media (min-width: 1600px) {
   .ztarja__inner        { gap: 32px; }
   .ztarja__copy         { font-size: 15px; }
-  .ztarja__badge        { font-size: 15px; }
+  .ztarja__badge        { font-size: 22px; padding: 8px 17px 7px; }
   .ztarja__cupom-main b { font-size: 15px; }
   .ztarja__cta          { font-size: 14px; }
 }
@@ -452,9 +518,9 @@
 
 @media (max-width: 1139.98px) {
   .ztarja__inner        { gap: 20px; padding: 0 20px; }
-  .ztarja__lead         { gap: 5px; }
+  .ztarja__lead         { gap: 12px; }
   .ztarja__copy         { font-size: 12.5px; letter-spacing: 0.03em; }
-  .ztarja__badge        { font-size: 12.5px; }
+  .ztarja__badge        { font-size: 18px; padding: 6px 13px 5px; }
   .ztarja__cupom-main b { font-size: 13px; }
   .ztarja__cta          { font-size: 12px; padding-left: 16px; }
 }
@@ -499,7 +565,8 @@
     text-align: right;
   }
 
-  .ztarja__badge { font-size: 10.5px; }
+  .ztarja__badge { font-size: 16px; padding: 6px 11px 5px; }
+  .ztarja__badge::before { inset: -18px -30px; }
 
   /* andar B: cupom + CTA, exatamente 50% cada, alvo de toque >= 44px */
   .ztarja__cupom,
@@ -533,7 +600,7 @@
     display: grid;
     place-items: center;
     border-radius: inherit;
-    background: #0a2c44;
+    background: var(--tz-ok-bg);
     font-size: 10px;
     letter-spacing: 0.06em;
   }
