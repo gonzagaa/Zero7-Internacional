@@ -27,7 +27,7 @@
    PALETA DA CAMPANHA — vale para a tarja E para o card de planos
    (selo promocional, valor "de/por" e borda da célula em promoção).
    Trocar SÓ este bloco muda a campanha inteira.
-   Campanha atual: "80% OFF + taxa de ativação reduzida" (out/2026) —
+   Campanha atual: "80% OFF" (out/2026) —
    paleta Floresta + latão.
    ===================================================================== */
 :root {
@@ -37,7 +37,7 @@
   --camp-bg-3:#0c281e;
   --camp-hair:rgba(201, 164, 92, 0.3);/* fios 1px */
   --camp-accent:#d9b97c;                  /* timer, código, valor promocional */
-  --camp-badge-a:#e6cc98;                  /* selos (80% OFF, Ativação −27%) */
+  --camp-badge-a:#e6cc98;                  /* selo 80% OFF da tarja */
   --camp-badge-b:#b48a3f;
   --camp-badge-ink:#231805;
   --camp-badge-shadow:rgba(180, 138, 63, 0.34);

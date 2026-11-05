@@ -576,14 +576,6 @@
     refs.cardCupom.innerHTML = `${prefixo} <b>${code}</b>`;
   }
 
-  // Selo promocional ("50% de colchão") ao lado do nome do plano —
-  // aparece em TODOS os modos exceto Liberty (que já tem drawdown EOD
-  // nativo, então a promoção de colchão não se aplica).
-  const PROMO_MODOS = new Set(['com_ativacao']);   // selo "Ativação −27%": só Activation Challenge
-  function renderPromo() {
-    if (refs.cardPromo) refs.cardPromo.hidden = !PROMO_MODOS.has(state.modo);
-  }
-
   function renderTudo({ animar = true } = {}) {
     renderCard({ animar });
     renderPreco({ animar });
@@ -591,7 +583,6 @@
     renderLabel({ animar });
     renderBadge({ animar });
     renderCupom();
-    renderPromo();
     renderCheckoutHref();
   }
 
@@ -711,7 +702,6 @@
     refs.cardPrice = $('.plan-card__price', secao);
     refs.cardMode = $('.plan-card__mode', secao);
     refs.cardCupom = $('.plan-card__cupom', secao);
-    refs.cardPromo = $('.plan-card__promo', secao);
     refs.cardCta = $('.plan-card__cta', secao);
     refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
     refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);
