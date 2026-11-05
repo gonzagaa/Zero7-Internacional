@@ -556,7 +556,8 @@
     if (href) refs.cardCta.setAttribute('href', href);
   }
 
-  // Cupom exibido no card — hoje é "BLACK07" para TODOS os modos (Pré-Black Friday).
+  // Cupom exibido no card — hoje é "BLACK07" para TODOS os modos (Pré-Black Friday;
+  // o código da tarja vem de js/campanha.js).
   // Mantenho o mapa por modo pra facilitar quando voltar a ter cupom
   // diferente por produto.
   const PLAN_CUPOM = {
@@ -568,12 +569,92 @@
   function renderCupom() {
     if (!refs.cardCupom) return;
     const code = PLAN_CUPOM[state.modo] || 'BLACK07';
-    const base = String(tr('tarja.cupom.html'));            // ex.: "Use o cupom: <b>BLACK07</b>"
-    // Extrai só o prefixo ("Use o cupom:"); se i18n ainda não resolveu, usa padrão
-    const prefixo = /<b>/i.test(base)
-      ? base.replace(/<b>[\s\S]*?<\/b>/i, '').trim()
-      : 'Use o cupom:';
+    const t = tr('plan.cupom_prefixo');
+    const prefixo = t && t !== 'plan.cupom_prefixo' ? t : 'Use o cupom:';
     refs.cardCupom.innerHTML = `${prefixo} <b>${code}</b>`;
+  }
+
+  /* ============================================================
+     Restart incluído — BENEFÍCIO DO PRODUTO (links "- Restart" do checkout).
+     Não depende da campanha: continua depois dela.
+     ============================================================ */
+  const RESTART_REGRA = {
+    com_ativacao: 'plan.restart_regra',
+    sem_ativacao: 'plan.restart_regra',
+    liberty:      'plan.restart_regra_liberty',   // Liberty: só ao atingir o drawdown
+  };
+  function renderRestart() {
+    if (!refs.restart) return;
+    const k = RESTART_REGRA[state.modo];
+    refs.restart.hidden = !k;
+    if (k && refs.restartRegra) refs.restartRegra.textContent = tr(k);
+  }
+
+  /* ============================================================
+     Campanha (js/campanha.js) — 50k em destaque e selos do card.
+     Os selos mostram SEMPRE o desconto real calculado do planos.json.
+     Sem campanha ativa, nada disto roda e nada é criado.
+     ============================================================ */
+  const CAMP = (window.Z7_CAMPANHA && window.Z7_CAMPANHA.ativa) ? window.Z7_CAMPANHA : null;
+
+  function descontoReal(capital, modo) {
+    const c = state.dados && state.dados.capitais[capital];
+    if (!c || !capitalCompativelComModo(modo, capital)) return null;
+    const num = (x) => parseFloat(String(x || '').replace(/[^0-9,]/g, '').replace(',', '.'));
+    const por = num(pick(c.precos[MODO_PRECO[modo]])), de = num(pick(c.precos[MODO_PRECO_DE[modo]]));
+    return por && de && de > por ? Math.round((1 - por / de) * 100) : null;
+  }
+
+  // antes do 1º render e antes de medir o blob: 50k selecionado + selo no botão
+  function prepararCampanha() {
+    if (!CAMP) return;
+    const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
+    if (dest) {
+      dest.classList.add('camp-dest');
+      const selo = document.createElement('span');
+      selo.className = 'camp-seg-selo';
+      selo.setAttribute('aria-hidden', 'true');
+      const sr = document.createElement('span');
+      sr.className = 'camp-sr';
+      dest.append(selo, sr);
+      refs.campSegSelo = selo;
+      refs.campSegSr = sr;
+      refs.campSegBtn = dest;
+      if (CAMP.destaque.selecionarPorPadrao && capitalCompativelComModo(state.modo, dest.dataset.capital)) {
+        atualizarSelecionado(refs.botoesCapital, dest);
+        state.capital = dest.dataset.capital;
+      }
+    }
+    const header = refs.cardBadge && refs.cardBadge.parentElement;
+    if (header) {
+      refs.campCardSelo = document.createElement('span');
+      refs.campCardSelo.className = 'camp-card-selo';
+      header.appendChild(refs.campCardSelo);
+    }
+    const borda = document.createElement('i');
+    borda.className = 'camp-card-borda';
+    borda.setAttribute('aria-hidden', 'true');
+    refs.card.appendChild(borda);
+  }
+
+  function renderCampanha() {
+    if (!CAMP) return;
+    const naCamp = CAMP.modos.includes(state.modo);
+    if (refs.campSegSelo) {
+      const p = naCamp ? descontoReal(CAMP.destaque.capital, state.modo) : null;
+      refs.campSegSelo.textContent = p ? `-${p}%` : '';
+      refs.campSegSr.textContent = p ? ` (${tr('camp.seg_selo_aria').replace('{p}', p)})` : '';
+      refs.campSegBtn.classList.toggle('is-sem-selo', !p);
+    }
+    const p = naCamp ? descontoReal(state.capital, state.modo) : null;
+    // dourado só onde está o número da campanha (ex.: FP 50K em 80% mostra "-80%" normal)
+    const dest = !!p && p >= CAMP.pct.ate && state.capital === CAMP.destaque.capital;
+    refs.card.classList.toggle('camp-card-dest', dest);
+    if (refs.campCardSelo) {
+      refs.campCardSelo.textContent = p ? tr('camp.card_selo').replace('{p}', p) : '';
+      refs.campCardSelo.classList.toggle('is-on', !!p);
+      refs.campCardSelo.classList.toggle('is-dest', dest);
+    }
   }
 
   function renderTudo({ animar = true } = {}) {
@@ -583,6 +664,8 @@
     renderLabel({ animar });
     renderBadge({ animar });
     renderCupom();
+    renderRestart();
+    renderCampanha();
     renderCheckoutHref();
   }
 
@@ -703,6 +786,8 @@
     refs.cardMode = $('.plan-card__mode', secao);
     refs.cardCupom = $('.plan-card__cupom', secao);
     refs.cardCta = $('.plan-card__cta', secao);
+    refs.restart = $('.plan-restart', secao);
+    refs.restartRegra = $('.plan-restart__rg', secao);
     refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
     refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);
   }
@@ -743,6 +828,7 @@
     captureAffiliateCoupon();
 
     sincronizarEstadoComDOM();
+    prepararCampanha();
     definirAriaInicial();
 
     try {

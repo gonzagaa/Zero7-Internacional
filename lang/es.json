@@ -29,19 +29,24 @@
     "abrir_menu": "Abrir menú",
     "fechar_menu": "Cerrar menú"
   },
-  "tarja": {
-    "texto": {
-      "html": "<span class=\"ztarja__copy\">Opera en el mercado internacional con</span> <span class=\"ztarja__badge\">80% OFF</span>"
-    },
-    "cupom": {
-      "html": "Usa el cupón: <b>BLACK07</b>"
-    },
-    "botao": "Ver Oferta",
-    "timer_label": "Esta oferta finaliza en:",
-    "aria": "Promoción destacada",
-    "cupom_aria": "Copiar el cupón BLACK07",
+  "camp": {
+    "aria": "Pre-Black Friday",
+    "selo": "Pre-Black Friday",
+    "selo_curto": "Pre-Black",
+    "timer_label": "La oferta termina en",
     "timer_aria": "Tiempo restante: {h} h y {m} min",
-    "copiado": "¡Copiado!"
+    "ate": "Hasta",
+    "todos": "en todos los planes",
+    "chip": "+ Restart incluido",
+    "chip_x": "en los Challenge",
+    "restart_challenge": "Restart incluido en los Challenge",
+    "cupom_rot": "Cupón",
+    "cupom_aria": "Copiar el cupón BLACK07",
+    "copiado": "¡Copiado!",
+    "copiado_sr": "Cupón BLACK07 copiado",
+    "cta": "Ver planes",
+    "card_selo": "Pre-Black · -{p}%",
+    "seg_selo_aria": "{p}% de descuento"
   },
   "hero": {
     "titulo_inicio": "Financiamos traders con cuentas de hasta",
@@ -133,6 +138,10 @@
     "bar_cta_aria": "Quiero este plan",
     "badge": "Plan {capital}",
     "valor_promo_aria": "Antes {de}, ahora {por}",
+    "cupom_prefixo": "Usa el cupón:",
+    "restart_titulo": "Restart incluido",
+    "restart_regra": "Un único Restart al alcanzar el drawdown o al terminar el plazo",
+    "restart_regra_liberty": "Un único Restart al alcanzar el drawdown",
     "reset_eyebrow": "Novedad",
     "reset_titulo": "Reset de la cuenta Funding",
     "reset_texto": "¿Ya estás en la fase Funding? Ahora puedes resetear tu cuenta.",

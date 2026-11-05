@@ -29,19 +29,24 @@
     "abrir_menu": "Open menu",
     "fechar_menu": "Close menu"
   },
-  "tarja": {
-    "texto": {
-      "html": "<span class=\"ztarja__copy\">Trade the international market with</span> <span class=\"ztarja__badge\">80% OFF</span>"
-    },
-    "cupom": {
-      "html": "Use code: <b>BLACK07</b>"
-    },
-    "botao": "See Offer",
-    "timer_label": "This offer ends in:",
-    "aria": "Featured promotion",
-    "cupom_aria": "Copy the coupon code BLACK07",
+  "camp": {
+    "aria": "Pre-Black Friday",
+    "selo": "Pre-Black Friday",
+    "selo_curto": "Pre-Black",
+    "timer_label": "Offer ends in",
     "timer_aria": "Time left: {h} h {m} min",
-    "copiado": "Copied!"
+    "ate": "Up to",
+    "todos": "on all plans",
+    "chip": "+ Restart included",
+    "chip_x": "on Challenge plans",
+    "restart_challenge": "Restart included on Challenge plans",
+    "cupom_rot": "Code",
+    "cupom_aria": "Copy the coupon code BLACK07",
+    "copiado": "Copied!",
+    "copiado_sr": "Coupon BLACK07 copied",
+    "cta": "See plans",
+    "card_selo": "Pre-Black · -{p}%",
+    "seg_selo_aria": "{p}% off"
   },
   "hero": {
     "titulo_inicio": "We fund traders with accounts up to",
@@ -133,6 +138,10 @@
     "bar_cta_aria": "Get this plan",
     "badge": "{capital} Plan",
     "valor_promo_aria": "Was {de}, now {por}",
+    "cupom_prefixo": "Use code:",
+    "restart_titulo": "Restart included",
+    "restart_regra": "One Restart if you hit the drawdown or run out of time",
+    "restart_regra_liberty": "One Restart if you hit the drawdown",
     "reset_eyebrow": "New",
     "reset_titulo": "Funding account reset",
     "reset_texto": "Already in the Funding phase? You can now reset your account.",

@@ -1442,3 +1442,53 @@
         transform: none;
     }
 }
+
+/* =====================================================================
+   RESTART INCLUÍDO — benefício do produto (links "- Restart" do checkout).
+   Activation, Challenge e Liberty; não aparece no Funding Pass.
+   Não é campanha: continua depois dela. Texto por modo: sectionPlanos.js.
+   ===================================================================== */
+.plan-restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 0.6rem 1.4rem 0.6rem 0.6rem;
+    border: 1px solid rgba(37, 233, 155, 0.22);
+    border-radius: 1.2rem;
+    background: linear-gradient(180deg, rgba(37, 233, 155, 0.07), rgba(37, 233, 155, 0.02));
+    text-align: left;
+}
+.plan-restart[hidden] {
+    display: none;
+}
+.plan-restart__ic {
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(37, 233, 155, 0.35);
+    border-radius: 0.9rem;
+    background: rgba(37, 233, 155, 0.08);
+    color: #6ff0b8;
+}
+.plan-restart__ic svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.plan-restart__t {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    line-height: 1.25;
+}
+.plan-restart__tt {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #fff;
+}
+.plan-restart__rg {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.72);
+}

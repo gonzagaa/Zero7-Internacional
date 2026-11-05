@@ -1,0 +1,680 @@
+/* =====================================================================
+   CAMPANHA — Pré-Black Friday · direção "Eclipse"
+   Tarja (2 linhas) + faixa da seção de planos + selos/destaque do 50k.
+
+   - Tudo só existe sob html.camp-on (js/campanha.js decide antes do paint).
+     Fim da campanha -> sem classe -> nada aparece e nada é reservado.
+   - Altura da tarja reservada só por CSS (.zbk-espaco), desde o 1º frame.
+   - Tarja em px (v1 e v2 têm escalas de rem diferentes); seção de planos
+     em rem, como o resto dela.
+   - Animações: só transform e opacity. Pausam com a aba oculta
+     (.camp-pausa) e fora da tela (.is-fora). prefers-reduced-motion: tudo
+     parado (o eclipse fica, sem girar).
+   - HTML: index.html e v2/index.html, blocos TARJA e FAIXA (idênticos —
+     node tools/check-tarja.mjs).
+   ===================================================================== */
+
+/* tokens neutros usados pelo card (valor "de/por" em célula promocional) */
+:root {
+  --camp-accent: #f1c36a;
+  --camp-line: rgba(241, 195, 106, 0.5);
+  --camp-tint: rgba(241, 195, 106, 0.08);
+}
+
+.zbk, .zbk-espaco, .zbk-faixa, .camp-seg-selo, .camp-card-selo, .camp-card-borda { display: none; }
+
+html.camp-on {
+  --tz-l1: 30px;
+  --tz-l2: 68px;
+  --altura-tarja: calc(var(--tz-l1) + var(--tz-l2));
+}
+@media (max-width: 767.98px) {
+  html.camp-on { --tz-l1: 28px; --tz-l2: 100px; }
+}
+
+.camp-on .zbk-espaco { display: block; height: var(--altura-tarja); }
+.camp-on .zbk ~ nav#navigation { top: var(--altura-tarja); }
+@media (min-width: 1080px) {
+  .camp-on .zbk ~ nav#navigation { left: 0; width: 100%; border-radius: 0; }
+}
+
+/* =====================================================================
+   TARJA
+   ===================================================================== */
+.camp-on .zbk {
+  --ink: rgba(255, 255, 255, 0.92);
+  --ink-2: rgba(255, 255, 255, 0.72);
+  display: block;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 102;
+  height: var(--altura-tarja);
+  font-family: var(--tts), system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+.zbk, .zbk *, .zbk *::before, .zbk *::after,
+.zbk-faixa, .zbk-faixa *, .zbk-faixa *::before, .zbk-faixa *::after { box-sizing: border-box; }
+.zbk p, .zbk-faixa p { margin: 0; }
+
+/* ---------- Linha 1: selo + timer ---------- */
+.zbk__l1 {
+  position: relative;
+  height: var(--tz-l1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 16px;
+  background: #000;
+  font-size: 11.5px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.zbk__l1::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(241, 195, 106, 0.45) 35%, rgba(241, 195, 106, 0.45) 65%, transparent);
+}
+.zbk__selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--camp-ouro-1);
+}
+.zbk__selo-curto { display: none; }
+.zbk__pulse {
+  position: relative;
+  flex: none;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--camp-ambar);
+}
+.zbk__pulse::after {
+  content: "";
+  position: absolute; inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--camp-ambar);
+  opacity: 0;
+  animation: zbkPulse 2.4s ease-out infinite;
+}
+@keyframes zbkPulse {
+  0%   { transform: scale(0.5); opacity: 0.9; }
+  70%, 100% { transform: scale(1.5); opacity: 0; }
+}
+.zbk__tlabel { color: var(--ink-2); letter-spacing: 0.02em; }
+
+/* timer: células de largura fixa (anti-tremor); o dígito que muda entra
+   de baixo (JS, Web Animations); última hora = âmbar */
+.zbk__timer {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.zbk__timer:not(.is-pronto) { opacity: 0; }       /* nunca mostra "00:00:00" antes do JS */
+.zbk__timer.is-pronto { transition: opacity 300ms ease, color 600ms ease; }
+.zbk__timer.is-final { color: var(--camp-ouro-2); }
+.zbk__d {
+  position: relative;
+  display: inline-block;
+  width: 0.78em;
+  height: 1.25em;
+  line-height: 1.25em;
+  text-align: center;
+  overflow: hidden;
+}
+.zbk__d i { display: block; font-style: normal; }
+.zbk__c { display: inline-block; width: 0.42em; text-align: center; opacity: 0.55; }
+
+/* ---------- Linha 2: o palco ---------- */
+.zbk__l2 {
+  position: relative;
+  height: var(--tz-l2);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--camp-base);
+}
+.zbk__l2::before {                       /* céu + eco menta parado atrás do CTA */
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(260px 120px at calc(50% + 430px) 120%, rgba(63, 227, 166, 0.16), transparent 70%),
+    linear-gradient(180deg, #060908 0%, #000 100%);
+}
+.zbk__grao {
+  position: absolute; inset: 0;
+  z-index: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.zbk__in {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+/* O conteúdo da linha 2 só aparece com as fontes prontas (troca de fonte não
+   desloca nada visível -> CLS). JS libera em fonts.ready (máx. 2,5s); sem JS,
+   o CSS libera sozinho aos 3,5s. */
+.zbk__in { visibility: hidden; animation: zbkMostra 0s linear 3.5s forwards; }
+.zbk.is-fontes .zbk__in { visibility: visible; animation: zbkEntra 350ms ease-out both; }
+@keyframes zbkMostra { to { visibility: visible; } }
+.zbk__oferta { display: flex; align-items: center; gap: 24px; }
+.zbk__hero { display: flex; align-items: center; gap: 10px; }
+
+.zbk__ate {
+  align-self: flex-start;
+  margin-top: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--camp-ouro-1);
+}
+/* número + eclipse: o eclipse se ancora no próprio número */
+.zbk__num { position: relative; display: inline-block; }
+.zbk__pct {
+  position: relative;
+  display: inline-block;
+  min-width: 5.3em;          /* largura final de "87% OFF" reservada: a troca de fonte não move a linha (CLS) */
+  padding: 2px 4px 3px 0;
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  background: linear-gradient(100deg, var(--camp-ouro-1) 0%, var(--camp-ouro-2) 46%, var(--camp-ouro-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(233, 166, 64, 0.3));
+}
+.zbk__pct b { font-weight: inherit; }
+.zbk__count { display: inline-block; text-align: right; }
+
+/* shimmer preso às letras: cópia clara do texto numa janela com máscara.
+   A janela anda para a direita e a cópia anda o mesmo tanto para a
+   esquerda -> o texto fica parado e só a luz atravessa. Só transform. */
+.zbk__brilho {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(100deg, transparent 38%, rgba(0, 0, 0, 0.9) 50%, transparent 62%);
+  mask-image: linear-gradient(100deg, transparent 38%, rgba(0, 0, 0, 0.9) 50%, transparent 62%);
+  transform: translateX(-100%);
+  animation: zbkJanela 5s cubic-bezier(0.45, 0, 0.3, 1) 1.8s infinite;
+}
+.zbk__brilho > span {
+  display: block;
+  padding: 2px 4px 3px 0;
+  white-space: nowrap;
+  color: rgba(255, 244, 214, 0.9);
+  transform: translateX(100%);
+  animation: zbkCopia 5s cubic-bezier(0.45, 0, 0.3, 1) 1.8s infinite;
+}
+@keyframes zbkJanela { 0% { transform: translateX(-100%); } 32%, 100% { transform: translateX(100%); } }
+@keyframes zbkCopia  { 0% { transform: translateX(100%); }  32%, 100% { transform: translateX(-100%); } }
+
+.zbk__todos {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+}
+
+/* ---------- Eclipse: disco escuro com aro aceso, nascendo sob o número ---------- */
+/* Fora do fluxo: ancorado na tarja/faixa (que não se movem) e levado para baixo do
+   número por transform (js/campanhaTarja.js -> --ecl-x/--ecl-y). Trocas de fonte que
+   movem a linha não arrastam o disco por layout -> sem CLS. Valores padrão = 1º paint. */
+.zbk__eclipse {
+  position: absolute; left: 50%; top: 0;
+  z-index: 0;
+  pointer-events: none;
+  transform: translate(var(--ecl-x, -252px), var(--ecl-y, 57px));
+}
+.zbk__eclipse.is-pos { transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+.zbk-faixa .zbk__eclipse { --ecl-x: -12rem; --ecl-y: 7.6rem; }
+.zbk__eclipse i {
+  position: absolute;
+  left: calc(var(--d) / -2);
+  width: var(--d); height: var(--d);
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+.zbk__disco {                            /* aro sempre aceso + 2 pontos quentes que giram */
+  --d: 760px;
+  top: 4px;
+  background:
+    radial-gradient(closest-side, #000 98.3%, transparent 99.3%),
+    conic-gradient(from 0deg,
+      rgba(233, 166, 64, 0.45) 0deg, rgba(255, 232, 178, 1) 40deg, rgba(233, 166, 64, 0.45) 85deg,
+      rgba(233, 166, 64, 0.3) 180deg, rgba(255, 232, 178, 0.95) 220deg, rgba(233, 166, 64, 0.45) 265deg, rgba(233, 166, 64, 0.45) 360deg);
+  animation: zbkGira 30s linear infinite;
+}
+.zbk__coroa {                            /* halo âmbar por fora do aro, respirando */
+  --d: 840px;
+  top: -36px;
+  background: radial-gradient(closest-side, transparent 88%, rgba(233, 166, 64, 0.4) 90.6%, rgba(233, 166, 64, 0.08) 93.5%, transparent 96%);
+  animation: zbkCoroa 6s ease-in-out infinite alternate;
+}
+.zbk__reflexo {                          /* brilho dos pontos quentes na coroa */
+  --d: 840px;
+  top: -36px;
+  background: conic-gradient(from 0deg, transparent 10deg, rgba(255, 220, 150, 0.45) 40deg, transparent 75deg,
+    transparent 190deg, rgba(255, 220, 150, 0.38) 220deg, transparent 255deg);
+  -webkit-mask: radial-gradient(closest-side, transparent 89.5%, #000 90.8%, transparent 94%);
+  mask: radial-gradient(closest-side, transparent 89.5%, #000 90.8%, transparent 94%);
+  animation: zbkGira 30s linear infinite;
+}
+@keyframes zbkGira { to { transform: rotate(360deg); } }
+@keyframes zbkCoroa { from { opacity: 0.45; } to { opacity: 1; } }
+/* entrada: a luz acende devagar (só opacity) */
+.zbk__eclipse { animation: zbkEntra 1400ms ease-out both; }
+@media (max-width: 767.98px) {
+  .zbk__l2 .zbk__eclipse { --ecl-x: -62px; --ecl-y: 46px; }
+  .zbk-faixa .zbk__eclipse { --ecl-x: -6rem; --ecl-y: 6.4rem; }
+}
+@keyframes zbkEntra { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- chip, cupom, CTA ---------- */
+.zbk__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 11px 0 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+  white-space: nowrap;
+}
+.zbk__chip-x { margin-left: -2px; }
+.zbk__ic { width: 13px; height: 13px; flex: none; color: var(--camp-menta); }
+.zbk__mob { display: none; }
+
+.zbk__cupom {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 0 0 14px;
+  border: 1px dashed rgba(241, 195, 106, 0.5);
+  border-radius: 8px;
+  background: rgba(6, 9, 8, 0.8);          /* quase opaco: o código nunca disputa com a luz */
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+.zbk__cupom:hover { background: rgba(22, 18, 9, 0.88); border-color: rgba(241, 195, 106, 0.75); }
+.zbk__cupom-rot {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.66);
+}
+.zbk__code {
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--camp-ouro-2);
+}
+.z0 { position: relative; display: inline-block; }       /* zero cortado */
+.z0::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 24%;
+  width: 1.6px; height: 54%;
+  background: currentColor;
+  border-radius: 1px;
+  transform: translateX(-50%) rotate(32deg);
+}
+.zbk__stub {
+  position: relative;
+  align-self: stretch;
+  width: 38px;
+  display: grid;
+  place-items: center;
+  border-left: 1px dashed rgba(241, 195, 106, 0.4);
+  color: rgba(255, 255, 255, 0.75);
+}
+.zbk__stub-ic { width: 15px; height: 15px; transition: opacity 160ms ease; }
+.zbk__stub-ok {
+  position: absolute;
+  top: -1px; bottom: -1px; right: -1px;
+  display: flex; align-items: center;
+  padding: 0 12px;
+  border-radius: 0 8px 8px 0;
+  background: #0d1f18;
+  color: var(--camp-menta);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  opacity: 0;
+  transform: translateX(4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+.zbk__cupom.is-copied .zbk__stub-ic { opacity: 0; }
+.zbk__cupom.is-copied .zbk__stub-ok { opacity: 1; transform: none; }
+.zbk__sr, .camp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.zbk__cta {
+  --r: 12px; --cr: 9px; --in: 4px; --capw: 34px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding-left: 18px;
+  padding-right: calc(var(--capw) + var(--in) + 12px);
+  border-radius: var(--r) 0 var(--r) 0;          /* geometria da marca (z7-btnx) */
+  background: var(--camp-cta-bg);
+  color: var(--camp-cta-ink);
+  text-decoration: none;
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 180ms ease;
+}
+.zbk__cta:hover { background: #fff; }
+.zbk__cta-cap {
+  position: absolute;
+  top: var(--in); right: var(--in);
+  width: var(--capw);
+  height: calc(100% - var(--in) * 2);
+  display: grid; place-items: center;
+  border-radius: var(--cr) 0 var(--cr) var(--cr);
+  background: linear-gradient(135deg, var(--camp-ouro-2), var(--camp-ouro-3));
+  color: #1b1204;
+}
+.zbk__cta-cap svg { width: 16px; height: 16px; transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+.zbk__cta:hover .zbk__cta-cap svg { transform: translateX(3px); }
+.zbk__cupom:focus-visible, .zbk__cta:focus-visible { outline: 2px solid var(--camp-ouro-2); outline-offset: 3px; }
+
+/* ---------- larguras intermediárias ---------- */
+@media (max-width: 1279.98px) {
+  .zbk__chip-x { display: none; }
+  .zbk__in { gap: 20px; }
+  .zbk__oferta { gap: 18px; }
+}
+@media (max-width: 1023.98px) {
+  .zbk__in { gap: 14px; padding: 0 16px; }
+  .zbk__oferta { gap: 12px; }
+  .zbk__cupom-rot { display: none; }
+  .zbk__pct { font-size: 33px; }
+  .zbk__todos { font-size: 13px; white-space: normal; max-width: 9.5em; }
+}
+@media (max-width: 899.98px) {
+  .zbk__chip { display: none; }            /* o Restart segue na faixa e no card */
+}
+
+/* ---------- celular (< 768): dois andares, máx. 100px ---------- */
+@media (max-width: 767.98px) {
+  .zbk__l1 { gap: 10px; }
+  .zbk__tlabel { display: none; }
+  .zbk__l2::before { background: linear-gradient(180deg, #060908 0%, #000 100%); }
+  .zbk__in {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "o o" "c a";
+    align-content: center;
+    gap: 7px 8px;
+    padding: 0 16px;
+  }
+  .zbk__oferta { grid-area: o; display: grid; grid-template-columns: auto auto; justify-content: center; align-items: baseline; column-gap: 8px; row-gap: 3px; }
+  .zbk__hero { gap: 6px; align-items: baseline; }
+  .zbk__ate { align-self: auto; margin-top: 0; font-size: 10px; }
+  .zbk__pct { font-size: 26px; }
+  .zbk__todos { font-size: 13px; white-space: nowrap; max-width: none; color: var(--camp-ouro-1); }
+  .zbk__mob { display: block; grid-column: 1 / -1; text-align: center; font-size: 11px; line-height: 1.2; color: rgba(255, 255, 255, 0.78); white-space: nowrap; }
+  .zbk__cupom { grid-area: c; height: 44px; gap: 8px; padding-left: 12px; }
+  .zbk__cta { grid-area: a; height: 44px; justify-content: center; font-size: 12px; padding-left: 14px; }
+  /* arco nasce ABAIXO da linha pequena do Restart (contraste) */
+  .zbk__disco { --d: 520px; top: 21px; }
+  .zbk__coroa { --d: 580px; top: -9px; }
+  .zbk__reflexo { display: none; }
+}
+@media (max-width: 359.98px) {
+  .zbk__selo-txt { display: none; }
+  .zbk__selo-curto { display: inline; }
+  .zbk__pct { font-size: 23px; }
+  .zbk__todos { font-size: 12px; }
+  .zbk__mob { font-size: 10.5px; }
+  .zbk__in { padding: 0 10px; column-gap: 6px; }
+  .zbk__cupom { padding-left: 10px; gap: 6px; }
+  .zbk__code { font-size: 13.5px; letter-spacing: 0.05em; }
+  .zbk__stub { width: 32px; }
+  .zbk__cta { --capw: 30px; padding-left: 12px; font-size: 11px; letter-spacing: 0.04em; }
+}
+
+/* =====================================================================
+   FAIXA da seção de planos — mini-tarja (linha fina + oferta)
+   ===================================================================== */
+.camp-on .zbk-faixa {
+  --ink: rgba(255, 255, 255, 0.92);
+  display: block;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  width: min(100%, 96rem);
+  margin: 0 auto 2.4rem;
+  border-radius: 1.6rem;
+  background: #000;
+  box-shadow: 0 1.6rem 4rem -2rem rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(241, 195, 106, 0.16);
+  color: var(--ink);
+  font-family: var(--tts), system-ui, sans-serif;
+  text-align: left;
+}
+.zbk-faixa .zbk__grao { border-radius: inherit; }
+.zbk-faixa__in {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 2.4rem 1.6rem;
+}
+.zbk-faixa__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+.zbk-faixa .zbk__selo { font-size: 1.05rem; }
+.zbk-faixa__tempo { display: inline-flex; align-items: center; gap: 0.8rem; }
+.zbk-faixa__tl { font-size: 1.15rem; color: rgba(255, 255, 255, 0.7); }
+.zbk-faixa .zbk__timer { font-size: 1.35rem; }
+.zbk-faixa__txt {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.6rem;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+.zbk-faixa__p { white-space: nowrap; }
+.zbk-faixa__p + .zbk-faixa__p::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 4px; height: 4px;
+  margin: 0 1.6rem 0 0;
+  border-radius: 50%;
+  background: rgba(241, 195, 106, 0.65);
+}
+.zbk-faixa__ate {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--camp-ouro-1);
+}
+.zbk-faixa__num { position: relative; display: inline-block; }
+.zbk-faixa__gold {
+  display: inline-block;
+  min-width: 5.3em;          /* idem: troca de fonte sem deslocar a linha */
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  background: linear-gradient(100deg, var(--camp-ouro-1), var(--camp-ouro-2) 46%, var(--camp-ouro-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.zbk-faixa__gold b { font-weight: inherit; }
+.zbk-faixa__todos { color: var(--camp-ouro-1); font-weight: 600; }
+.zbk-faixa__p--restart .zbk__ic { display: inline-block; vertical-align: -0.2em; width: 1.4rem; height: 1.4rem; margin-right: 0.4rem; }
+.zbk-faixa .zbk__disco { --d: 60rem; top: 0.6rem; }
+.zbk-faixa .zbk__coroa { --d: 66rem; top: -2.4rem; }
+.zbk-faixa .zbk__reflexo { display: none; }
+
+@media (max-width: 767.98px) {
+  .zbk-faixa__in { padding: 0.9rem 1.6rem 1.4rem; }
+  .zbk-faixa__tl { display: none; }
+  .zbk-faixa__txt { flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
+  .zbk-faixa__p + .zbk-faixa__p::before { display: none; }
+  .zbk-faixa .zbk__disco { top: 3.6rem; }          /* arco abaixo da linha do Restart */
+  .zbk-faixa .zbk__coroa { top: 0.6rem; }
+}
+
+/* =====================================================================
+   SEÇÃO DE PLANOS — 50k em destaque, selos e borda do card
+   (elementos criados por js/sectionPlanos.js só com a campanha ativa)
+   ===================================================================== */
+.camp-on .seg__option.camp-dest::after {            /* anel âmbar, pulso lento */
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1.5px rgba(233, 166, 64, 0.7), 0 0 1.4rem rgba(233, 166, 64, 0.4);
+  pointer-events: none;
+  animation: campAnel 3s ease-in-out infinite;
+}
+@keyframes campAnel { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+.camp-on .seg__option.camp-dest.is-sem-selo::after { display: none; }
+
+.camp-on .camp-seg-selo {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--camp-ouro-1), var(--camp-ouro-2) 55%, var(--camp-ouro-3));
+  color: #241604;
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.camp-on .camp-seg-selo:empty { display: none; }
+@media (min-width: 1080px) {                         /* acima do botão (sem rolagem lateral) */
+  .camp-on .camp-seg-selo {
+    position: absolute;
+    left: 50%; bottom: 100%;
+    margin: 0;
+    transform: translate(-50%, -0.5rem);
+    padding: 0.3rem 0.8rem;
+    font-size: 1.05rem;
+    box-shadow: 0 0.6rem 1.6rem -0.4rem rgba(233, 166, 64, 0.55);
+  }
+  .camp-on .camp-seg-selo::after {
+    content: "";
+    position: absolute; left: 50%; top: 100%;
+    border: 0.4rem solid transparent;
+    border-top-color: var(--camp-ouro-2);
+    transform: translateX(-50%);
+  }
+}
+
+.camp-on .plan-card.camp-card-dest .camp-card-borda {
+  display: block;
+  position: absolute; inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(241, 195, 106, 0.95), rgba(233, 166, 64, 0.45) 40%, rgba(63, 227, 166, 0.55));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.camp-on .camp-card-selo.is-on {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(241, 195, 106, 0.55);
+  background: rgba(241, 195, 106, 0.08);
+  color: var(--camp-ouro-2);
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.camp-on .camp-card-selo.is-dest {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--camp-ouro-1), var(--camp-ouro-2) 55%, var(--camp-ouro-3));
+  color: #241604;
+  box-shadow: 0 0.6rem 2rem -0.6rem rgba(233, 166, 64, 0.6);
+}
+.camp-on .plan-card.camp-card-dest .plan-card__price {
+  background: linear-gradient(100deg, var(--camp-ouro-1), var(--camp-ouro-2) 50%, var(--camp-ouro-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.camp-on .plan-card.camp-card-dest .plan-card__price-from { color: #c4c4c4; font-size: 1.25em; }
+
+/* ---------- pausas e movimento reduzido ---------- */
+.camp-pausa .zbk *, .camp-pausa .zbk *::before, .camp-pausa .zbk *::after,
+.camp-pausa .zbk-faixa *, .camp-pausa .zbk-faixa *::before, .camp-pausa .zbk-faixa *::after,
+.camp-pausa .seg__option.camp-dest::after,
+.zbk.is-fora *, .zbk.is-fora *::before, .zbk.is-fora *::after,
+.zbk-faixa.is-fora *, .zbk-faixa.is-fora *::before, .zbk-faixa.is-fora *::after {
+  animation-play-state: paused !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .zbk *, .zbk *::before, .zbk *::after,
+  .zbk-faixa *, .zbk-faixa *::before, .zbk-faixa *::after,
+  .camp-on .seg__option.camp-dest::after { animation: none !important; }
+  .zbk__brilho { display: none; }
+  .zbk__coroa { opacity: 0.8; }
+  .zbk__eclipse.is-pos { transition: none; }
+  .camp-on .seg__option.camp-dest::after { opacity: 0.8; }
+}

@@ -33,7 +33,8 @@
 
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="./css/index.css?v=20261105-1">
+  <script src="./js/campanha.js?v=20261105-2"></script>
+  <link rel="stylesheet" href="./css/index.css?v=20261105-2">
 
  <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -235,50 +236,55 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <link rel="sitemap" type="application/xml" href="./sitemap.xml">
 
-  <script src="./js/i18n.js?v=20261105-1" defer></script>
+  <script src="./js/i18n.js?v=20261105-2" defer></script>
 </head>
 
 <body id="body" class="smooth-scroll-wrapper">
 
   <!-- TARJA: manter idêntico em /home e /home/v2 -->
-  <!-- Tarja promocional. Visual: css/tarjaTopo.css · comportamento: js/tarjaTopo.js e
-       js/tarjaTimer.js (defer) · copy: lang/*.json > "tarja".
-       Fim da campanha: data-fim (hora local). Conferir as duas cópias: node tools/check-tarja.mjs
+  <!-- Tarja da campanha (Pré-Black Friday · Eclipse). Objeto da campanha (fim, cupom, %, cores):
+       js/campanha.js · visual: css/campanha.css · comportamento: js/campanhaTarja.js (defer) ·
+       copy: lang/*.json > "camp". Só aparece com <html class="camp-on"> (ligado por js/campanha.js
+       antes do 1º paint). Conferir as duas cópias: node tools/check-tarja.mjs
        Classes tarja-topo* mantidas como ganchos (offset do FAQ em script/sectionFaq.js e tracking). -->
-  <aside class="ztarja tarja-topo" role="region" data-fim="2027-12-31T23:59:00" aria-label="Promoção em destaque" data-i18n-attr="aria-label:tarja.aria">
-    <div class="ztarja__urg">
-      <span class="ztarja__dot" aria-hidden="true"></span>
-      <span class="ztarja__urg-label" data-i18n="tarja.timer_label">Essa oferta se encerra em:</span>
-      <span class="ztarja__timer" role="timer" aria-label="Tempo restante"><span class="ztarja__d" aria-hidden="true">0</span><span class="ztarja__d" aria-hidden="true">0</span><span class="ztarja__c" aria-hidden="true">:</span><span class="ztarja__d" aria-hidden="true">0</span><span class="ztarja__d" aria-hidden="true">0</span><span class="ztarja__c" aria-hidden="true">:</span><span class="ztarja__d" aria-hidden="true">0</span><span class="ztarja__d" aria-hidden="true">0</span></span>
+  <aside class="zbk tarja-topo" role="region" aria-label="Pré-Black Friday" data-i18n-attr="aria-label:camp.aria">
+    <div class="zbk__l1">
+      <span class="zbk__selo"><span class="zbk__pulse" aria-hidden="true"></span><span class="zbk__selo-txt" data-i18n="camp.selo">Pré-Black Friday</span><span class="zbk__selo-curto" aria-hidden="true" data-i18n="camp.selo_curto">Pré-Black</span></span>
+      <span class="zbk__tlabel" data-i18n="camp.timer_label">A oferta termina em</span>
+      <span class="zbk__timer" role="timer" aria-label="Tempo restante"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span>
     </div>
-    <div class="ztarja__offer">
-      <div class="ztarja__inner">
-        <p class="ztarja__lead" data-i18n="tarja.texto.html"><span class="ztarja__copy">Opere no mercado internacional com</span> <span class="ztarja__badge">80% OFF</span></p>
-        <button type="button" class="ztarja__cupom tarja-topo__cupom" aria-label="Copiar o cupom BLACK07" data-i18n-attr="aria-label:tarja.cupom_aria">
-          <span class="ztarja__cupom-main" data-i18n="tarja.cupom.html">Use o cupom: <b>BLACK07</b></span>
-          <span class="ztarja__stub" aria-hidden="true">
-            <svg class="ztarja__stub-ic" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            <span class="ztarja__stub-ok" data-i18n="tarja.copiado">Copiado!</span>
+    <div class="zbk__l2">
+      <i class="zbk__grao" aria-hidden="true"></i>
+      <span class="zbk__eclipse" aria-hidden="true"><i class="zbk__coroa"></i><i class="zbk__disco"></i><i class="zbk__reflexo"></i></span>
+      <div class="zbk__in">
+        <p class="zbk__oferta">
+          <span class="zbk__hero">
+            <span class="zbk__ate" data-i18n="camp.ate">Até</span>
+            <span class="zbk__num">
+              <span class="zbk__pct"><b class="zbk__count" data-camp-num="ate">87</b>% OFF<span class="zbk__brilho" aria-hidden="true"><span><b class="zbk__count" data-camp-num="ate">87</b>% OFF</span></span></span>
+            </span>
+          </span>
+          <span class="zbk__todos" data-i18n="camp.todos">em todos os planos</span>
+          <span class="zbk__chip"><svg class="zbk__ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.34 5.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 4v7h-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="camp.chip">+ Restart incluído</span><span class="zbk__chip-x" data-i18n="camp.chip_x">nos Challenge</span></span>
+          <span class="zbk__mob" data-i18n="camp.restart_challenge">Restart incluído nos Challenge</span>
+        </p>
+        <button type="button" class="zbk__cupom tarja-topo__cupom" data-camp-cupom aria-label="Copiar o cupom BLACK07" data-i18n-attr="aria-label:camp.cupom_aria">
+          <span class="zbk__cupom-rot" data-i18n="camp.cupom_rot">Cupom</span>
+          <span class="zbk__code" data-camp-code>BLACK<span class="z0">0</span>7</span>
+          <span class="zbk__stub" aria-hidden="true">
+            <svg class="zbk__stub-ic" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="zbk__stub-ok" data-i18n="camp.copiado">Copiado!</span>
           </span>
         </button>
-        <span class="ztarja__sr" aria-live="polite"></span>
-        <a class="ztarja__cta tarja-topo__btn" href="#plan">
-          <span class="ztarja__cta-label" data-i18n="tarja.botao">Ver Oferta</span>
-          <span class="ztarja__cta-cap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="zbk__sr" aria-live="polite"></span>
+        <a class="zbk__cta tarja-topo__btn" href="#plan" data-camp-ir>
+          <span class="zbk__cta-label" data-i18n="camp.cta">Ver planos</span>
+          <span class="zbk__cta-cap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </a>
       </div>
     </div>
   </aside>
-  <div class="ztarja-espaco" aria-hidden="true"></div>
-  <script>
-    /* Campanha já expirada: tarja e espaço reservado saem antes do 1º paint.
-       Sem rede e sem bloquear nada; se falhar, a tarja fica (lado seguro). */
-    (function (s) {
-      var e = s.previousElementSibling, t = e && e.previousElementSibling;
-      var fim = t && Date.parse(t.getAttribute('data-fim'));
-      if (fim && Date.now() >= fim) { t.parentNode.removeChild(t); e.parentNode.removeChild(e); }
-    })(document.currentScript);
-  </script>
+  <div class="zbk-espaco" aria-hidden="true"></div>
   <!-- /TARJA -->
 
   <nav id="navigation" class="">
@@ -809,6 +815,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <h2>Mini índice / Dólar</h2> -->
 
         <div class="box">
+          <!-- FAIXA: manter idêntico em /home e /home/v2 -->
+          <!-- Faixa da campanha acima das abas (mesma campanha da tarja; só existe com html.camp-on). -->
+          <div class="zbk-faixa" role="note" aria-label="Pré-Black Friday" data-i18n-attr="aria-label:camp.aria">
+            <i class="zbk__grao" aria-hidden="true"></i>
+            <span class="zbk__eclipse" aria-hidden="true"><i class="zbk__coroa"></i><i class="zbk__disco"></i></span>
+            <div class="zbk-faixa__in">
+              <div class="zbk-faixa__topo">
+                <span class="zbk__selo"><span class="zbk__pulse" aria-hidden="true"></span><span class="zbk__selo-txt" data-i18n="camp.selo">Pré-Black Friday</span></span>
+                <span class="zbk-faixa__tempo"><span class="zbk-faixa__tl" data-i18n="camp.timer_label">A oferta termina em</span>
+                  <span class="zbk__timer" role="timer" aria-label="Tempo restante"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span></span>
+              </div>
+              <p class="zbk-faixa__txt">
+                <span class="zbk-faixa__p zbk-faixa__p--hero"><span class="zbk-faixa__ate" data-i18n="camp.ate">Até</span> <span class="zbk-faixa__num"><span class="zbk-faixa__gold"><b data-camp-num="ate">87</b>% OFF</span></span> <span class="zbk-faixa__todos" data-i18n="camp.todos">em todos os planos</span></span>
+                <span class="zbk-faixa__p zbk-faixa__p--restart"><svg class="zbk__ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.34 5.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 4v7h-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="camp.restart_challenge">Restart incluído nos Challenge</span></span>
+              </p>
+            </div>
+          </div>
+          <!-- /FAIXA -->
+
           <div class="mode-toggle" role="radiogroup" data-i18n-attr="aria-label:plan.aria_modo">
             <span class="mode-toggle__item tooltip-btn">
               <button type="button" class="mode-toggle__btn z7-btnx z7-btnx--toggle is-active" data-mode="com_ativacao" role="radio" aria-checked="true" tabindex="0">
@@ -888,6 +913,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <span class="plan-card__badge">Plano 25k</span>
                 </div>
                 <span class="plan-card__mode">Desafio com taxa de ativação</span>
+                <div class="plan-restart" hidden>
+                  <span class="plan-restart__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 11a8 8 0 1 0-2.34 5.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 4v7h-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="plan-restart__t"><span class="plan-restart__tt" data-i18n="plan.restart_titulo">Restart incluído</span><span class="plan-restart__rg"></span></span>
+                </div>
               </div>
             </div>
 
@@ -1334,13 +1363,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script src="./script/global.js?v=20261105-1"></script>
-  <script src="./script/depoimentosModal.js?v=20261105-1"></script>
-  <script src="./script/sectionBa.js?v=20261105-1"></script>
-  <script src="./script/sectionFaq.js?v=20261105-1" defer></script>
-  <script src="./js/utmForward.js?v=20261105-1"></script>
-  <script src="./js/sectionPlanos.js?v=20261105-1" defer></script>
-  <script src="./js/tarjaTopo.js?v=20261105-1" defer></script>
-  <script src="./js/tarjaTimer.js?v=20261105-1" defer></script>
+  <script src="./script/global.js?v=20261105-2"></script>
+  <script src="./script/depoimentosModal.js?v=20261105-2"></script>
+  <script src="./script/sectionBa.js?v=20261105-2"></script>
+  <script src="./script/sectionFaq.js?v=20261105-2" defer></script>
+  <script src="./js/utmForward.js?v=20261105-2"></script>
+  <script src="./js/sectionPlanos.js?v=20261105-2" defer></script>
+  <script src="./js/campanhaTarja.js?v=20261105-2" defer></script>
 </body>
 </html>
