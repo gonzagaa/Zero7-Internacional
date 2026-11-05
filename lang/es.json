@@ -34,12 +34,12 @@
       "html": "<span class=\"ztarja__copy\">Opera en el mercado internacional con</span> <span class=\"ztarja__badge\">80% OFF</span>"
     },
     "cupom": {
-      "html": "Usa el cupón: <b>ZERO7</b>"
+      "html": "Usa el cupón: <b>BLACK07</b>"
     },
     "botao": "Ver Oferta",
     "timer_label": "Esta oferta finaliza en:",
     "aria": "Promoción destacada",
-    "cupom_aria": "Copiar el cupón ZERO7",
+    "cupom_aria": "Copiar el cupón BLACK07",
     "timer_aria": "Tiempo restante: {h} h y {m} min",
     "copiado": "¡Copiado!"
   },

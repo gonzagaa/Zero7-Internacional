@@ -34,12 +34,12 @@
       "html": "<span class=\"ztarja__copy\">Trade the international market with</span> <span class=\"ztarja__badge\">80% OFF</span>"
     },
     "cupom": {
-      "html": "Use code: <b>ZERO7</b>"
+      "html": "Use code: <b>BLACK07</b>"
     },
     "botao": "See Offer",
     "timer_label": "This offer ends in:",
     "aria": "Featured promotion",
-    "cupom_aria": "Copy the coupon code ZERO7",
+    "cupom_aria": "Copy the coupon code BLACK07",
     "timer_aria": "Time left: {h} h {m} min",
     "copiado": "Copied!"
   },

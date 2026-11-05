@@ -556,19 +556,19 @@
     if (href) refs.cardCta.setAttribute('href', href);
   }
 
-  // Cupom exibido no card — hoje é "ZERO7" para TODOS os modos.
+  // Cupom exibido no card — hoje é "BLACK07" para TODOS os modos (Pré-Black Friday).
   // Mantenho o mapa por modo pra facilitar quando voltar a ter cupom
   // diferente por produto.
   const PLAN_CUPOM = {
-    com_ativacao: 'ZERO7',
-    sem_ativacao: 'ZERO7',
-    funding_pass: 'ZERO7',
-    liberty:      'ZERO7',
+    com_ativacao: 'BLACK07',
+    sem_ativacao: 'BLACK07',
+    funding_pass: 'BLACK07',
+    liberty:      'BLACK07',
   };
   function renderCupom() {
     if (!refs.cardCupom) return;
-    const code = PLAN_CUPOM[state.modo] || 'ZERO7';
-    const base = String(tr('tarja.cupom.html'));            // ex.: "Use o cupom: <b>ZERO7</b>"
+    const code = PLAN_CUPOM[state.modo] || 'BLACK07';
+    const base = String(tr('tarja.cupom.html'));            // ex.: "Use o cupom: <b>BLACK07</b>"
     // Extrai só o prefixo ("Use o cupom:"); se i18n ainda não resolveu, usa padrão
     const prefixo = /<b>/i.test(base)
       ? base.replace(/<b>[\s\S]*?<\/b>/i, '').trim()
