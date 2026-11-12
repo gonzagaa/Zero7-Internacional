@@ -1,8 +1,8 @@
 {
   "produto": {
-    "pt": "Mini índice / Dólar",
-    "en": "Mini Index / Dollar",
-    "es": "Mini Índice / Dólar"
+    "pt": "Futuros CME",
+    "en": "CME Futures",
+    "es": "Futuros CME"
   },
   "condicoesFixas": {
     "minimoDias": {
