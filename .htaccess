@@ -14,3 +14,7 @@
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
+
+# REGULAMENTO OFF (temporário): /regulamento/ responde 404 (arquivos mantidos no repositório).
+# Para voltar ao ar: apagar este bloco.
+RedirectMatch 404 /regulamento(/.*)?$
