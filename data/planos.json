@@ -54,7 +54,7 @@
         "comAtivacao": "$19,00",
         "semAtivacao": "$66,50",
         "fundingPass": "$147,00",
-        "liberty":     "$97,00",
+        "liberty":     "$63,05",
         "comAtivacaoDe": "$95,00",
         "semAtivacaoDe": "$332,50",
         "fundingPassDe": "$735,00",
@@ -85,8 +85,8 @@
         "incubadora": "---"
       },
       "precos": {
-        "comAtivacao": "$18,85",
-        "semAtivacao": "$63,38",
+        "comAtivacao": "$29,00",
+        "semAtivacao": "$97,50",
         "fundingPass": "$247,00",
         "liberty":     "$121,55",
         "comAtivacaoDe": "$145,00",
@@ -122,7 +122,7 @@
         "comAtivacao": "$39,00",
         "semAtivacao": "$136,50",
         "fundingPass": "$397,00",
-        "liberty":     "$247,00",
+        "liberty":     "$160,55",
         "comAtivacaoDe": "$195,00",
         "semAtivacaoDe": "$682,50",
         "fundingPassDe": "$1.985,00",

@@ -608,18 +608,20 @@
   // antes do 1º render e antes de medir o blob: 50k selecionado + selo no botão
   function prepararCampanha() {
     if (!CAMP) return;
-    const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
-    if (dest) {
-      dest.classList.add('camp-dest');
+    // selo + anel em todo botão de capital: aparecem só onde a aba atual tem o desconto
+    // máximo da campanha (ex.: Liberty 25k/50k/100k). Nos planos a 80% (Activation, Challenge e
+    // Funding Pass, inclusive no 50k) o botão fica sem destaque (pedido de 12/11)
+    refs.campSeg = refs.botoesCapital.map((btn) => {
       const selo = document.createElement('span');
       selo.className = 'camp-seg-selo';
       selo.setAttribute('aria-hidden', 'true');
       const sr = document.createElement('span');
       sr.className = 'camp-sr';
-      dest.append(selo, sr);
-      refs.campSegSelo = selo;
-      refs.campSegSr = sr;
-      refs.campSegBtn = dest;
+      btn.append(selo, sr);
+      return { btn, selo, sr };
+    });
+    const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
+    if (dest) {
       if (CAMP.destaque.selecionarPorPadrao && capitalCompativelComModo(state.modo, dest.dataset.capital)) {
         atualizarSelecionado(refs.botoesCapital, dest);
         state.capital = dest.dataset.capital;
@@ -640,15 +642,18 @@
   function renderCampanha() {
     if (!CAMP) return;
     const naCamp = CAMP.modos.includes(state.modo);
-    if (refs.campSegSelo) {
-      const p = naCamp ? descontoReal(CAMP.destaque.capital, state.modo) : null;
-      refs.campSegSelo.textContent = p ? `-${p}%` : '';
-      refs.campSegSr.textContent = p ? ` (${tr('camp.seg_selo_aria').replace('{p}', p)})` : '';
-      refs.campSegBtn.classList.toggle('is-sem-selo', !p);
-    }
+    (refs.campSeg || []).forEach(({ btn, selo, sr }) => {
+      const cap = btn.dataset.capital;
+      const pc = naCamp ? descontoReal(cap, state.modo) : null;
+      const mostra = !!pc && pc >= CAMP.pct.ate;
+      btn.classList.toggle('camp-dest', mostra);
+      selo.textContent = mostra ? `-${pc}%` : '';
+      sr.textContent = mostra ? ` (${tr('camp.seg_selo_aria').replace('{p}', pc)})` : '';
+    });
     const p = naCamp ? descontoReal(state.capital, state.modo) : null;
-    // dourado só onde está o número da campanha (ex.: FP 50K em 80% mostra "-80%" normal)
-    const dest = !!p && p >= CAMP.pct.ate && state.capital === CAMP.destaque.capital;
+    // dourado onde está o número da campanha (ex.: Liberty 25k/50k/100k a 87%;
+    // FP 50K em 80% mostra "-80%" normal)
+    const dest = !!p && p >= CAMP.pct.ate;
     refs.card.classList.toggle('camp-card-dest', dest);
     if (refs.campCardSelo) {
       refs.campCardSelo.textContent = p ? tr('camp.card_selo').replace('{p}', p) : '';
