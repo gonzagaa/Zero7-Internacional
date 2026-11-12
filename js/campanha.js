@@ -29,6 +29,8 @@
     destaque: {
       capital: '50k',
       selecionarPorPadrao: true,          // flag de conversão: a seção de planos abre no 50k
+      modo: 'liberty',                    // ...e nesta aba (maior desconto: Liberty 25k/50k/100k a 87%).
+                                          // null = abre na aba padrão (Activation Challenge)
     },
 
     // modos que exibem o selo "PRÉ-BLACK · -XX%" no card

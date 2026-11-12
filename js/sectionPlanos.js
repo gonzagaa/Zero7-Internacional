@@ -608,6 +608,13 @@
   // antes do 1º render e antes de medir o blob: 50k selecionado + selo no botão
   function prepararCampanha() {
     if (!CAMP) return;
+    // aba pré-selecionada durante a campanha (CAMP.destaque.modo; ex.: Liberty)
+    const modoCamp = CAMP.destaque.selecionarPorPadrao && CAMP.destaque.modo;
+    const btnModo = modoCamp && refs.botoesModo.find((b) => b.dataset.mode === modoCamp);
+    if (btnModo) {
+      atualizarSelecionado(refs.botoesModo, btnModo, 'is-active');
+      state.modo = modoCamp;
+    }
     // selo + anel em todo botão de capital: aparecem só onde a aba atual tem o desconto
     // máximo da campanha (ex.: Liberty 25k/50k/100k). Nos planos a 80% (Activation, Challenge e
     // Funding Pass, inclusive no 50k) o botão fica sem destaque (pedido de 12/11)
