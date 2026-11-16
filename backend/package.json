@@ -5,6 +5,6 @@
   "type": "module",
   "description": "Meta Conversions API endpoint (server-side) para Zero7 Internacional. Sem dependencias externas.",
   "engines": {
-    "node": "20.x"
+    "node": "26.x"
   }
 }

@@ -5,7 +5,7 @@ Conversions API, deduplicados pelo `event_id` que também é enviado no lado
 navegador.
 
 - **Sem dependências npm.** Só Node nativo (fetch + crypto).
-- **Runtime**: Node 20.x (fixado em `package.json > engines`).
+- **Runtime**: Node 26.x (fixado em `package.json > engines`).
 - **Rotas públicas**: `POST /api/capi` e `POST /api/lead` (cadastro da LP
   Black Zero7 Trading 2026 na RD Station; ver a seção "Rota /api/lead").
 
