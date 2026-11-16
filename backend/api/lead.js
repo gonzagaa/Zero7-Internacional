@@ -88,7 +88,7 @@ function validar(body) {
 
   if (typeof nome !== 'string') return null;
   const n = nome.trim();
-  if (n.length < 2 || n.length > 120) return null;
+  if (n.length < 1 || n.length > 120) return null;
 
   if (typeof email !== 'string') return null;
   const e = email.trim();
@@ -100,12 +100,13 @@ function validar(body) {
   if (digitos.length < 10 || digitos.length > 15) return null;
   const tel = (t.startsWith('+') ? '+' : '') + digitos;
 
+  // UTMs: opcionais. Não recusam o lead: tipo diferente de string é ignorado
+  // e texto acima de 200 caracteres é cortado em 200.
   const utm = {};
   for (const campo of UTMS) {
     const v = body[campo];
-    if (v === undefined || v === null || v === '') continue;
-    if (typeof v !== 'string' || v.length > 200) return null;
-    const limpo = v.trim();
+    if (typeof v !== 'string') continue;
+    const limpo = v.trim().slice(0, 200).trim();
     if (limpo) utm[campo] = limpo;
   }
 
