@@ -136,12 +136,15 @@ Recebe o cadastro da LP Black Zero7 Trading 2026
   "utm_source": "", "utm_medium": "", "utm_campaign": "", "utm_term": "", "utm_content": ""
 }
 ```
-- `nome`: 2 a 120 caracteres. `email`: até 254. `telefone`: de 10 a 15 dígitos
-  (vai para a RD só com os dígitos, com `+` na frente se veio com `+`).
-- UTMs opcionais, até 200 caracteres. `utm_source`, `utm_medium`,
-  `utm_campaign` e `utm_term` viram `traffic_source`, `traffic_medium`,
-  `traffic_campaign` e `traffic_value`; `utm_content` não tem campo na API
-  de conversões e não é enviado.
+- `nome`: 1 a 120 caracteres depois do trim. `email`: até 254. `telefone`: de
+  10 a 15 dígitos (vai para a RD só com os dígitos, com `+` na frente se veio
+  com `+`).
+- UTMs opcionais; nunca recusam o lead. Acima de 200 caracteres, são cortadas
+  em 200. Valor que não é texto é ignorado (a UTM não vai, o lead segue).
+- `utm_source`, `utm_medium`, `utm_campaign` e `utm_term` viram
+  `traffic_source`, `traffic_medium`, `traffic_campaign` e `traffic_value`.
+  `utm_content` é aceito, mas não vai para a RD: a API de conversões não tem
+  campo para ele.
 - O identificador da conversão é fixo na função; a página não escolhe.
 
 **Respostas**
