@@ -133,7 +133,8 @@ Recebe o cadastro da LP Black Zero7 Trading 2026
   "nome": "Nome do lead",
   "email": "lead@exemplo.com",
   "telefone": "+55 62 99999-0000",
-  "utm_source": "", "utm_medium": "", "utm_campaign": "", "utm_term": "", "utm_content": ""
+  "utm_source": "", "utm_medium": "", "utm_campaign": "", "utm_term": "", "utm_content": "",
+  "event_id": "", "fbp": "", "fbc": "", "external_id": ""
 }
 ```
 - `nome`: 1 a 120 caracteres depois do trim. `email`: até 254. `telefone`: de
@@ -146,6 +147,32 @@ Recebe o cadastro da LP Black Zero7 Trading 2026
   `utm_content` é aceito, mas não vai para a RD: a API de conversões não tem
   campo para ele.
 - O identificador da conversão é fixo na função; a página não escolhe.
+- `event_id` (até 100 caracteres), `fbp` e `fbc` (até 500) e `external_id`
+  (até 200): opcionais, para a Meta (abaixo). Inválido ou ausente é ignorado;
+  nunca dão 400.
+
+**Meta: CompleteRegistration pela API de Conversões**
+
+Com `event_id` no corpo, a função manda à Meta um `CompleteRegistration`
+(`POST https://graph.facebook.com/v26.0/<META_PIXEL_ID>/events`) com esse
+`event_id`. O Pixel dispara o mesmo evento, com o mesmo `eventID`, na página de
+obrigado, e a Meta desduplica os dois.
+- Usa as variáveis do `/api/capi`: `META_PIXEL_ID`, `META_ACCESS_TOKEN` e
+  `META_TEST_EVENT_CODE` (mesma regra: só com conteúdo real). Sem `META_PIXEL_ID`
+  ou `META_ACCESS_TOKEN`, não manda nada à Meta (aviso no log) e o lead segue.
+- `user_data`: e-mail, telefone e primeiro nome em SHA-256, normalizados como a
+  Meta pede (e-mail aparado e em minúsculas; telefone só com dígitos e com 55 na
+  frente quando vem sem DDI; primeiro nome em minúsculas, sem pontuação);
+  `external_id` em SHA-256; `fbp` e `fbc` sem hash; IP (`x-forwarded-for`) e
+  user-agent sempre dos headers, nunca do corpo.
+- **O lead nunca depende da Meta.** A Meta roda em paralelo com a RD, com
+  tempo-limite próprio de 3 s, e a resposta é decidida só pela RD: Meta com
+  erro, lenta ou sem configuração não muda o `200`. A função espera as duas
+  terminarem antes de responder (a Vercel pode congelar a função depois da
+  resposta), então o tempo total é o maior dos dois e a Meta nunca soma mais de 3 s.
+- **Se a RD falhar, o evento da Meta pode já ter saído**, porque as duas rodam
+  juntas. É aceitável: a página mostra o erro, a pessoa tenta de novo e a nova
+  tentativa vai com outro `event_id`.
 
 **Respostas**
 - `200 { "success": true }`: a RD aceitou (2xx).
@@ -154,8 +181,10 @@ Recebe o cadastro da LP Black Zero7 Trading 2026
 - `500 { "error": "server misconfigured" }`: falta `RD_API_KEY`.
 - `502 { "error": "upstream error" }`: a RD respondeu erro ou passou de 8 s.
 
-**Logs:** só status da RD, duração e código de erro. Nunca o corpo
-recebido, nome, e-mail, telefone, a URL com a chave nem a resposta da RD.
+**Logs:** só status da RD e da Meta, duração e código de erro
+(`[lead] rd ok/erro`, `[lead] meta ok/erro`). Nunca o corpo recebido, nome,
+e-mail, telefone, hashes, token, a URL com a chave ou o token, nem a resposta
+da RD ou da Meta.
 
 ### Teste da rota /api/lead
 

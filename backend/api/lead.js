@@ -11,12 +11,26 @@
    - Nada de dado pessoal em log: nem o corpo recebido, nem nome, e-mail,
      telefone, nem a resposta da RD. Só status, duração e código de erro.
    - O identificador da conversão é fixo aqui; nunca vem da página.
+
+   Meta (API de Conversões): CompleteRegistration com o event_id da página
+   (o Pixel dispara o mesmo evento no obrigado; a Meta desduplica).
+   - O lead nunca depende da Meta: a resposta é decidida só pela RD.
+   - A Meta roda em paralelo com a RD, com tempo-limite próprio de 3 s.
+   - Token, hashes e dados da pessoa nunca vão para log.
    ===================================================================== */
+
+import crypto from 'node:crypto';
 
 const RD_URL = 'https://api.rd.services/platform/conversions';
 const CONVERSAO = 'black-zero7-trading-2026';
 const LIMITE_CORPO = 4096;        // bytes
 const TEMPO_LIMITE_RD = 8000;     // ms
+
+const META_GRAPH_URL = 'https://graph.facebook.com/v26.0';
+const TEMPO_LIMITE_META = 3000;   // ms
+const META_EVENTO = 'CompleteRegistration';
+const META_URL_PAGINA = 'https://zero7trading.com/black-2026/';
+const META_CONTEUDO = 'LP Black Zero7 Trading 2026';
 
 const UTMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 const BASES_LEGAIS = [
@@ -142,6 +156,143 @@ function montarEvento({ nome, email, telefone, utm }) {
 }
 
 /* -----------------------------------------------------------------------
+   Meta: CompleteRegistration pela API de Conversões
+   ----------------------------------------------------------------------- */
+
+// Campos de rastreio opcionais. Inválido ou ausente: ignorado, nunca recusa o lead.
+function camposMeta(body) {
+  const pegar = (nome, max) => {
+    const v = body[nome];
+    if (typeof v !== 'string') return null;
+    const limpo = v.trim();
+    return limpo && limpo.length <= max ? limpo : null;
+  };
+  return {
+    eventId: pegar('event_id', 100),
+    fbp: pegar('fbp', 500),
+    fbc: pegar('fbc', 500),
+    externalId: pegar('external_id', 200),
+  };
+}
+
+const sha256 = (texto) => crypto.createHash('sha256').update(texto, 'utf8').digest('hex');
+
+// Normalização da Meta ("Customer Information Parameters"):
+// e-mail aparado e em minúsculas; telefone só com dígitos, sem zeros à esquerda e com
+// código do país (55 quando o número veio sem DDI); primeiro nome em minúsculas, sem
+// pontuação (acentos ficam, em UTF-8); external_id como no capi.js (trim + minúsculas).
+function telefoneMeta(telefone) {
+  const comDdi = telefone.startsWith('+');
+  let d = telefone.replace(/\D/g, '').replace(/^0+/, '');
+  if (!comDdi && (d.length === 10 || d.length === 11)) d = '55' + d;
+  return d;
+}
+
+function primeiroNome(nome) {
+  const primeiro = nome.normalize('NFC').trim().split(/\s+/)[0] || '';
+  return primeiro.toLowerCase().replace(/[^\p{L}\p{M}]/gu, '');
+}
+
+function getClientIp(req) {
+  const xff = req.headers['x-forwarded-for'];
+  if (!xff) return null;
+  const list = Array.isArray(xff) ? xff.join(',') : String(xff);
+  const first = list.split(',')[0].trim();
+  return first || null;
+}
+
+function montarEventoMeta(lead, meta, req) {
+  const userData = {};
+  const em = lead.email.trim().toLowerCase();
+  const ph = telefoneMeta(lead.telefone);
+  const fn = primeiroNome(lead.nome);
+  if (em) userData.em = [sha256(em)];
+  if (ph) userData.ph = [sha256(ph)];
+  if (fn) userData.fn = [sha256(fn)];
+  if (meta.externalId) userData.external_id = [sha256(meta.externalId.toLowerCase())];
+  if (meta.fbp) userData.fbp = meta.fbp;                 // sem hash
+  if (meta.fbc) userData.fbc = meta.fbc;                 // sem hash
+  const ip = getClientIp(req);                            // sempre dos headers, nunca do corpo
+  const ua = req.headers['user-agent'];
+  if (ip) userData.client_ip_address = ip;
+  if (ua) userData.client_user_agent = String(ua);
+
+  const corpo = {
+    data: [{
+      event_name: META_EVENTO,
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: meta.eventId,
+      action_source: 'website',
+      event_source_url: META_URL_PAGINA,
+      user_data: userData,
+      custom_data: { content_name: META_CONTEUDO },
+    }],
+  };
+  // Mesma regra do capi.js: só com conteúdo real (vazio ou espaços = ausente).
+  const testCode = (process.env.META_TEST_EVENT_CODE || '').trim();
+  if (testCode) corpo.test_event_code = testCode;
+  return corpo;
+}
+
+// Nunca rejeita e nunca passa de TEMPO_LIMITE_META. Loga só status, duração ou código.
+async function enviarMeta(lead, meta, req) {
+  if (!meta.eventId) return;
+  const pixelId = process.env.META_PIXEL_ID;
+  const token = process.env.META_ACCESS_TOKEN;
+  if (!pixelId || !token) {
+    console.warn('[lead] meta sem configuração; evento não enviado');
+    return;
+  }
+  const inicio = Date.now();
+  try {
+    const url = `${META_GRAPH_URL}/${encodeURIComponent(pixelId)}/events?access_token=${encodeURIComponent(token)}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(montarEventoMeta(lead, meta, req)),
+      signal: AbortSignal.timeout(TEMPO_LIMITE_META),
+    });
+    const ms = Date.now() - inicio;
+    try { await resp.body?.cancel(); } catch (_) { /* nada */ }
+    if (resp.ok) console.log('[lead] meta ok', { status: resp.status, ms });
+    else console.error('[lead] meta erro', { status: resp.status, ms });
+  } catch (err) {
+    const codigo = err && err.name === 'TimeoutError' ? 'timeout' : 'fetch_failed';
+    console.error('[lead] meta erro', { codigo, ms: Date.now() - inicio });
+  }
+}
+
+/* -----------------------------------------------------------------------
+   RD: devolve true/false; loga só status, duração ou código
+   ----------------------------------------------------------------------- */
+
+async function enviarRd(lead, chave) {
+  const inicio = Date.now();
+  try {
+    const rd = await fetch(`${RD_URL}?api_key=${encodeURIComponent(chave)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(montarEvento(lead)),
+      signal: AbortSignal.timeout(TEMPO_LIMITE_RD),
+    });
+    const ms = Date.now() - inicio;
+    // Descarta o corpo da RD sem ler nem logar (pode ecoar dados do contato).
+    try { await rd.body?.cancel(); } catch (_) { /* nada */ }
+
+    if (!rd.ok) {
+      console.error('[lead] rd erro', { status: rd.status, ms });
+      return false;
+    }
+    console.log('[lead] rd ok', { status: rd.status, ms });
+    return true;
+  } catch (err) {
+    const codigo = err && err.name === 'TimeoutError' ? 'timeout' : 'fetch_failed';
+    console.error('[lead] rd falhou', { codigo, ms: Date.now() - inicio });
+    return false;
+  }
+}
+
+/* -----------------------------------------------------------------------
    Handler
    ----------------------------------------------------------------------- */
 
@@ -173,7 +324,8 @@ export default async function handler(req, res) {
     return;
   }
 
-  const lead = validar(await readJsonBody(req));
+  const body = await readJsonBody(req);
+  const lead = validar(body);
   if (!lead) {
     res.status(400).json({ error: 'invalid input' });
     return;
@@ -186,29 +338,16 @@ export default async function handler(req, res) {
     return;
   }
 
-  const inicio = Date.now();
-  try {
-    const rd = await fetch(`${RD_URL}?api_key=${encodeURIComponent(chave)}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(montarEvento(lead)),
-      signal: AbortSignal.timeout(TEMPO_LIMITE_RD),
-    });
-    const ms = Date.now() - inicio;
-    // Descarta o corpo da RD sem ler nem logar (pode ecoar dados do contato).
-    try { await rd.body?.cancel(); } catch (_) { /* nada */ }
+  // RD e Meta em paralelo. A resposta é só a da RD; a Meta nunca rejeita e acaba em até 3 s.
+  // Espera as duas antes de responder: depois da resposta a Vercel pode congelar a função.
+  const [rdOk] = await Promise.all([
+    enviarRd(lead, chave),
+    enviarMeta(lead, camposMeta(body), req).catch(() => {}),
+  ]);
 
-    if (!rd.ok) {
-      console.error('[lead] rd erro', { status: rd.status, ms });
-      res.status(502).json({ error: 'upstream error' });
-      return;
-    }
-
-    console.log('[lead] rd ok', { status: rd.status, ms });
-    res.status(200).json({ success: true });
-  } catch (err) {
-    const codigo = err && err.name === 'TimeoutError' ? 'timeout' : 'fetch_failed';
-    console.error('[lead] rd falhou', { codigo, ms: Date.now() - inicio });
+  if (!rdOk) {
     res.status(502).json({ error: 'upstream error' });
+    return;
   }
+  res.status(200).json({ success: true });
 }
