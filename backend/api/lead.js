@@ -25,6 +25,7 @@ const RD_URL = 'https://api.rd.services/platform/conversions';
 const CONVERSAO = 'black-zero7-trading-2026';
 const LIMITE_CORPO = 4096;        // bytes
 const TEMPO_LIMITE_RD = 8000;     // ms
+const TEMPO_LIMITE_RD_REENVIO = 5000; // ms (só no reenvio sem telefone; o total fica abaixo dos 15 s da página)
 
 const META_GRAPH_URL = 'https://graph.facebook.com/v26.0';
 const TEMPO_LIMITE_META = 3000;   // ms
@@ -127,15 +128,27 @@ function validar(body) {
   return { nome: n, email: e, telefone: tel, utm };
 }
 
-function montarEvento({ nome, email, telefone, utm }) {
+// A RD recusa (400) telefone sem código do país. Formato que ela aceita: "+" e só dígitos (E.164).
+// Sem "+": 10 ou 11 dígitos são DDD + número do Brasil (ganham +55); 12 ou 13 começando com 55 já trazem o país.
+function telefoneRd(telefone) {
+  if (telefone.startsWith('+')) return telefone;
+  const d = telefone.replace(/^0+/, '');
+  if (d.length === 10 || d.length === 11) return '+55' + d;
+  return '+' + d;
+}
+
+function montarEvento({ nome, email, telefone, utm }, { semTelefone = false } = {}) {
   const payload = {
     conversion_identifier: CONVERSAO,
     name: nome,
     email,
-    // o mesmo número nos dois campos da RD ("Celular" e "Telefone")
-    mobile_phone: telefone,
-    phone: telefone,
   };
+  if (!semTelefone) {
+    // o mesmo número nos dois campos da RD ("Celular" e "Telefone")
+    const tel = telefoneRd(telefone);
+    payload.mobile_phone = tel;
+    payload.phone = tel;
+  }
   // UTM vazia não vai. utm_content não tem campo na API de conversões.
   if (utm.utm_source) payload.traffic_source = utm.utm_source;
   if (utm.utm_medium) payload.traffic_medium = utm.utm_medium;
@@ -266,30 +279,47 @@ async function enviarMeta(lead, meta, req) {
    RD: devolve true/false; loga só status, duração ou código
    ----------------------------------------------------------------------- */
 
-async function enviarRd(lead, chave) {
-  const inicio = Date.now();
+// Um POST à RD. Devolve o status HTTP, ou o código do erro de rede. Nunca lê nem loga o corpo da resposta.
+async function postRd(evento, chave, tempoLimite) {
   try {
     const rd = await fetch(`${RD_URL}?api_key=${encodeURIComponent(chave)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(montarEvento(lead)),
-      signal: AbortSignal.timeout(TEMPO_LIMITE_RD),
+      body: JSON.stringify(evento),
+      signal: AbortSignal.timeout(tempoLimite),
     });
-    const ms = Date.now() - inicio;
     // Descarta o corpo da RD sem ler nem logar (pode ecoar dados do contato).
     try { await rd.body?.cancel(); } catch (_) { /* nada */ }
-
-    if (!rd.ok) {
-      console.error('[lead] rd erro', { status: rd.status, ms });
-      return false;
-    }
-    console.log('[lead] rd ok', { status: rd.status, ms });
-    return true;
+    return { status: rd.status, ok: rd.ok };
   } catch (err) {
-    const codigo = err && err.name === 'TimeoutError' ? 'timeout' : 'fetch_failed';
-    console.error('[lead] rd falhou', { codigo, ms: Date.now() - inicio });
+    return { codigo: err && err.name === 'TimeoutError' ? 'timeout' : 'fetch_failed', ok: false };
+  }
+}
+
+async function enviarRd(lead, chave) {
+  const inicio = Date.now();
+  const r = await postRd(montarEvento(lead), chave, TEMPO_LIMITE_RD);
+  if (r.ok) {
+    console.log('[lead] rd ok', { status: r.status, ms: Date.now() - inicio });
+    return true;
+  }
+  if (r.codigo) {
+    console.error('[lead] rd falhou', { codigo: r.codigo, ms: Date.now() - inicio });
     return false;
   }
+  console.error('[lead] rd erro', { status: r.status, ms: Date.now() - inicio });
+
+  // 400 = a RD recusou algum campo. O lead não pode se perder: reenvia uma vez sem telefone
+  // (nome, e-mail e UTMs ficam; o telefone continua no CRM da 4Selet).
+  if (r.status !== 400) return false;
+  const inicio2 = Date.now();
+  const r2 = await postRd(montarEvento(lead, { semTelefone: true }), chave, TEMPO_LIMITE_RD_REENVIO);
+  if (r2.ok) {
+    console.warn('[lead] rd ok sem telefone', { status: r2.status, ms: Date.now() - inicio2 });
+    return true;
+  }
+  console.error('[lead] rd erro sem telefone', r2.codigo ? { codigo: r2.codigo, ms: Date.now() - inicio2 } : { status: r2.status, ms: Date.now() - inicio2 });
+  return false;
 }
 
 /* -----------------------------------------------------------------------
