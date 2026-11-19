@@ -1,0 +1,14 @@
+{
+  "name": "zero7-internacional-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scripts locais de verificação e captura. NÃO entra no deploy (ver .gitignore e .htaccess).",
+  "scripts": {
+    "check-tarja": "node check-tarja.mjs",
+    "screenshots": "node screenshots.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.49.0"
+  }
+}

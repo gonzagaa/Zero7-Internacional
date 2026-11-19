@@ -42,8 +42,12 @@
     "copiado": "¡Copiado!",
     "copiado_sr": "Cupón BLACK07 copiado",
     "cta": "Ver planes",
-    "card_selo": "Pre-Black · -{p}%",
-    "seg_selo_aria": "{p}% de descuento"
+    "card_label": "Pre-Black",
+    "seg_selo_aria": "{p}% de descuento",
+    "unit_h": "horas",
+    "unit_m": "min",
+    "unit_s": "seg",
+    "aplique": "Aplícalo en el checkout"
   },
   "hero": {
     "titulo_inicio": "Financiamos traders con cuentas de hasta",

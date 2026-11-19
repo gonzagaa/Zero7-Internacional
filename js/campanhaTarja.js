@@ -79,7 +79,8 @@
 
   /* ---------- conta de 0 até C.pct.ate uma vez (85 nesta campanha) ---------- */
   function contar() {
-    var els = $$('.zbk .zbk__count');               // o número + a cópia do brilho
+    // Pega os números da tarja E da faixa (o selo + a cópia do brilho em cada).
+    var els = $$('.zbk .zbk__count, .zbk-faixa .zbk__count');
     if (!els.length || reduz) return;
     var alvo = C.pct.ate;
     var w = els.map(function (el) { return el.getBoundingClientRect().width; });
@@ -134,7 +135,10 @@
     $$('.zbk, .zbk-faixa').forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- eclipse: centralizado sob o número por transform (não é layout -> sem CLS) ---------- */
+  /* ---------- eclipse: posicionado por transform (não é layout -> sem CLS)
+       - Tarja: y = bottom do número (horizonte que nasce abaixo do texto).
+       - Faixa: y = centro vertical do número (backdrop coeso dentro
+         de ~140px de altura, sem corte seco em nenhuma borda). ---------- */
   var ecRaf = null;
   function posicionarEclipses() {
     $$('.zbk__eclipse').forEach(function (ec) {
@@ -142,7 +146,10 @@
       if (!num || !num.getClientRects().length) return;
       var r = num.getBoundingClientRect(), c = box.getBoundingClientRect();
       ec.style.setProperty('--ecl-x', Math.round(r.left + r.width / 2 - (c.left + c.width / 2)) + 'px');
-      ec.style.setProperty('--ecl-y', Math.round(r.bottom - c.top) + 'px');
+      var y = ec.closest('.zbk-faixa')
+        ? Math.round(r.top + r.height / 2 - c.top)
+        : Math.round(r.bottom - c.top);
+      ec.style.setProperty('--ecl-y', y + 'px');
       ec.classList.add('is-pos');
     });
   }

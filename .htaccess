@@ -20,3 +20,7 @@
 # REGULAMENTO OFF (temporário): /regulamento/ responde 404 (arquivos mantidos no repositório).
 # Para voltar ao ar: apagar este bloco.
 RedirectMatch 404 /regulamento(/.*)?$
+
+# Scripts de desenvolvimento (verificador de tarja, capturas Playwright) nunca
+# são servidos em produção, mesmo se o deploy subir a pasta junto.
+RedirectMatch 404 /tools(/.*)?$

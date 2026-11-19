@@ -1,0 +1,15 @@
+# Dev-only — nada aqui vai para o deploy (o site é servido direto pelo Apache
+# a partir dos arquivos do repositório; tools/ e backend/ ficam fora da raiz
+# servida ou são hospedados em outro lugar).
+
+# Node / Playwright (local, só para rodar scripts e capturas)
+node_modules/
+tools/node_modules/
+tools/package-lock.json
+tools/.cache/
+tools/screenshots-out/
+
+# Editores
+.DS_Store
+Thumbs.db
+.vscode/*.log

@@ -27,6 +27,12 @@ html.camp-on {
   --tz-l1: 30px;
   --tz-l2: 68px;
   --altura-tarja: calc(var(--tz-l1) + var(--tz-l2));
+  /* Token único do gradiente dourado — usado em qualquer peça da
+     campanha que pede "o mesmo ouro da tarja" (número 85% da tarja,
+     número da faixa, texto do selo PRÉ-BLACK · 85%). Trocar as
+     CORES: edite js/campanha.js > C.cores (--camp-ouro-1/2/3).
+     Trocar os STOPS: edite aqui.                                    */
+  --camp-grad-ouro: linear-gradient(100deg, var(--camp-ouro-1), var(--camp-ouro-2) 46%, var(--camp-ouro-3));
 }
 @media (max-width: 767.98px) {
   html.camp-on { --tz-l1: 28px; --tz-l2: 100px; }
@@ -454,94 +460,396 @@ html.camp-on {
 /* =====================================================================
    FAIXA da seção de planos — mini-tarja (linha fina + oferta)
    ===================================================================== */
+/* ---------- raiz ---------- */
 .camp-on .zbk-faixa {
   --ink: rgba(255, 255, 255, 0.92);
+  --ink-2: rgba(255, 255, 255, 0.72);
+  --faixa-r: 1.8rem;
   display: block;
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  width: min(100%, 96rem);
+  width: min(100%, 110rem);
   margin: 0 auto 2.4rem;
-  border-radius: 1.6rem;
-  background: #000;
-  box-shadow: 0 1.6rem 4rem -2rem rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(241, 195, 106, 0.16);
+  border-radius: var(--faixa-r);
+  min-height: 14rem;                                   /* altura reservada — sem CLS */
+  background:
+    radial-gradient(120% 140% at 15% 50%, rgba(23, 20, 16, 0.95), #060604 65%, #050404 100%);
+  box-shadow: 0 2.4rem 5.6rem -2.4rem rgba(0, 0, 0, 0.7);
   color: var(--ink);
   font-family: var(--tts), system-ui, sans-serif;
   text-align: left;
 }
 .zbk-faixa .zbk__grao { border-radius: inherit; }
-.zbk-faixa__in {
+
+/* Borda em gradiente (ouro translúcido → transparente → menta translúcida).
+   Desenhada por um ::before em cima, sem adicionar peso ao layout.          */
+.camp-on .zbk-faixa::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(241, 195, 106, 0.7) 0%,
+    rgba(241, 195, 106, 0.12) 28%,
+    rgba(255, 255, 255, 0.02) 55%,
+    rgba(63, 227, 166, 0.35) 95%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Halo âmbar suave "respirando" atrás do número (contido pela faixa) */
+.camp-on .zbk-faixa__halo {
+  position: absolute;
+  left: 18%;
+  top: 50%;
+  width: 24rem;
+  height: 24rem;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(233, 166, 64, 0.22), transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+  animation: zbkFaixaHalo 5s ease-in-out infinite alternate;
+  will-change: opacity;
+}
+@keyframes zbkFaixaHalo { from { opacity: 0.55; } to { opacity: 1; } }
+
+/* ---------- grid: 3 colunas × 2 linhas (selo em cima do oferta) ---------- */
+.zbk-faixa__grid {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 0.9fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 2.8rem;
+  row-gap: 0.6rem;
+  align-items: center;
+  padding: 1.8rem 2.6rem;
+  min-height: 14rem;
+}
+.zbk-faixa__selo   { grid-column: 1; grid-row: 1; align-self: end; justify-self: start; }
+.zbk-faixa__oferta { grid-column: 1; grid-row: 2; align-self: start; }
+.zbk-faixa__clock  { grid-column: 2; grid-row: 1 / span 2; }
+.zbk-faixa__acao   { grid-column: 3; grid-row: 1 / span 2; }
+
+/* ============================================================
+   ECLIPSE da faixa — aro dourado atrás do número.
+   NÃO é um disco preto: o centro é totalmente transparente (nada
+   fica coberto), e a parte de baixo DISSOLVE num mask antes de
+   encostar na borda da caixa. Sem rotação (é só o aro).
+   ============================================================ */
+.zbk-faixa__oferta {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem 2.4rem 1.6rem;
+  gap: 0.6rem;
 }
-.zbk-faixa__topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.6rem;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  white-space: nowrap;
+.zbk-faixa__oferta .zbk__eclipse {
+  z-index: -1;                            /* abaixo de TODOS os filhos do grid */
+  pointer-events: none;
 }
-.zbk-faixa .zbk__selo { font-size: 1.05rem; }
-.zbk-faixa__tempo { display: inline-flex; align-items: center; gap: 0.8rem; }
-.zbk-faixa__tl { font-size: 1.15rem; color: rgba(255, 255, 255, 0.7); }
-.zbk-faixa .zbk__timer { font-size: 1.35rem; }
-.zbk-faixa__txt {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem 1.6rem;
-  font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.86);
-}
-.zbk-faixa__p { white-space: nowrap; }
-.zbk-faixa__p + .zbk-faixa__p::before {
-  content: "";
-  display: inline-block;
-  vertical-align: middle;
-  width: 4px; height: 4px;
-  margin: 0 1.6rem 0 0;
+.zbk-faixa__oferta .zbk__eclipse i {
+  position: absolute;
+  left: calc(var(--d) / -2);
+  top: 0;
+  width: var(--d); height: var(--d);
   border-radius: 50%;
-  background: rgba(241, 195, 106, 0.65);
+  will-change: opacity;
+}
+.zbk-faixa .zbk__disco {
+  --d: 18rem;
+  top: calc(var(--d) / -2);
+  /* Anel fino dourado (centro transparente — não cobre texto) */
+  background: radial-gradient(closest-side,
+    transparent 72%,
+    rgba(255, 215, 150, 0.35) 85%,
+    rgba(233, 166, 64, 0.72) 90%,
+    rgba(233, 166, 64, 0.22) 96%,
+    transparent 100%);
+  /* Fade do hemisfério inferior → dissolve antes da borda da faixa */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,0.65) 72%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 52%, rgba(0,0,0,0.65) 72%, transparent 100%);
+  animation: none;                         /* sem rotação */
+  opacity: 0.9;
+}
+.zbk-faixa .zbk__coroa {
+  --d: 26rem;
+  top: calc(var(--d) / -2);
+  background: radial-gradient(closest-side,
+    rgba(233, 166, 64, 0.22) 0%,
+    rgba(233, 166, 64, 0.06) 48%,
+    transparent 72%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+  animation: zbkCoroa 6s ease-in-out infinite alternate;
+}
+.zbk-faixa .zbk__reflexo { display: none; }
+
+.zbk-faixa__selo { font-size: 1.05rem; }
+.zbk-faixa__mega {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin: 0;
+  line-height: 1;
 }
 .zbk-faixa__ate {
-  font-size: 1.05rem;
+  margin-top: 0.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--camp-ouro-1);
 }
 .zbk-faixa__num { position: relative; display: inline-block; }
 .zbk-faixa__gold {
+  position: relative;
   display: inline-block;
-  min-width: 5.3em;          /* idem: troca de fonte sem deslocar a linha */
+  min-width: 7em;                                      /* reserva de "85% OFF" (sem CLS) */
+  padding: 0.2rem 0.3rem 0.3rem 0;
   font-family: var(--ncs), var(--tts), sans-serif;
-  font-size: 2.6rem;
+  font-size: 5.2rem;                                   /* ~52px no desktop padrão */
   font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
   background: linear-gradient(100deg, var(--camp-ouro-1), var(--camp-ouro-2) 46%, var(--camp-ouro-3));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  filter: drop-shadow(0 0 20px rgba(233, 166, 64, 0.25));
 }
 .zbk-faixa__gold b { font-weight: inherit; }
-.zbk-faixa__todos { color: var(--camp-ouro-1); font-weight: 600; }
-.zbk-faixa .zbk__disco { --d: 60rem; top: 0.6rem; }
-.zbk-faixa .zbk__coroa { --d: 66rem; top: -2.4rem; }
-.zbk-faixa .zbk__reflexo { display: none; }
+.zbk-faixa__gold .zbk__count { display: inline-block; text-align: right; }
+/* Shimmer preso às letras (mesma mecânica da tarja) */
+.zbk-faixa__shine {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(100deg, transparent 38%, rgba(0, 0, 0, 0.9) 50%, transparent 62%);
+          mask-image: linear-gradient(100deg, transparent 38%, rgba(0, 0, 0, 0.9) 50%, transparent 62%);
+  transform: translateX(-100%);
+  animation: zbkJanela 5s cubic-bezier(0.45, 0, 0.3, 1) 1.8s infinite;
+}
+.zbk-faixa__shine > span {
+  display: block;
+  padding: 2px 4px 3px 0;
+  white-space: nowrap;
+  color: rgba(255, 244, 214, 0.9);
+  transform: translateX(100%);
+  animation: zbkCopia 5s cubic-bezier(0.45, 0, 0.3, 1) 1.8s infinite;
+}
 
+.zbk-faixa__todos {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ============================================================
+   ZONA CENTRO — timer painel (HH : MM : SS + rótulos)
+   ============================================================ */
+.zbk-faixa__clock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+}
+.zbk-faixa__clock-label {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.58);
+}
+.zbk-faixa .zbk__timer.zbk-faixa__timer {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  font-size: 1rem;                                    /* reset do tamanho antigo */
+}
+.zbk-faixa__cell {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 5.6rem;
+  padding: 0.55rem 0.8rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+.zbk-faixa__cell-num {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--ncs), var(--tts), sans-serif;
+  font-size: 3rem;                                    /* ~30px tabular */
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.zbk-faixa__cell-num .zbk__d {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+}
+.zbk-faixa__cell-u {
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+.zbk-faixa__cell-sep {
+  align-self: center;
+  margin-top: -1.3rem;                                /* compensa altura do rótulo */
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.3);
+}
+/* Última hora: dígitos âmbar (como na tarja). .is-final é posto pelo JS. */
+.zbk-faixa .zbk__timer.is-final .zbk-faixa__cell-num,
+.zbk-faixa .zbk__timer.is-final .zbk-faixa__cell-sep {
+  color: var(--camp-ouro-2);
+}
+/* CLS: labels/unidades visíveis desde o 1º paint; só os dígitos ficam
+   ocultos até o JS pintar o 1º tick (anula o opacity: 0 herdado). */
+.zbk-faixa .zbk__timer:not(.is-pronto) { opacity: 1; }
+.zbk-faixa .zbk__timer:not(.is-pronto) .zbk-faixa__cell-num,
+.zbk-faixa .zbk__timer:not(.is-pronto) .zbk-faixa__cell-sep { visibility: hidden; }
+
+/* ============================================================
+   ZONA DIREITA — ação (cupom + rodapé "Aplique no checkout")
+   ============================================================ */
+.zbk-faixa__acao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+.zbk-faixa__cupom { height: 4.6rem; padding-left: 1.4rem; }
+.zbk-faixa__cupom .zbk__code { font-size: 1.55rem; }
+.zbk-faixa__cupom .zbk__stub { width: 4rem; }
+.zbk-faixa__apply {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ---------- larguras intermediárias ---------- */
+@media (max-width: 1279.98px) {
+  .zbk-faixa__grid { column-gap: 2rem; padding: 1.5rem 2rem; }
+  .zbk-faixa__gold { font-size: 4.4rem; }
+  .zbk-faixa__cell-num { font-size: 2.6rem; }
+  .zbk-faixa__cell { min-width: 5rem; }
+  .zbk-faixa__cell-sep { font-size: 2.2rem; }
+}
+@media (max-width: 1023.98px) {
+  .zbk-faixa__grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    column-gap: 2rem; row-gap: 1.2rem;
+  }
+  .zbk-faixa__clock  { grid-column: 2; grid-row: 1 / span 2; }
+  .zbk-faixa__acao   { grid-column: 1 / -1; grid-row: 3; flex-direction: row; justify-content: center; gap: 1.2rem; align-items: center; }
+  .zbk-faixa__apply  { align-self: center; }
+  .zbk-faixa__gold   { font-size: 4rem; }
+}
+
+/* ============================================================
+   CELULAR (<768) — layout de 3 linhas, altura-alvo ~170px.
+   Linha 1: selo | timer compacto inline (HH:MM:SS tabular 16px,
+            sem caixinhas, sem rótulos horas/min/seg).
+   Linha 2: "ATÉ 85% OFF" (~34px) + "em todos os planos" abaixo.
+   Linha 3: cupom BLACK07 largura toda + "Aplique" compacto.
+   Eclipse removido (fica só o halo suave do .zbk-faixa__halo).
+   ============================================================ */
 @media (max-width: 767.98px) {
-  .zbk-faixa__in { padding: 0.9rem 1.6rem 1.4rem; }
-  .zbk-faixa__tl { display: none; }
-  .zbk-faixa__txt { flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
-  .zbk-faixa__p + .zbk-faixa__p::before { display: none; }
-  .zbk-faixa .zbk__disco { top: 3.6rem; }          /* arco abaixo da linha única */
-  .zbk-faixa .zbk__coroa { top: 0.6rem; }
+  .camp-on .zbk-faixa {
+    margin-bottom: 1.6rem;
+    border-radius: 1.4rem;
+    min-height: 0;
+  }
+  .zbk-faixa__grid {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    column-gap: 1rem; row-gap: 0.7rem;
+    padding: 1rem 1.2rem 1.1rem;
+    min-height: 0;
+    align-items: center;
+  }
+  .zbk-faixa__selo   { grid-column: 1; grid-row: 1; align-self: center; justify-self: start; font-size: 0.95rem; }
+  .zbk-faixa__clock  { grid-column: 2; grid-row: 1; flex-direction: row; align-items: center; gap: 0; align-self: center; }
+  .zbk-faixa__oferta { grid-column: 1 / -1; grid-row: 2; align-items: center; text-align: center; gap: 0.25rem; }
+  .zbk-faixa__acao   { grid-column: 1 / -1; grid-row: 3; flex-direction: row; justify-content: stretch; align-items: center; gap: 0; }
+
+  /* Esconde o rótulo "A oferta termina em" no celular; o timer ao
+     lado do selo já se explica. Mantém o aria-label do timer. */
+  .zbk-faixa__clock-label { display: none; }
+
+  /* Timer compacto inline: HH:MM:SS tabular, sem células, sem rótulos. */
+  .zbk-faixa .zbk__timer.zbk-faixa__timer {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    font-size: 1rem;
+  }
+  .zbk-faixa__cell {
+    flex: 0 0 auto;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    flex-direction: row;
+    gap: 0;
+  }
+  .zbk-faixa__cell-num {
+    font-size: 1.6rem;                                /* ~16px tabular */
+    letter-spacing: 0.02em;
+  }
+  .zbk-faixa__cell-u { display: none; }
+  .zbk-faixa__cell-sep {
+    margin: 0 0.25rem;
+    font-size: 1.6rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* Número + subtítulo centralizado em uma linha vertical compacta. */
+  .zbk-faixa__mega   { justify-content: center; align-items: baseline; gap: 0.5rem; }
+  .zbk-faixa__ate    { margin-top: 0.15rem; font-size: 0.85rem; letter-spacing: 0.18em; }
+  .zbk-faixa__gold   { font-size: 3.4rem; min-width: 6.4em; }
+  .zbk-faixa__todos  { font-size: 1.05rem; }
+
+  /* Eclipse sai do celular — fica só o halo suave do .zbk-faixa__halo. */
+  .zbk-faixa__oferta .zbk__eclipse { display: none; }
+  .camp-on .zbk-faixa__halo { left: 50%; top: 50%; width: 18rem; height: 18rem; opacity: 0.6; }
+
+  /* Cupom largura toda; "Aplique no checkout" vira hint à esquerda do código.
+     Sem "Aplique" separado embaixo. */
+  .zbk-faixa__cupom { flex: 1 1 auto; height: 4rem; padding-left: 1.1rem; }
+  .zbk-faixa__cupom .zbk__code { font-size: 1.4rem; }
+  .zbk-faixa__cupom .zbk__cupom-rot { display: none; }    /* economiza largura */
+  .zbk-faixa__cupom .zbk__stub { width: 3.4rem; }
+  .zbk-faixa__apply { display: none; }
+}
+@media (max-width: 359.98px) {
+  .zbk-faixa__grid { padding: 0.9rem 1rem 1rem; }
+  .zbk-faixa__gold { font-size: 3rem; }
+  .zbk-faixa__cell-num { font-size: 1.4rem; }
+  .zbk-faixa__cell-sep { font-size: 1.4rem; }
+  .zbk-faixa__cupom .zbk__code { font-size: 1.25rem; }
+  /* A regra global (<360) esconde o selo-txt e mostra o selo-curto.
+     Na faixa não existe selo-curto, então mantemos o texto completo. */
+  .zbk-faixa__selo .zbk__selo-txt { display: inline; font-size: 0.75rem; letter-spacing: 0.1em; }
 }
 
 /* =====================================================================
@@ -607,9 +915,16 @@ html.camp-on {
   mask-composite: exclude;
   pointer-events: none;
 }
+/* Selo do card — "PRÉ-BLACK • 85%" / "PRE-BLACK • 80%".
+   80% (contorno): fundo translúcido, borda dourada fina, texto em ouro.
+   85% (.is-dest): fundo com gradiente dourado (--camp-grad-ouro), texto
+   e bolinha em quase-preto (peso 800), borda em dourado claro só para
+   acabamento e glow âmbar sutil para destacar sobre o card escuro.
+   O "·" é uma bolinha real (span), não o caractere (que desalinha). */
 .camp-on .camp-card-selo.is-on {
   display: inline-flex;
   align-items: center;
+  gap: 0.55rem;
   padding: 0.55rem 1.3rem;
   border-radius: 999px;
   border: 1px solid rgba(241, 195, 106, 0.55);
@@ -621,12 +936,35 @@ html.camp-on {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
+  transition: background 220ms ease, color 220ms ease,
+              border-color 220ms ease, box-shadow 220ms ease;
 }
+.camp-on .camp-card-selo__label,
+.camp-on .camp-card-selo__p {
+  display: inline-block;
+  line-height: 1;
+}
+/* Bolinha no lugar do "·": círculo em currentColor na x-height média. */
+.camp-on .camp-card-selo__dot {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+  translate: 0 -0.04em;
+  transition: background 220ms ease;
+}
+/* Topo da campanha (85%): fundo em gradiente dourado + texto quase preto. */
 .camp-on .camp-card-selo.is-dest {
-  border-color: transparent;
-  background: linear-gradient(135deg, var(--camp-ouro-1), var(--camp-ouro-2) 55%, var(--camp-ouro-3));
-  color: #241604;
-  box-shadow: 0 0.6rem 2rem -0.6rem rgba(233, 166, 64, 0.6);
+  background: var(--camp-grad-ouro);
+  border-color: rgba(255, 230, 180, 0.7);
+  color: #0b0b0b;                                   /* herdado por label/número */
+  box-shadow: 0 0 12px rgba(241, 195, 106, 0.25);   /* glow âmbar sutil */
+  font-weight: 800;
+}
+.camp-on .camp-card-selo.is-dest .camp-card-selo__dot {
+  background: #0b0b0b;
 }
 .camp-on .plan-card.camp-card-dest .plan-card__price {
   background: linear-gradient(100deg, var(--camp-ouro-1), var(--camp-ouro-2) 50%, var(--camp-ouro-3));
@@ -648,7 +986,9 @@ html.camp-on {
   .zbk *, .zbk *::before, .zbk *::after,
   .zbk-faixa *, .zbk-faixa *::before, .zbk-faixa *::after,
   .camp-on .seg__option.camp-dest::after { animation: none !important; }
-  .zbk__brilho { display: none; }
+  .zbk__brilho,
+  .zbk-faixa__shine,
+  .zbk-faixa__halo { display: none; }
   .zbk__coroa { opacity: 0.8; }
   .zbk__eclipse.is-pos { transition: none; }
   .camp-on .seg__option.camp-dest::after { opacity: 0.8; }

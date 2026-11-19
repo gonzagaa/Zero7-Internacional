@@ -577,10 +577,11 @@
   /* ============================================================
      Campanha (js/campanha.js) — selos do card + destaque opcional.
      Os selos mostram SEMPRE o desconto real calculado do planos.json.
-     O bloco "destaque" (seletor pré-selecionado, anel pulsante, selo
-     flutuante no capital e borda dourada do card) só liga quando
-     CAMP.destaque.selecionarPorPadrao === true — fora disso tudo fica
-     inerte, pronto para a próxima campanha.
+     Duas flags independentes no objeto de campanha:
+       - selecionarPorPadrao: abre a seção no capital (e modo, se
+         definido) alvo + CTA da tarja força esse capital em #plan.
+       - destacarVisualmente: liga o anel âmbar, selo "-XX%" flutuante
+         e o card dourado do capital destacado.
      Sem campanha ativa, nada disto roda e nada é criado.
      ============================================================ */
   const CAMP = (window.Z7_CAMPANHA && window.Z7_CAMPANHA.ativa) ? window.Z7_CAMPANHA : null;
@@ -595,20 +596,32 @@
 
   // antes do 1º render e antes de medir o blob:
   //   - sempre cria o selo "PRÉ-BLACK · -XX%" no cabeçalho do card
-  //   - se CAMP.destaque.selecionarPorPadrao: também pré-seleciona
-  //     modo/capital, cria os selos flutuantes no seletor e a borda do card
+  //   - se selecionarPorPadrao: troca de modo/capital iniciais
+  //   - se destacarVisualmente: cria selos flutuantes no seletor
+  //     + borda dourada em volta do card do capital destacado
   function prepararCampanha() {
     if (!CAMP) return;
-    const destLigado = !!CAMP.destaque.selecionarPorPadrao;
+    const preSelecao = !!CAMP.destaque.selecionarPorPadrao;
+    const visual = !!CAMP.destaque.destacarVisualmente;
 
-    if (destLigado) {
-      // aba pré-selecionada durante a campanha (CAMP.destaque.modo; ex.: Liberty)
+    if (preSelecao) {
+      // aba pré-selecionada só se o objeto definir um modo (null = mantém
+      // o modo padrão do HTML, que é Activation Challenge)
       const modoCamp = CAMP.destaque.modo;
       const btnModo = modoCamp && refs.botoesModo.find((b) => b.dataset.mode === modoCamp);
       if (btnModo) {
         atualizarSelecionado(refs.botoesModo, btnModo, 'is-active');
         state.modo = modoCamp;
       }
+      // capital pré-selecionado
+      const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
+      if (dest && capitalCompativelComModo(state.modo, dest.dataset.capital)) {
+        atualizarSelecionado(refs.botoesCapital, dest);
+        state.capital = dest.dataset.capital;
+      }
+    }
+
+    if (visual) {
       // selo + anel em todo botão de capital (aparecem só onde a aba atual
       // atinge o desconto máximo da campanha)
       refs.campSeg = refs.botoesCapital.map((btn) => {
@@ -620,11 +633,6 @@
         btn.append(selo, sr);
         return { btn, selo, sr };
       });
-      const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
-      if (dest && capitalCompativelComModo(state.modo, dest.dataset.capital)) {
-        atualizarSelecionado(refs.botoesCapital, dest);
-        state.capital = dest.dataset.capital;
-      }
       // borda dourada em volta do card do capital destacado
       const borda = document.createElement('i');
       borda.className = 'camp-card-borda';
@@ -632,7 +640,7 @@
       refs.card.appendChild(borda);
     }
 
-    // selo "PRÉ-BLACK · -XX%" vale para TODOS os cards (independente do destaque)
+    // selo "PRÉ-BLACK · -XX%" vale para TODOS os cards (independente do destaque visual)
     const header = refs.cardBadge && refs.cardBadge.parentElement;
     if (header) {
       refs.campCardSelo = document.createElement('span');
@@ -643,12 +651,12 @@
 
   function renderCampanha() {
     if (!CAMP) return;
-    const destLigado = !!CAMP.destaque.selecionarPorPadrao;
+    const visual = !!CAMP.destaque.destacarVisualmente;
     const naCamp = CAMP.modos.includes(state.modo);
 
-    // Selos flutuantes no seletor de capital: só quando o bloco de destaque
-    // está ligado (refs.campSeg só foi criado neste caso)
-    if (destLigado) {
+    // Selos flutuantes no seletor de capital + card dourado: só com o
+    // destaque visual ligado (refs.campSeg só foi criado neste caso).
+    if (visual) {
       (refs.campSeg || []).forEach(({ btn, selo, sr }) => {
         const cap = btn.dataset.capital;
         const pc = naCamp ? descontoReal(cap, state.modo) : null;
@@ -660,15 +668,42 @@
     }
 
     const p = naCamp ? descontoReal(state.capital, state.modo) : null;
-    // card dourado: só com o bloco de destaque ligado — e mesmo assim só
-    // quando o card atual atinge o percentual máximo da campanha
-    const dest = destLigado && !!p && p >= CAMP.pct.ate;
-    refs.card.classList.toggle('camp-card-dest', dest);
+    // topo da campanha = este card atingiu o % máximo (ex.: 85 na Pré-Black).
+    // Dispara o texto do selo com gradiente dourado, independente do destaque
+    // visual geral (a bolinha acompanha a cor; o selo de 80% fica inalterado).
+    const topo = !!p && p >= CAMP.pct.ate;
+    // card inteiro dourado — SÓ com destaque visual + topo
+    refs.card.classList.toggle('camp-card-dest', visual && topo);
     if (refs.campCardSelo) {
-      refs.campCardSelo.textContent = p ? tr('camp.card_selo').replace('{p}', p) : '';
-      refs.campCardSelo.classList.toggle('is-on', !!p);
-      refs.campCardSelo.classList.toggle('is-dest', dest);
+      pintarCardSelo(refs.campCardSelo, p, topo);
     }
+  }
+
+  // Monta "PRÉ-BLACK · 85%" no selo do card com uma bolinha real
+  // (span, em currentColor) e aria-label dedicado ("85% de desconto"
+  // / "85% off" / "85% de descuento") para o leitor de tela.
+  function pintarCardSelo(el, pct, topo) {
+    el.classList.toggle('is-on', !!pct);
+    el.classList.toggle('is-dest', !!topo);
+    el.innerHTML = '';
+    if (!pct) { el.removeAttribute('aria-label'); return; }
+
+    const label = document.createElement('span');
+    label.className = 'camp-card-selo__label';
+    label.setAttribute('aria-hidden', 'true');
+    label.textContent = tr('camp.card_label');
+
+    const dot = document.createElement('span');
+    dot.className = 'camp-card-selo__dot';
+    dot.setAttribute('aria-hidden', 'true');
+
+    const num = document.createElement('span');
+    num.className = 'camp-card-selo__p';
+    num.setAttribute('aria-hidden', 'true');
+    num.textContent = `${pct}%`;
+
+    el.append(label, dot, num);
+    el.setAttribute('aria-label', String(tr('camp.seg_selo_aria')).replace('{p}', pct));
   }
 
   function renderTudo({ animar = true } = {}) {

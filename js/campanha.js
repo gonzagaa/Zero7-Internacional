@@ -25,15 +25,21 @@
     // calculam o desconto real de cada plano a partir do data/planos.json.
     pct: { ate: 85 },
 
-    // estrutura do "plano destacado" preservada para campanhas futuras.
-    // Enquanto `selecionarPorPadrao` for false: a seção abre no padrão
-    // (Activation Challenge · 25k) e não existe selo flutuante, anel
-    // âmbar, borda dourada ou CTA forçando o seletor. Basta religar a
-    // flag (e eventualmente ajustar capital/modo) na próxima campanha.
+    // Pré-seleção e destaque visual do plano são flags independentes:
+    //   - selecionarPorPadrao: abre a seção já no capital (e modo, se
+    //     definido) alvo, e o CTA "Ver planos" da tarja garante esse
+    //     capital ao chegar em #plan.
+    //   - destacarVisualmente: liga o anel âmbar pulsante, o selo "-XX%"
+    //     flutuante e a borda/card dourado do capital destacado.
+    // Na Pré-Black 85% os Challenge empatam no desconto, então o destaque
+    // visual sugeriria uma vantagem que não existe: fica off. A
+    // pré-seleção segue (nova campanha, capital volume). Modo = null:
+    // abre na aba padrão (Activation Challenge).
     destaque: {
       capital: '50k',
-      selecionarPorPadrao: false,
-      modo: 'liberty',                    // null = abre na aba padrão (Activation Challenge)
+      modo: null,
+      selecionarPorPadrao: true,
+      destacarVisualmente: false,
     },
 
     // modos que exibem o selo "PRÉ-BLACK · -XX%" no card

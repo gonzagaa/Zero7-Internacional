@@ -42,8 +42,12 @@
     "copiado": "Copied!",
     "copiado_sr": "Coupon BLACK07 copied",
     "cta": "See plans",
-    "card_selo": "Pre-Black · -{p}%",
-    "seg_selo_aria": "{p}% off"
+    "card_label": "Pre-Black",
+    "seg_selo_aria": "{p}% off",
+    "unit_h": "hours",
+    "unit_m": "min",
+    "unit_s": "sec",
+    "aplique": "Apply at checkout"
   },
   "hero": {
     "titulo_inicio": "We fund traders with accounts up to",

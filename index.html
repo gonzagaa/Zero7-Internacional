@@ -100,9 +100,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        copy: lang/*.json > "camp". Só aparece com <html class="camp-on"> (ligado por js/campanha.js
        antes do 1º paint). Conferir as duas cópias: node tools/check-tarja.mjs
        Classes tarja-topo* mantidas como ganchos (offset do FAQ em script/sectionFaq.js e tracking). -->
-  <aside class="zbk tarja-topo" role="region" aria-label="Pré-Black Friday" data-i18n-attr="aria-label:camp.aria">
+  <aside class="zbk tarja-topo" role="region" aria-label="Pre-Black Friday" data-i18n-attr="aria-label:camp.aria">
     <div class="zbk__l1">
-      <span class="zbk__selo"><span class="zbk__pulse" aria-hidden="true"></span><span class="zbk__selo-txt" data-i18n="camp.selo">Pré-Black Friday</span><span class="zbk__selo-curto" aria-hidden="true" data-i18n="camp.selo_curto">Pré-Black</span></span>
+      <span class="zbk__selo"><span class="zbk__pulse" aria-hidden="true"></span><span class="zbk__selo-txt" data-i18n="camp.selo">Pre-Black Friday</span><span class="zbk__selo-curto" aria-hidden="true" data-i18n="camp.selo_curto">Pre-Black</span></span>
       <span class="zbk__tlabel" data-i18n="camp.timer_label">A oferta termina em</span>
       <span class="zbk__timer" role="timer" aria-label="Tempo restante"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span>
     </div>
@@ -668,18 +668,38 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="box">
           <!-- FAIXA: manter idêntico em /home e /home/v2 -->
           <!-- Faixa da campanha acima das abas (mesma campanha da tarja; só existe com html.camp-on). -->
-          <div class="zbk-faixa" role="note" aria-label="Pré-Black Friday" data-i18n-attr="aria-label:camp.aria">
+          <div class="zbk-faixa" role="note" aria-label="Pre-Black Friday" data-i18n-attr="aria-label:camp.aria">
             <i class="zbk__grao" aria-hidden="true"></i>
-            <span class="zbk__eclipse" aria-hidden="true"><i class="zbk__coroa"></i><i class="zbk__disco"></i></span>
-            <div class="zbk-faixa__in">
-              <div class="zbk-faixa__topo">
-                <span class="zbk__selo"><span class="zbk__pulse" aria-hidden="true"></span><span class="zbk__selo-txt" data-i18n="camp.selo">Pré-Black Friday</span></span>
-                <span class="zbk-faixa__tempo"><span class="zbk-faixa__tl" data-i18n="camp.timer_label">A oferta termina em</span>
-                  <span class="zbk__timer" role="timer" aria-label="Tempo restante"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__c" aria-hidden="true">:</span><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span></span>
+            <i class="zbk-faixa__halo" aria-hidden="true"></i>
+            <div class="zbk-faixa__grid">
+              <span class="zbk__selo zbk-faixa__selo"><span class="zbk__pulse" aria-hidden="true"></span><span class="zbk__selo-txt" data-i18n="camp.selo">Pre-Black Friday</span></span>
+              <div class="zbk-faixa__oferta">
+                <span class="zbk__eclipse" aria-hidden="true"><i class="zbk__coroa"></i><i class="zbk__disco"></i></span>
+                <p class="zbk-faixa__mega">
+                  <span class="zbk-faixa__ate" data-i18n="camp.ate">Até</span>
+                  <span class="zbk-faixa__num"><span class="zbk-faixa__gold"><b class="zbk__count" data-camp-num="ate">85</b>% OFF<span class="zbk-faixa__shine" aria-hidden="true"><span><b class="zbk__count" data-camp-num="ate">85</b>% OFF</span></span></span></span>
+                </p>
+                <span class="zbk-faixa__todos" data-i18n="camp.todos">em todos os planos</span>
               </div>
-              <p class="zbk-faixa__txt">
-                <span class="zbk-faixa__p zbk-faixa__p--hero"><span class="zbk-faixa__ate" data-i18n="camp.ate">Até</span> <span class="zbk-faixa__num"><span class="zbk-faixa__gold"><b data-camp-num="ate">85</b>% OFF</span></span> <span class="zbk-faixa__todos" data-i18n="camp.todos">em todos os planos</span></span>
-              </p>
+              <div class="zbk-faixa__clock">
+                <span class="zbk-faixa__clock-label" data-i18n="camp.timer_label">A oferta termina em</span>
+                <div class="zbk__timer zbk-faixa__timer" role="timer" aria-label="Tempo restante">
+                  <span class="zbk-faixa__cell"><span class="zbk-faixa__cell-num"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span><span class="zbk-faixa__cell-u" data-i18n="camp.unit_h">horas</span></span>
+                  <span class="zbk-faixa__cell-sep" aria-hidden="true">:</span>
+                  <span class="zbk-faixa__cell"><span class="zbk-faixa__cell-num"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span><span class="zbk-faixa__cell-u" data-i18n="camp.unit_m">min</span></span>
+                  <span class="zbk-faixa__cell-sep" aria-hidden="true">:</span>
+                  <span class="zbk-faixa__cell"><span class="zbk-faixa__cell-num"><span class="zbk__d" aria-hidden="true"><i>0</i></span><span class="zbk__d" aria-hidden="true"><i>0</i></span></span><span class="zbk-faixa__cell-u" data-i18n="camp.unit_s">seg</span></span>
+                </div>
+              </div>
+              <div class="zbk-faixa__acao">
+                <button type="button" class="zbk__cupom zbk-faixa__cupom" data-camp-cupom aria-label="Copiar o cupom BLACK07" data-i18n-attr="aria-label:camp.cupom_aria">
+                  <span class="zbk__cupom-rot" data-i18n="camp.cupom_rot">Cupom</span>
+                  <span class="zbk__code" data-camp-code>BLACK<span class="z0">0</span>7</span>
+                  <span class="zbk__stub" aria-hidden="true"><svg class="zbk__stub-ic" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V6a2 2 0 0 1 2-2h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="zbk__stub-ok" data-i18n="camp.copiado">Copiado!</span></span>
+                </button>
+                <span class="zbk__sr" aria-live="polite"></span>
+                <span class="zbk-faixa__apply" data-i18n="camp.aplique">Aplique no checkout</span>
+              </div>
             </div>
           </div>
           <!-- /FAIXA -->
