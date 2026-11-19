@@ -193,7 +193,7 @@ html.camp-on {
 .zbk__pct {
   position: relative;
   display: inline-block;
-  min-width: 5.3em;          /* largura final de "87% OFF" reservada: a troca de fonte não move a linha (CLS) */
+  min-width: 5.3em;          /* largura final de "85% OFF" reservada (com folga): a troca de fonte não move a linha (CLS) */
   padding: 2px 4px 3px 0;
   font-family: var(--ncs), var(--tts), sans-serif;
   font-size: 40px;
@@ -295,25 +295,7 @@ html.camp-on {
 }
 @keyframes zbkEntra { from { opacity: 0; } to { opacity: 1; } }
 
-/* ---------- chip, cupom, CTA ---------- */
-.zbk__chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 26px;
-  padding: 0 11px 0 9px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 11.5px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.86);
-  white-space: nowrap;
-}
-.zbk__chip-x { margin-left: -2px; }
-.zbk__ic { width: 13px; height: 13px; flex: none; color: var(--camp-menta); }
-.zbk__mob { display: none; }
-
+/* ---------- cupom, CTA ---------- */
 .zbk__cupom {
   position: relative;
   display: inline-flex;
@@ -421,7 +403,6 @@ html.camp-on {
 
 /* ---------- larguras intermediárias ---------- */
 @media (max-width: 1279.98px) {
-  .zbk__chip-x { display: none; }
   .zbk__in { gap: 20px; }
   .zbk__oferta { gap: 18px; }
 }
@@ -431,9 +412,6 @@ html.camp-on {
   .zbk__cupom-rot { display: none; }
   .zbk__pct { font-size: 33px; }
   .zbk__todos { font-size: 13px; white-space: normal; max-width: 9.5em; }
-}
-@media (max-width: 899.98px) {
-  .zbk__chip { display: none; }            /* o Restart segue na faixa e no card */
 }
 
 /* ---------- celular (< 768): dois andares, máx. 100px ---------- */
@@ -454,10 +432,9 @@ html.camp-on {
   .zbk__ate { align-self: auto; margin-top: 0; font-size: 10px; }
   .zbk__pct { font-size: 26px; }
   .zbk__todos { font-size: 13px; white-space: nowrap; max-width: none; color: var(--camp-ouro-1); }
-  .zbk__mob { display: block; grid-column: 1 / -1; text-align: center; font-size: 11px; line-height: 1.2; color: rgba(255, 255, 255, 0.78); white-space: nowrap; }
   .zbk__cupom { grid-area: c; height: 44px; gap: 8px; padding-left: 12px; }
   .zbk__cta { grid-area: a; height: 44px; justify-content: center; font-size: 12px; padding-left: 14px; }
-  /* arco nasce ABAIXO da linha pequena do Restart (contraste) */
+  /* arco nasce ABAIXO da linha "ATÉ 85% OFF em todos os planos" */
   .zbk__disco { --d: 520px; top: 21px; }
   .zbk__coroa { --d: 580px; top: -9px; }
   .zbk__reflexo { display: none; }
@@ -467,7 +444,6 @@ html.camp-on {
   .zbk__selo-curto { display: inline; }
   .zbk__pct { font-size: 23px; }
   .zbk__todos { font-size: 12px; }
-  .zbk__mob { font-size: 10.5px; }
   .zbk__in { padding: 0 10px; column-gap: 6px; }
   .zbk__cupom { padding-left: 10px; gap: 6px; }
   .zbk__code { font-size: 13.5px; letter-spacing: 0.05em; }
@@ -555,7 +531,6 @@ html.camp-on {
 }
 .zbk-faixa__gold b { font-weight: inherit; }
 .zbk-faixa__todos { color: var(--camp-ouro-1); font-weight: 600; }
-.zbk-faixa__p--restart .zbk__ic { display: inline-block; vertical-align: -0.2em; width: 1.4rem; height: 1.4rem; margin-right: 0.4rem; }
 .zbk-faixa .zbk__disco { --d: 60rem; top: 0.6rem; }
 .zbk-faixa .zbk__coroa { --d: 66rem; top: -2.4rem; }
 .zbk-faixa .zbk__reflexo { display: none; }
@@ -565,7 +540,7 @@ html.camp-on {
   .zbk-faixa__tl { display: none; }
   .zbk-faixa__txt { flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
   .zbk-faixa__p + .zbk-faixa__p::before { display: none; }
-  .zbk-faixa .zbk__disco { top: 3.6rem; }          /* arco abaixo da linha do Restart */
+  .zbk-faixa .zbk__disco { top: 3.6rem; }          /* arco abaixo da linha única */
   .zbk-faixa .zbk__coroa { top: 0.6rem; }
 }
 

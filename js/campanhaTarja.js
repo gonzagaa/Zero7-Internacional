@@ -6,10 +6,13 @@
      (comportamento de sempre). Só o dígito que muda entra de baixo
      (translateY 40% -> 0 + opacidade, 250ms). Última hora: âmbar.
      Leitor de tela recebe o tempo por MINUTO, nunca por segundo.
-   - "87" conta de 0 a 87 uma vez (largura travada: nada se mexe).
+   - O número ("ATÉ X% OFF") conta de 0 ao alvo uma vez (largura travada:
+     nada se mexe). O alvo vem de C.pct.ate.
    - Cupom: copia o código e mostra "Copiado!".
    - Animações pausam com a aba oculta e quando a tarja/faixa sai da tela.
-   - CTA da tarja: garante o 50k selecionado ao chegar em #plan.
+   - CTA da tarja: quando CAMP.destaque.selecionarPorPadrao estiver ligado,
+     também força a seleção do capital destacado ao chegar em #plan. Fora
+     disso, o CTA só navega para #plan sem forçar seletor nenhum.
    - O fim da campanha durante a visita não remove nada (sem salto de
      layout); na próxima carga, js/campanha.js já não liga a campanha.
    ===================================================================== */
@@ -74,7 +77,7 @@
   function ligar() { desligar(); rodar(true); tick = setInterval(function () { rodar(false); }, 1000); }
   function desligar() { if (tick) { clearInterval(tick); tick = null; } }
 
-  /* ---------- 87: conta de 0 a 87 uma vez ---------- */
+  /* ---------- conta de 0 até C.pct.ate uma vez (85 nesta campanha) ---------- */
   function contar() {
     var els = $$('.zbk .zbk__count');               // o número + a cópia do brilho
     if (!els.length || reduz) return;
@@ -145,8 +148,10 @@
   }
   function reposicionar() { if (ecRaf) cancelAnimationFrame(ecRaf); ecRaf = requestAnimationFrame(posicionarEclipses); }
 
-  /* ---------- CTA da tarja: chega em #plan já no 50k ---------- */
+  /* ---------- CTA da tarja: só força o capital destacado quando o
+       bloco de destaque está ligado. Fora disso, o <a href="#plan"> apenas navega. ---------- */
   function ligarCta() {
+    if (!C.destaque || !C.destaque.selecionarPorPadrao) return;
     $$('[data-camp-ir]').forEach(function (a) {
       a.addEventListener('click', function () {
         var b = $('#plan .seg--capital [data-capital="' + C.destaque.capital + '"]');

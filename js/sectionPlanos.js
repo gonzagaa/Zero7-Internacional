@@ -575,24 +575,12 @@
   }
 
   /* ============================================================
-     Restart incluído — BENEFÍCIO DO PRODUTO (links "- Restart" do checkout).
-     Não depende da campanha: continua depois dela.
-     ============================================================ */
-  const RESTART_REGRA = {
-    com_ativacao: 'plan.restart_regra',
-    sem_ativacao: 'plan.restart_regra',
-    liberty:      'plan.restart_regra_liberty',   // Liberty: só ao atingir o drawdown
-  };
-  function renderRestart() {
-    if (!refs.restart) return;
-    const k = RESTART_REGRA[state.modo];
-    refs.restart.hidden = !k;
-    if (k && refs.restartRegra) refs.restartRegra.textContent = tr(k);
-  }
-
-  /* ============================================================
-     Campanha (js/campanha.js) — 50k em destaque e selos do card.
+     Campanha (js/campanha.js) — selos do card + destaque opcional.
      Os selos mostram SEMPRE o desconto real calculado do planos.json.
+     O bloco "destaque" (seletor pré-selecionado, anel pulsante, selo
+     flutuante no capital e borda dourada do card) só liga quando
+     CAMP.destaque.selecionarPorPadrao === true — fora disso tudo fica
+     inerte, pronto para a próxima campanha.
      Sem campanha ativa, nada disto roda e nada é criado.
      ============================================================ */
   const CAMP = (window.Z7_CAMPANHA && window.Z7_CAMPANHA.ativa) ? window.Z7_CAMPANHA : null;
@@ -605,62 +593,76 @@
     return por && de && de > por ? Math.round((1 - por / de) * 100) : null;
   }
 
-  // antes do 1º render e antes de medir o blob: 50k selecionado + selo no botão
+  // antes do 1º render e antes de medir o blob:
+  //   - sempre cria o selo "PRÉ-BLACK · -XX%" no cabeçalho do card
+  //   - se CAMP.destaque.selecionarPorPadrao: também pré-seleciona
+  //     modo/capital, cria os selos flutuantes no seletor e a borda do card
   function prepararCampanha() {
     if (!CAMP) return;
-    // aba pré-selecionada durante a campanha (CAMP.destaque.modo; ex.: Liberty)
-    const modoCamp = CAMP.destaque.selecionarPorPadrao && CAMP.destaque.modo;
-    const btnModo = modoCamp && refs.botoesModo.find((b) => b.dataset.mode === modoCamp);
-    if (btnModo) {
-      atualizarSelecionado(refs.botoesModo, btnModo, 'is-active');
-      state.modo = modoCamp;
-    }
-    // selo + anel em todo botão de capital: aparecem só onde a aba atual tem o desconto
-    // máximo da campanha (ex.: Liberty 25k/50k/100k). Nos planos a 80% (Activation, Challenge e
-    // Funding Pass, inclusive no 50k) o botão fica sem destaque (pedido de 12/11)
-    refs.campSeg = refs.botoesCapital.map((btn) => {
-      const selo = document.createElement('span');
-      selo.className = 'camp-seg-selo';
-      selo.setAttribute('aria-hidden', 'true');
-      const sr = document.createElement('span');
-      sr.className = 'camp-sr';
-      btn.append(selo, sr);
-      return { btn, selo, sr };
-    });
-    const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
-    if (dest) {
-      if (CAMP.destaque.selecionarPorPadrao && capitalCompativelComModo(state.modo, dest.dataset.capital)) {
+    const destLigado = !!CAMP.destaque.selecionarPorPadrao;
+
+    if (destLigado) {
+      // aba pré-selecionada durante a campanha (CAMP.destaque.modo; ex.: Liberty)
+      const modoCamp = CAMP.destaque.modo;
+      const btnModo = modoCamp && refs.botoesModo.find((b) => b.dataset.mode === modoCamp);
+      if (btnModo) {
+        atualizarSelecionado(refs.botoesModo, btnModo, 'is-active');
+        state.modo = modoCamp;
+      }
+      // selo + anel em todo botão de capital (aparecem só onde a aba atual
+      // atinge o desconto máximo da campanha)
+      refs.campSeg = refs.botoesCapital.map((btn) => {
+        const selo = document.createElement('span');
+        selo.className = 'camp-seg-selo';
+        selo.setAttribute('aria-hidden', 'true');
+        const sr = document.createElement('span');
+        sr.className = 'camp-sr';
+        btn.append(selo, sr);
+        return { btn, selo, sr };
+      });
+      const dest = refs.botoesCapital.find((b) => b.dataset.capital === CAMP.destaque.capital);
+      if (dest && capitalCompativelComModo(state.modo, dest.dataset.capital)) {
         atualizarSelecionado(refs.botoesCapital, dest);
         state.capital = dest.dataset.capital;
       }
+      // borda dourada em volta do card do capital destacado
+      const borda = document.createElement('i');
+      borda.className = 'camp-card-borda';
+      borda.setAttribute('aria-hidden', 'true');
+      refs.card.appendChild(borda);
     }
+
+    // selo "PRÉ-BLACK · -XX%" vale para TODOS os cards (independente do destaque)
     const header = refs.cardBadge && refs.cardBadge.parentElement;
     if (header) {
       refs.campCardSelo = document.createElement('span');
       refs.campCardSelo.className = 'camp-card-selo';
       header.appendChild(refs.campCardSelo);
     }
-    const borda = document.createElement('i');
-    borda.className = 'camp-card-borda';
-    borda.setAttribute('aria-hidden', 'true');
-    refs.card.appendChild(borda);
   }
 
   function renderCampanha() {
     if (!CAMP) return;
+    const destLigado = !!CAMP.destaque.selecionarPorPadrao;
     const naCamp = CAMP.modos.includes(state.modo);
-    (refs.campSeg || []).forEach(({ btn, selo, sr }) => {
-      const cap = btn.dataset.capital;
-      const pc = naCamp ? descontoReal(cap, state.modo) : null;
-      const mostra = !!pc && pc >= CAMP.pct.ate;
-      btn.classList.toggle('camp-dest', mostra);
-      selo.textContent = mostra ? `-${pc}%` : '';
-      sr.textContent = mostra ? ` (${tr('camp.seg_selo_aria').replace('{p}', pc)})` : '';
-    });
+
+    // Selos flutuantes no seletor de capital: só quando o bloco de destaque
+    // está ligado (refs.campSeg só foi criado neste caso)
+    if (destLigado) {
+      (refs.campSeg || []).forEach(({ btn, selo, sr }) => {
+        const cap = btn.dataset.capital;
+        const pc = naCamp ? descontoReal(cap, state.modo) : null;
+        const mostra = !!pc && pc >= CAMP.pct.ate;
+        btn.classList.toggle('camp-dest', mostra);
+        selo.textContent = mostra ? `-${pc}%` : '';
+        sr.textContent = mostra ? ` (${tr('camp.seg_selo_aria').replace('{p}', pc)})` : '';
+      });
+    }
+
     const p = naCamp ? descontoReal(state.capital, state.modo) : null;
-    // dourado onde está o número da campanha (ex.: Liberty 25k/50k/100k a 87%;
-    // FP 50K em 80% mostra "-80%" normal)
-    const dest = !!p && p >= CAMP.pct.ate;
+    // card dourado: só com o bloco de destaque ligado — e mesmo assim só
+    // quando o card atual atinge o percentual máximo da campanha
+    const dest = destLigado && !!p && p >= CAMP.pct.ate;
     refs.card.classList.toggle('camp-card-dest', dest);
     if (refs.campCardSelo) {
       refs.campCardSelo.textContent = p ? tr('camp.card_selo').replace('{p}', p) : '';
@@ -676,7 +678,6 @@
     renderLabel({ animar });
     renderBadge({ animar });
     renderCupom();
-    renderRestart();
     renderCampanha();
     renderCheckoutHref();
   }
@@ -798,8 +799,6 @@
     refs.cardMode = $('.plan-card__mode', secao);
     refs.cardCupom = $('.plan-card__cupom', secao);
     refs.cardCta = $('.plan-card__cta', secao);
-    refs.restart = $('.plan-restart', secao);
-    refs.restartRegra = $('.plan-restart__rg', secao);
     refs.listaDesafio = $('.plan-card__list[data-block="desafio"]', secao);
     refs.listaIncubadora = $('.plan-card__list[data-block="incubadora"]', secao);
   }

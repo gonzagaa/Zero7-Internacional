@@ -21,16 +21,19 @@
 
     cupom: 'BLACK07',                     // um código só (tarja; o card usa PLAN_CUPOM em sectionPlanos.js)
 
-    // número da copy "ATÉ 87% OFF". Os selos do card NÃO usam este número:
+    // número da copy "ATÉ 85% OFF". Os selos do card NÃO usam este número:
     // calculam o desconto real de cada plano a partir do data/planos.json.
-    pct: { ate: 87 },
+    pct: { ate: 85 },
 
-    // onde estão os 87%: selo flutuante, anel, card dourado, CTA da tarja
+    // estrutura do "plano destacado" preservada para campanhas futuras.
+    // Enquanto `selecionarPorPadrao` for false: a seção abre no padrão
+    // (Activation Challenge · 25k) e não existe selo flutuante, anel
+    // âmbar, borda dourada ou CTA forçando o seletor. Basta religar a
+    // flag (e eventualmente ajustar capital/modo) na próxima campanha.
     destaque: {
       capital: '50k',
-      selecionarPorPadrao: true,          // flag de conversão: a seção de planos abre no 50k
-      modo: 'liberty',                    // ...e nesta aba (maior desconto: Liberty 25k/50k/100k a 87%).
-                                          // null = abre na aba padrão (Activation Challenge)
+      selecionarPorPadrao: false,
+      modo: 'liberty',                    // null = abre na aba padrão (Activation Challenge)
     },
 
     // modos que exibem o selo "PRÉ-BLACK · -XX%" no card
@@ -40,7 +43,7 @@
     cores: {
       'ouro-1': '#fbeccb',   /* champanhe   */
       'ouro-2': '#f1c36a',   /* âmbar       */
-      'ouro-3': '#c99030',   /* ouro escuro (mínimo p/ contraste do 87% sobre o eclipse) */
+      'ouro-3': '#c99030',   /* ouro escuro (mínimo p/ contraste do percentual sobre o eclipse) */
       'ambar':  '#e9a640',
       'menta':  '#3fe3a6',
       'base':   '#000000',
